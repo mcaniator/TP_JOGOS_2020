@@ -63,18 +63,18 @@ void Player::OnCollision(sf::Vector2f direction)
 {
     if(direction.x < 0.0f)
     {
-        velocidade.x = 0.0f;
+        sentidoMovimentoX = 0;
     }
     else if(direction.x > 0.0f)
     {
-        velocidade.x = 0.0f;
+        sentidoMovimentoX = 0;
     }
     if(direction.y < 0.0f)
     {
-        velocidade.y = 0.0f;
+        sentidoMovimentoY = 0;
     }
     else if(direction.y > 0.0f)
     {
-        velocidade.y = 0.0f;
+        sentidoMovimentoY = 0;
     }
 }
