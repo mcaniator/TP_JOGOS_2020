@@ -6,10 +6,13 @@ class Animation
 {
     ///FUNCOES
 public:
-    Animation(sf::Texture* texture, sf::Vector2u imageCount, float switchTime);
+    Animation(sf::Texture* texture, sf::Vector2u tamanhoDaImagem, float switchTime);
     virtual ~Animation();
 
     void Update(int row, float deltaTime, bool faceRight);
+
+    void setNumFrames(int numFrames) { tamanhoDaImagem.x = numFrames; };
+    void setFrameAtual(int frame) { currentImage.x = frame; };
 private:
 
     ///VARIAVEIS
@@ -17,11 +20,13 @@ public:
     sf::IntRect uvRect;
 
 private:
-    sf::Vector2u imageCount;
+    sf::Vector2u tamanhoDaImagem;
     sf::Vector2u currentImage;
 
     float totalTime;
     float switchTime;
+    //int numFrames;
+    //int fileira;
 };
 
 #endif // ANIMATION_H

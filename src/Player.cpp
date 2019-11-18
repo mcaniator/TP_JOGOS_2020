@@ -4,8 +4,8 @@
 
 using namespace std;
 
-Player::Player(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float speed, float jumpHeight) :
-    animation(texture, imageCount, switchTime)
+Player::Player(sf::Texture* texture, sf::Vector2u tamanhoDaImagem, float switchTime, float speed, float jumpHeight) :
+    animation(texture, tamanhoDaImagem, switchTime)
 {
     row = 0;
     faceRight = true;
@@ -28,27 +28,46 @@ Player::~Player()
 
 void Player::Update(float deltaTime)
 {
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && sentidoMovimentoY == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
     {
         sentidoMovimentoX = -1;
     }
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && sentidoMovimentoY == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
     {
         sentidoMovimentoX = 1;
     }
     else
         sentidoMovimentoX = 0;
 
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sentidoMovimentoX == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
     {
         sentidoMovimentoY = -1;
     }
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && sentidoMovimentoX == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
     {
         sentidoMovimentoY = 1;
     }
     else
         sentidoMovimentoY = 0;
+
+    //ANIMACAO
+    int numFrames = 0;
+    if(sentidoMovimentoX == 1)
+    {
+        animation.setNumFrames(9);
+        row = 11;
+    }
+    else if(sentidoMovimentoX == -1)
+    {
+        row = 9;
+        animation.setNumFrames(9);
+    }
+    else
+    {
+        row = 2;
+        animation.setNumFrames(0);
+        animation.setFrameAtual(0);
+    }
 
     animation.Update(row, deltaTime, faceRight);
     body.setTextureRect(animation.uvRect);

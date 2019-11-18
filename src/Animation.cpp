@@ -1,14 +1,14 @@
 #include "Animation.h"
 
-Animation::Animation(sf::Texture* texture, sf::Vector2u imageCount, float switchTime)
+Animation::Animation(sf::Texture* texture, sf::Vector2u tamanhoDaImagem, float switchTime)
 {
-    this->imageCount = imageCount;
+    this->tamanhoDaImagem = tamanhoDaImagem;
     this->switchTime = switchTime;
     totalTime = 0.0f;
     currentImage.x = 0;
 
-    uvRect.width = texture->getSize().x / (float)imageCount.x;
-    uvRect.height = texture->getSize().y / (float)imageCount.y;
+    uvRect.width = texture->getSize().x / (float)tamanhoDaImagem.x;
+    uvRect.height = texture->getSize().y / (float)tamanhoDaImagem.y;
 }
 
 Animation::~Animation()
@@ -19,14 +19,14 @@ Animation::~Animation()
 void Animation::Update(int row, float deltaTime, bool faceRight)
 {
     currentImage.y = row;
-    totalTime += deltaTime;
+    totalTime += 5 * deltaTime;
 
     if(totalTime >= switchTime)
     {
         totalTime -= switchTime;
         currentImage.x++;
 
-        if(currentImage.x >= imageCount.x)
+        if(currentImage.x >= tamanhoDaImagem.x)
         {
             currentImage.x = 0;
         }

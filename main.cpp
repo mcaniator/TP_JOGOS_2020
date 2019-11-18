@@ -105,11 +105,11 @@ int main()
     sf::RenderWindow window(sf::VideoMode(512, 400), "GettingStarted", sf::Style::Close | sf::Style::Resize);
     sf::View view(sf::Vector2f(VIEW_HEIGHT,VIEW_HEIGHT), sf::Vector2f(512.0f,512.0f));
     sf::Texture playerTexture;
-    playerTexture.loadFromFile("Tux.png");
+    playerTexture.loadFromFile("jogador.png");
     sf::Texture platformTexture;
     platformTexture.loadFromFile("Tux.png");
 
-    Player player(&playerTexture, sf::Vector2u(3, 9), 0.3f, 100.0f, 200.0f);
+    Player player(&playerTexture, sf::Vector2u(13, 21), 0.3f, 100.0f, 200.0f);
 
     std::vector<Platform> platforms;
 
