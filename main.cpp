@@ -109,7 +109,7 @@ int main()
     sf::Texture platformTexture;
     platformTexture.loadFromFile("Tux.png");
 
-    Player player(&playerTexture, sf::Vector2u(13, 21), 0.3f, 100.0f, 200.0f);
+    Player player(&playerTexture, sf::Vector2u(13, 21), 0.3f, 180.0f);
 
     std::vector<Platform> platforms;
 

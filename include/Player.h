@@ -7,7 +7,7 @@
 class Player
 {
 public:
-    Player(sf::Texture* texture, sf::Vector2u tamanhoDaImagem, float switchTime, float speed, float jumpHeight);
+    Player(sf::Texture* texture, sf::Vector2u tamanhoDaImagem, float switchTime, float vel);
     virtual ~Player();
 
     void Update(float deltaTime);
@@ -72,8 +72,11 @@ public:
 private:
     sf::RectangleShape body;
     Animation animation;
-    unsigned int row;
-    bool faceRight;
+
+    unsigned int linha;
+    bool emMovimento;
+    char ultimaDirecao;
+
     int sentidoMovimentoX;
     int sentidoMovimentoY;
     sf::Vector2f velocidade;
