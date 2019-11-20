@@ -171,13 +171,14 @@ int main()
 
         window.clear(sf::Color(150,150,150));
         window.setView(view);
-        jogador.Draw(window);
 
+        //DESENHA OS OBJETOS
         for(unsigned int i = 0; i < platforms.size(); i++)
         {
             Plataforma& platform = platforms[i];
             platform.Draw(window);
         }
+        jogador.Draw(window);
 
         window.display();
     }

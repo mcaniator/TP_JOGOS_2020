@@ -16,7 +16,7 @@ Jogador::Jogador(sf::Texture* texture, sf::Vector2u tamanhoDaImagem, float switc
     sentidoMovimentoY = 0;
     ultimaDirecao = 'b';
 
-    body.setSize(sf::Vector2f(100.0f, 200.0f));
+    body.setSize(sf::Vector2f(100.0f, 45.0f));
     body.setOrigin(body.getSize() / 2.0f);
     body.setPosition(206.0f, 206.0f);
     texturaJogador.setSize(sf::Vector2f(200.0f, 200.0f));
@@ -108,12 +108,16 @@ void Jogador::Update(float deltaTime)
     }
 
     animacao.Update(linha, deltaTime, emMovimento);
-    texturaJogador.setPosition(body.getPosition());
+    sf::Vector2f posicao = body.getPosition();
+    posicao.y -= 85;
+    texturaJogador.setPosition(posicao);
     texturaJogador.setTextureRect(animacao.uvRect);
+
 }
 
 void Jogador::Draw(sf::RenderWindow& window)
 {
+    window.draw(body);
     window.draw(texturaJogador);
 }
 
