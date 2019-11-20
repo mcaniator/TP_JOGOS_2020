@@ -1,11 +1,11 @@
-#include "Player.h"
+#include "Jogador.h"
 #include <math.h>
 #include <iostream>
 
 using namespace std;
 
-Player::Player(sf::Texture* texture, sf::Vector2u tamanhoDaImagem, float switchTime, float vel) :
-    animation(texture, tamanhoDaImagem, switchTime)
+Jogador::Jogador(sf::Texture* texture, sf::Vector2u tamanhoDaImagem, float switchTime, float vel) :
+    animacao(texture, tamanhoDaImagem, switchTime)
 {
     linha = 0;
 
@@ -16,18 +16,21 @@ Player::Player(sf::Texture* texture, sf::Vector2u tamanhoDaImagem, float switchT
     sentidoMovimentoY = 0;
     ultimaDirecao = 'b';
 
-    body.setSize(sf::Vector2f(200.0f, 200.0f));
+    body.setSize(sf::Vector2f(100.0f, 200.0f));
     body.setOrigin(body.getSize() / 2.0f);
     body.setPosition(206.0f, 206.0f);
-    body.setTexture(texture);
+    texturaJogador.setSize(sf::Vector2f(200.0f, 200.0f));
+    texturaJogador.setOrigin(texturaJogador.getSize() / 2.0f);
+    texturaJogador.setPosition(206.0f, 206.0f);
+    texturaJogador.setTexture(texture);
 }
 
-Player::~Player()
+Jogador::~Jogador()
 {
 
 }
 
-void Player::Update(float deltaTime)
+void Jogador::Update(float deltaTime)
 {
     //COMANDOS TECLADO
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && sentidoMovimentoY == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
@@ -62,25 +65,25 @@ void Player::Update(float deltaTime)
     if(sentidoMovimentoX == 1)
     {
         linha = 11;
-        animation.setNumFrames(9);
+        animacao.setNumFrames(9);
         ultimaDirecao = 'd';
     }
     else if(sentidoMovimentoX == -1)
     {
         linha = 9;
-        animation.setNumFrames(9);
+        animacao.setNumFrames(9);
         ultimaDirecao = 'e';
     }
     else if(sentidoMovimentoY == 1)
     {
         linha = 10;
-        animation.setNumFrames(9);
+        animacao.setNumFrames(9);
         ultimaDirecao = 'b';
     }
     else if(sentidoMovimentoY == -1)
     {
         linha = 8;
-        animation.setNumFrames(9);
+        animacao.setNumFrames(9);
         ultimaDirecao = 'c';
     }
     else
@@ -100,20 +103,21 @@ void Player::Update(float deltaTime)
                 linha = 3;
                 break;
         }
-        animation.setNumFrames(0);
-        animation.setFrameAtual(0);
+        animacao.setNumFrames(0);
+        animacao.setFrameAtual(0);
     }
 
-    animation.Update(linha, deltaTime, emMovimento);
-    body.setTextureRect(animation.uvRect);
+    animacao.Update(linha, deltaTime, emMovimento);
+    texturaJogador.setPosition(body.getPosition());
+    texturaJogador.setTextureRect(animacao.uvRect);
 }
 
-void Player::Draw(sf::RenderWindow& window)
+void Jogador::Draw(sf::RenderWindow& window)
 {
-    window.draw(body);
+    window.draw(texturaJogador);
 }
 
-void Player::OnCollision(sf::Vector2f direction)
+void Jogador::OnCollision(sf::Vector2f direction)
 {
     if(direction.x < 0.0f)
     {

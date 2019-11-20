@@ -1,6 +1,6 @@
-#include "Animation.h"
+#include "Animacao.h"
 
-Animation::Animation(sf::Texture* texture, sf::Vector2u tamanhoDaImagem, float switchTime)
+Animacao::Animacao(sf::Texture* texture, sf::Vector2u tamanhoDaImagem, float switchTime)
 {
     this->tamanhoDaImagem = tamanhoDaImagem;
     this->switchTime = switchTime;
@@ -11,12 +11,12 @@ Animation::Animation(sf::Texture* texture, sf::Vector2u tamanhoDaImagem, float s
     uvRect.height = texture->getSize().y / (float)tamanhoDaImagem.y;
 }
 
-Animation::~Animation()
+Animacao::~Animacao()
 {
     //dtor
 }
 
-void Animation::Update(int linha, float deltaTime, bool emMovimento)
+void Animacao::Update(int linha, float deltaTime, bool emMovimento)
 {
     currentImage.y = linha;
     totalTime += 5 * deltaTime;

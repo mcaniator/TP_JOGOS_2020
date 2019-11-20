@@ -1,13 +1,13 @@
-#ifndef ANIMATION_H
-#define ANIMATION_H
+#ifndef ANIMACAO_H
+#define ANIMACAO_H
 #include <SFML\Graphics.hpp>
 
-class Animation
+class Animacao
 {
     ///FUNCOES
 public:
-    Animation(sf::Texture* texture, sf::Vector2u tamanhoDaImagem, float switchTime);
-    virtual ~Animation();
+    Animacao(sf::Texture* texture, sf::Vector2u tamanhoDaImagem, float switchTime);
+    virtual ~Animacao();
 
     void Update(int linha, float deltaTime, bool faceRight);
 
@@ -27,4 +27,4 @@ private:
     float switchTime;
 };
 
-#endif // ANIMATION_H
+#endif // Animacao_H

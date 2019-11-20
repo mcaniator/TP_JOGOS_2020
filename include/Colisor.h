@@ -1,19 +1,19 @@
-#ifndef COLLIDER_H
-#define COLLIDER_H
+#ifndef COLISOR_H
+#define COLISOR_H
 #include <SFML/Graphics.hpp>
 
-class Collider
+class Colisor
 {
 public:
-    Collider(sf::RectangleShape& body);
-    virtual ~Collider();
+    Colisor(sf::RectangleShape& body);
+    virtual ~Colisor();
 
     void Move(float dx, float dy)
     {
         body.move(dx, dy);
     }
 
-    bool CheckCollision(Collider other, sf::Vector2f& direction, float push);
+    bool CheckCollision(Colisor other, sf::Vector2f& direction, float push);
     sf::Vector2f GetPosition()
     {
         return body.getPosition();
@@ -27,4 +27,4 @@ private:
     sf::RectangleShape& body;
 };
 
-#endif // COLLIDER_H
+#endif // Colisor_H

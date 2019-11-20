@@ -1,55 +1,55 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <vector>
-#include "Player.h"
-#include "Platform.h"
+#include "Jogador.h"
+#include "Plataforma.h"
 
 
 static const float VIEW_HEIGHT = 512.0f;
 
 using namespace std;
 
-float obtemPosicaoX(Player* p)
+float obtemPosicaoX(Jogador* p)
 {
     return p->getX();
 }
 
-float obtemPosicaoY(Player* p)
+float obtemPosicaoY(Jogador* p)
 {
     return p->getY();
 }
 
-void atualizaPosicao(Player* p, float x, float y)
+void atualizaPosicao(Jogador* p, float x, float y)
 {
     p->set(x, y);
 }
 
-float obtemVelocidadeX(Player* p)
+float obtemVelocidadeX(Jogador* p)
 {
     return p->getVX();
 }
 
-float obtemVelocidadeY(Player* p)
+float obtemVelocidadeY(Jogador* p)
 {
     return p->getVY();
 }
 
-void atualizaVelocidadeX(Player* p, float novaVX)
+void atualizaVelocidadeX(Jogador* p, float novaVX)
 {
     p->setVX(novaVX);
 }
 
-void atualizaVelocidadeY(Player* p, float novaVY)
+void atualizaVelocidadeY(Jogador* p, float novaVY)
 {
     p->setVY(novaVY);
 }
 
-int sentidoMovimentoLateral(Player* p)
+int sentidoMovimentoLateral(Jogador* p)
 {
     return p->sentidoMovimentoLateral();
 }
 
-int sentidoMovimentoVertical(Player* p)
+int sentidoMovimentoVertical(Jogador* p)
 {
     return p->sentidoMovimentoVertical();
 }
@@ -61,21 +61,21 @@ void ResizeView(const sf::RenderWindow&  window, sf::View& view)
 }
 
 ///EXERCICIO 1
-float deslocamentoLateral(Player* p, float deltaTime)
+float deslocamentoLateral(Jogador* p, float deltaTime)
 {
     float vx = obtemVelocidadeX(p);
     return vx * deltaTime * sentidoMovimentoLateral(p);
 }
 
 ///EXERCICIO 2
-float deslocamentoVertical(Player* p, float deltaTime)
+float deslocamentoVertical(Jogador* p, float deltaTime)
 {
     float vy = obtemVelocidadeY(p);
     return vy * deltaTime * sentidoMovimentoVertical(p);
 }
 
 ///EXERCICIO 3
-void calculaDeslocamento(Player* p, float deltaTime)
+void calculaDeslocamento(Jogador* p, float deltaTime)
 {
     float x, y;
     x = obtemPosicaoX(p);
@@ -104,18 +104,18 @@ int main()
 {
     sf::RenderWindow window(sf::VideoMode(512, 400), "GettingStarted", sf::Style::Close | sf::Style::Resize);
     sf::View view(sf::Vector2f(VIEW_HEIGHT,VIEW_HEIGHT), sf::Vector2f(512.0f,512.0f));
-    sf::Texture playerTexture;
-    playerTexture.loadFromFile("jogador.png");
+    sf::Texture texturaJogador;
+    texturaJogador.loadFromFile("jogador.png");
     sf::Texture platformTexture;
     platformTexture.loadFromFile("Tux.png");
 
-    Player player(&playerTexture, sf::Vector2u(13, 21), 0.3f, 180.0f);
+    Jogador jogador(&texturaJogador, sf::Vector2u(13, 21), 0.3f, 180.0f);
 
-    std::vector<Platform> platforms;
+    std::vector<Plataforma> platforms;
 
-    platforms.push_back(Platform(&platformTexture, sf::Vector2f(400.0f, 200.0f), sf::Vector2f(500.0f, 200.0f)));
-    platforms.push_back(Platform(&platformTexture, sf::Vector2f(400.0f, 200.0f), sf::Vector2f(500.0f, 0.0f)));
-    platforms.push_back(Platform(&platformTexture, sf::Vector2f(1000.0f, 200.0f), sf::Vector2f(500.0f, 500.0f)));
+    platforms.push_back(Plataforma(&platformTexture, sf::Vector2f(400.0f, 200.0f), sf::Vector2f(500.0f, 200.0f)));
+    platforms.push_back(Plataforma(&platformTexture, sf::Vector2f(400.0f, 200.0f), sf::Vector2f(500.0f, 0.0f)));
+    platforms.push_back(Plataforma(&platformTexture, sf::Vector2f(1000.0f, 200.0f), sf::Vector2f(500.0f, 500.0f)));
 
 
     float deltaTime = 0.0f;
@@ -155,27 +155,27 @@ int main()
 
         }
 
-        player.Update(deltaTime);
-        calculaDeslocamento(&player, deltaTime);
+        jogador.Update(deltaTime);
+        calculaDeslocamento(&jogador, deltaTime);
 
         sf::Vector2f direction;
 
         for(unsigned int i = 0; i < platforms.size(); i++)
         {
-            Platform& platform = platforms[i];
-            if(platform.GetCollider().CheckCollision(player.GetCollider(), direction, 1.0f))
-                player.OnCollision(direction);
+            Plataforma& platform = platforms[i];
+            if(platform.GetColisor().CheckCollision(jogador.GetColisor(), direction, 1.0f))
+                jogador.OnCollision(direction);
         }
 
-        view.setCenter(player.GetPosition());
+        view.setCenter(jogador.GetPosition());
 
         window.clear(sf::Color(150,150,150));
         window.setView(view);
-        player.Draw(window);
+        jogador.Draw(window);
 
         for(unsigned int i = 0; i < platforms.size(); i++)
         {
-            Platform& platform = platforms[i];
+            Plataforma& platform = platforms[i];
             platform.Draw(window);
         }
 

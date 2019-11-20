@@ -1,14 +1,14 @@
-#ifndef PLAYER_H
-#define PLAYER_H
-#include "Animation.h"
-#include "Collider.h"
+#ifndef JOGADOR_H
+#define JOGADOR_H
+#include "Animacao.h"
+#include "Colisor.h"
 
 
-class Player
+class Jogador
 {
 public:
-    Player(sf::Texture* texture, sf::Vector2u tamanhoDaImagem, float switchTime, float vel);
-    virtual ~Player();
+    Jogador(sf::Texture* texture, sf::Vector2u tamanhoDaImagem, float switchTime, float vel);
+    virtual ~Jogador();
 
     void Update(float deltaTime);
     void Draw(sf::RenderWindow& window);
@@ -64,14 +64,15 @@ public:
         body.setPosition(x, y);
     }
 
-    Collider GetCollider()
+    Colisor GetColisor()
     {
-        return Collider(body);
+        return Colisor(body);
     }
 
 private:
     sf::RectangleShape body;
-    Animation animation;
+    sf::RectangleShape texturaJogador;
+    Animacao animacao;
 
     unsigned int linha;
     bool emMovimento;
@@ -83,4 +84,4 @@ private:
 
 };
 
-#endif // PLAYER_H
+#endif // Jogador_H
