@@ -3,7 +3,7 @@
 #include <vector>
 #include "Jogador.h"
 #include "Plataforma.h"
-
+#include "Mapa.h"
 
 static const float VIEW_HEIGHT = 512.0f;
 
@@ -107,7 +107,11 @@ int main()
     sf::Texture texturaJogador;
     texturaJogador.loadFromFile("jogador.png");
     sf::Texture platformTexture;
-    platformTexture.loadFromFile("Tux.png");
+    //platformTexture.loadFromFile("Tux.png");
+    sf::Texture texturaMapa;
+    texturaMapa.loadFromFile("mapa.png");
+
+    Mapa mapa(&texturaMapa);
 
     Jogador jogador(&texturaJogador, sf::Vector2u(13, 21), 0.3f, 180.0f);
 
@@ -116,7 +120,6 @@ int main()
     platforms.push_back(Plataforma(&platformTexture, sf::Vector2f(400.0f, 200.0f), sf::Vector2f(500.0f, 200.0f)));
     platforms.push_back(Plataforma(&platformTexture, sf::Vector2f(400.0f, 200.0f), sf::Vector2f(500.0f, 0.0f)));
     platforms.push_back(Plataforma(&platformTexture, sf::Vector2f(1000.0f, 200.0f), sf::Vector2f(500.0f, 500.0f)));
-
 
     float deltaTime = 0.0f;
     sf::Clock clock;
@@ -178,6 +181,8 @@ int main()
             Plataforma& platform = platforms[i];
             platform.Draw(window);
         }
+
+        mapa.desenha(window);
         jogador.Draw(window);
 
         window.display();
