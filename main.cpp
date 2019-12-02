@@ -54,11 +54,15 @@ int sentidoMovimentoVertical(Jogador* p)
     return p->sentidoMovimentoVertical();
 }
 
-void ResizeView(const sf::RenderWindow&  window, sf::View& view)
+void ResizeView(const sf::RenderWindow& window, sf::View& view)
 {
     float aspectRatio = float(window.getSize().x) / float(window.getSize().y);
     view.setSize(VIEW_HEIGHT * aspectRatio, VIEW_HEIGHT);
 }
+
+///----------------------------------------------------------------------------------///
+///                                  EXERCICIOS                                      ///
+///----------------------------------------------------------------------------------///
 
 ///EXERCICIO 1
 float deslocamentoLateral(Jogador* p, float deltaTime)
@@ -102,8 +106,8 @@ void calculaDeslocamento(Jogador* p, float deltaTime)
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(512, 400), "GettingStarted", sf::Style::Close | sf::Style::Resize);
-    sf::View view(sf::Vector2f(VIEW_HEIGHT,VIEW_HEIGHT), sf::Vector2f(512.0f,512.0f));
+    sf::RenderWindow window(sf::VideoMode(512, 512), "GettingStarted", sf::Style::Close | sf::Style::Resize);
+    //sf::View view(sf::Vector2f(VIEW_HEIGHT,VIEW_HEIGHT), sf::Vector2f(200.0f,200.0f));
     sf::Texture texturaJogador;
     texturaJogador.loadFromFile("jogador.png");
     sf::Texture platformTexture;
@@ -140,7 +144,7 @@ int main()
                 break;
             case sf::Event::Resized:
                 cout << "Width: " << evnt.size.width << " Height: " << evnt.size.height << endl;
-                ResizeView(window, view);
+                //ResizeView(window, view);
                 break;
             case sf::Event::TextEntered:
                 if (evnt.text.unicode < 128)
@@ -170,10 +174,10 @@ int main()
                 jogador.OnCollision(direction);
         }
 
-        view.setCenter(jogador.GetPosition());
+        //view.setCenter(jogador.GetPosition());
 
         window.clear(sf::Color(150,150,150));
-        window.setView(view);
+        //window.setView(view);
 
         //DESENHA OS OBJETOS
         for(unsigned int i = 0; i < platforms.size(); i++)

@@ -16,17 +16,17 @@ public:
 
     sf::Vector2f GetPosition()
     {
-        return body.getPosition();
+        return corpoJogador.getPosition();
     }
 
     float getX()
     {
-        return body.getPosition().x;
+        return corpoJogador.getPosition().x;
     }
 
     float getY()
     {
-        return body.getPosition().y;
+        return corpoJogador.getPosition().y;
     }
 
     float getVX()
@@ -61,16 +61,16 @@ public:
 
     void set(float x, float y)
     {
-        body.setPosition(x, y);
+        corpoJogador.setPosition(x, y);
     }
 
     Colisor GetColisor()
     {
-        return Colisor(body);
+        return Colisor(corpoJogador);
     }
 
 private:
-    sf::RectangleShape body;
+    sf::RectangleShape corpoJogador;
     sf::RectangleShape texturaJogador;
     Animacao animacao;
 

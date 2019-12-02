@@ -1,6 +1,9 @@
 #ifndef MAPA_H
 #define MAPA_H
 #include <SFML/Graphics.hpp>
+#define TAMANHO_MAPA_X 10
+#define TAMANHO_MAPA_Y 10
+#define TAMANHO_BLOCOS 32
 
 typedef struct
 {
@@ -20,7 +23,7 @@ class Mapa
         int tamanhoBlocos;
         sf::Vector2i tamanhoDaImagem;
         sf::RectangleShape textura;
-        Bloco blocos[10][10];
+        Bloco blocos[TAMANHO_MAPA_X][TAMANHO_MAPA_Y];
 };
 
 #endif // MAPA_H
