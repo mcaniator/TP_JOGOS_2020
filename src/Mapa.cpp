@@ -6,7 +6,6 @@ Mapa::Mapa(sf::Texture *texturaMapa)
     numBlocos.x = 10;
     numBlocos.y = 10;
     tamanhoBlocos = 32;
-    //arqTextura.loadFromFile("mapa.png");
 
     tamanhoDaImagem.x = 16;
     tamanhoDaImagem.y = 12;
