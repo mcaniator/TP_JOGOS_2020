@@ -18,7 +18,7 @@ Jogador::Jogador(sf::Texture* texture, sf::Vector2u tamanhoDaImagem, float switc
 
     corpoJogador.setSize(sf::Vector2f(30.0f, 15.0f));
     corpoJogador.setOrigin(corpoJogador.getSize() / 2.0f);
-    corpoJogador.setPosition(10.0f, 10.0f);
+    corpoJogador.setPosition(100.0f, 100.0f);
     texturaJogador.setSize(sf::Vector2f(64.0f, 64.0f));
     texturaJogador.setOrigin(texturaJogador.getSize() / 2.0f);
     texturaJogador.setPosition(10.0f, 10.0f);
@@ -33,7 +33,7 @@ Jogador::~Jogador()
 void Jogador::Update(float deltaTime)
 {
     //COMANDOS TECLADO
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && sentidoMovimentoY == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && sentidoMovimentoY == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && corpoJogador.getPosition().x > 5 * 48 + (corpoJogador.getSize().x / 2))
     {
         sentidoMovimentoX = -1;
     }
