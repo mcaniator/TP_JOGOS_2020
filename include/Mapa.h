@@ -1,14 +1,15 @@
 #ifndef MAPA_H
 #define MAPA_H
 #include <SFML/Graphics.hpp>
-#define TAMANHO_MAPA_X 10
-#define TAMANHO_MAPA_Y 10
+#define TAMANHO_MAPA_X 30
+#define TAMANHO_MAPA_Y 30
 #define TAMANHO_BLOCOS 32
 
 typedef struct
 {
     sf::IntRect corpoBloco;
     sf::Vector2f posicaoBloco;
+    sf::Vector2i posicaoNaImagem;
 }Bloco;
 
 class Mapa

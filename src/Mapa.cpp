@@ -8,16 +8,18 @@ Mapa::Mapa(sf::Texture *texturaMapa)
     tamanhoBlocos = TAMANHO_BLOCOS;
 
     tamanhoDaImagem.x = 16;
-    tamanhoDaImagem.y = 12;
+    tamanhoDaImagem.y = 16;
 
     for(int i = 0; i < numBlocos.x; i++)
     {
         for(int j = 0; j < numBlocos.y; j++)
         {
+            blocos[i][j].posicaoNaImagem.x = 0;
+            blocos[i][j].posicaoNaImagem.y = 0;
             blocos[i][j].corpoBloco.width = texturaMapa->getSize().x / (float)tamanhoDaImagem.x;
-            blocos[i][j].corpoBloco.height = 32;
-            blocos[i][j].corpoBloco.left = 0; //0 e a currentImage
-            blocos[i][j].corpoBloco.top = 0;
+            blocos[i][j].corpoBloco.height = texturaMapa->getSize().y / (float)tamanhoDaImagem.y;
+            blocos[i][j].corpoBloco.left = blocos[i][j].corpoBloco.width * blocos[i][j].posicaoNaImagem.x; //0 e a currentImage
+            blocos[i][j].corpoBloco.top = blocos[i][j].corpoBloco.height * blocos[i][j].posicaoNaImagem.y;
             blocos[i][j].posicaoBloco.x = tamanhoBlocos * i;
             blocos[i][j].posicaoBloco.y = tamanhoBlocos * j;
         }
@@ -34,9 +36,9 @@ Mapa::~Mapa()
 
 void Mapa::desenha(sf::RenderWindow& window)
 {
-    for(int i = 0; i < 10; i++)
+    for(int i = 0; i < numBlocos.x; i++)
     {
-        for(int j = 0; j < 10; j++)
+        for(int j = 0; j < numBlocos.y; j++)
         {
             textura.setPosition(blocos[i][j].posicaoBloco);
             textura.setTextureRect(blocos[i][j].corpoBloco);
