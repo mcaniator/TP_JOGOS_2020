@@ -5,7 +5,7 @@
 #include "Plataforma.h"
 #include "Mapa.h"
 
-static const float VIEW_HEIGHT = 512.0f;
+static const float VIEW_HEIGHT = 312.0f;
 
 using namespace std;
 
@@ -85,18 +85,18 @@ void calculaDeslocamento(Jogador* p, float deltaTime)
     x = obtemPosicaoX(p);
     y = obtemPosicaoY(p);
 
- ///EXERCICIO 4
+///EXERCICIO 4
 
- ///float vx, vy;
- ///vx = obtemVelocidadeX(p);
- ///vy = obtemVelocidadeY(p);
+///float vx, vy;
+///vx = obtemVelocidadeX(p);
+///vy = obtemVelocidadeY(p);
 
- ///vx = vx + (500 * deltaTime * sentidoMovimentoLateral(p));
- ///vy = vy + (500 * deltaTime * sentidoMovimentoVertical(p));
- ///x = x + vx * deltaTime;
- ///y = y + vy * deltaTime;
- ///atualizaVelocidadeX(p, vx);
- ///atualizaVelocidadeY(p, vy);
+///vx = vx + (500 * deltaTime * sentidoMovimentoLateral(p));
+///vy = vy + (500 * deltaTime * sentidoMovimentoVertical(p));
+///x = x + vx * deltaTime;
+///y = y + vy * deltaTime;
+///atualizaVelocidadeX(p, vx);
+///atualizaVelocidadeY(p, vy);
 
     ///Essas duas linhas abaixo devem ser excluidas para o funcionamento do exercicio 4;
     x = x + deslocamentoLateral(p, deltaTime);
@@ -106,8 +106,8 @@ void calculaDeslocamento(Jogador* p, float deltaTime)
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(512, 512), "GettingStarted", sf::Style::Close | sf::Style::Resize);
-    //sf::View view(sf::Vector2f(VIEW_HEIGHT,VIEW_HEIGHT), sf::Vector2f(200.0f,200.0f));
+    sf::RenderWindow window(sf::VideoMode(800, 512), "Jogo Aula 01", sf::Style::Close);
+    sf::View view(sf::Vector2f(0, 0), sf::Vector2f(VIEW_HEIGHT, VIEW_HEIGHT));
     sf::Texture texturaJogador;
     texturaJogador.loadFromFile("jogador.png");
     sf::Texture platformTexture;
@@ -128,6 +128,7 @@ int main()
     float deltaTime = 0.0f;
     sf::Clock clock;
 
+    ResizeView(window, view);
     while(window.isOpen())
     {
         deltaTime = clock.restart().asSeconds();
@@ -139,27 +140,17 @@ int main()
         {
             switch(evnt.type)
             {
-            case sf::Event::Closed:
-                window.close();
-                break;
-            case sf::Event::Resized:
-                cout << "Width: " << evnt.size.width << " Height: " << evnt.size.height << endl;
-                //ResizeView(window, view);
-                break;
-            case sf::Event::TextEntered:
-                if (evnt.text.unicode < 128)
-                {
-                    printf("%c",evnt.text.unicode);
-                }
-            default:
-                break;
+                case sf::Event::Closed:
+                    window.close();
+                    break;
+                case sf::Event::TextEntered:
+                    if (evnt.text.unicode < 128)
+                    {
+                        printf("%c",evnt.text.unicode);
+                    }
+                default:
+                    break;
             }
-
-            if(evnt.type == evnt.Closed)
-            {
-                window.close();
-            }
-
         }
 
         jogador.Update(deltaTime);
@@ -174,10 +165,9 @@ int main()
                 jogador.OnCollision(direction);
         }
 
-        //view.setCenter(jogador.GetPosition());
-
+        view.setCenter(jogador.GetPosition());
+        window.setView(view);
         window.clear(sf::Color(150,150,150));
-        //window.setView(view);
 
         //DESENHA OS OBJETOS
         for(unsigned int i = 0; i < platforms.size(); i++)
@@ -188,6 +178,7 @@ int main()
 
         mapa.desenha(window);
         jogador.Draw(window);
+        //
 
         window.display();
     }
