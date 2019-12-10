@@ -19,10 +19,10 @@ Jogador::Jogador(sf::Texture* texture, sf::Vector2u tamanhoDaImagem, float switc
 
     corpoJogador.setSize(sf::Vector2f(30.0f, 15.0f));
     corpoJogador.setOrigin(corpoJogador.getSize() / 2.0f);
-    corpoJogador.setPosition(100.0f, 100.0f);
+    corpoJogador.setPosition(300.0f, 300.0f);
     texturaJogador.setSize(sf::Vector2f(64.0f, 64.0f));
     texturaJogador.setOrigin(texturaJogador.getSize() / 2.0f);
-    texturaJogador.setPosition(10.0f, 10.0f);
+    texturaJogador.setPosition(0.0f, 0.0f);
     texturaJogador.setTexture(texture);
 }
 
