@@ -1,4 +1,5 @@
 #include "Jogador.h"
+#include "Mapa.h"
 #include <math.h>
 #include <iostream>
 
@@ -33,22 +34,22 @@ Jogador::~Jogador()
 void Jogador::Update(float deltaTime)
 {
     //COMANDOS TECLADO
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && sentidoMovimentoY == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && corpoJogador.getPosition().x > 5 * 48 + (corpoJogador.getSize().x / 2))
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && sentidoMovimentoY == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && corpoJogador.getPosition().x - (corpoJogador.getSize().x / 2) > 5 * TAMANHO_BLOCOS)
     {
         sentidoMovimentoX = -1;
     }
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && sentidoMovimentoY == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && sentidoMovimentoY == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && corpoJogador.getPosition().x + (corpoJogador.getSize().x / 2) < (TAMANHO_MAPA_X - 5) * TAMANHO_BLOCOS)
     {
         sentidoMovimentoX = 1;
     }
     else
         sentidoMovimentoX = 0;
 
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sentidoMovimentoX == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sentidoMovimentoX == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && corpoJogador.getPosition().y - (corpoJogador.getSize().y / 2) > 4 * TAMANHO_BLOCOS)
     {
         sentidoMovimentoY = -1;
     }
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && sentidoMovimentoX == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && sentidoMovimentoX == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && corpoJogador.getPosition().y + (corpoJogador.getSize().y / 2) < (TAMANHO_MAPA_Y - 4) * TAMANHO_BLOCOS)
     {
         sentidoMovimentoY = 1;
     }

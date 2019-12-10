@@ -1,6 +1,7 @@
 #include "Mapa.h"
 #include <SFML/Graphics.hpp>
 
+
 Mapa::Mapa(sf::Texture *texturaMapa)
 {
     numBlocos.x = TAMANHO_MAPA_X;
@@ -10,11 +11,17 @@ Mapa::Mapa(sf::Texture *texturaMapa)
     tamanhoDaImagem.x = 16;
     tamanhoDaImagem.y = 16;
 
+    padrao.posicaoNaImagem.x = 0;
+    padrao.posicaoNaImagem.y = 0;
+    padrao.corpoBloco.width = texturaMapa->getSize().x / (float)tamanhoDaImagem.x;
+    padrao.corpoBloco.height = texturaMapa->getSize().y / (float)tamanhoDaImagem.y;
+    padrao.corpoBloco.left = padrao.corpoBloco.width * padrao.posicaoNaImagem.x;
+    padrao.corpoBloco.top = padrao.corpoBloco.height * padrao.posicaoNaImagem.y;
+
     for(int i = 0; i < numBlocos.x; i++)
     {
         for(int j = 0; j < numBlocos.y; j++)
         {
-            //tipoBlocos[i][j] = rand()%2;
             switch(tipoBlocos[i][j])
             {
                 case 0:
@@ -30,22 +37,18 @@ Mapa::Mapa(sf::Texture *texturaMapa)
                     blocos[i][j].posicaoNaImagem.y = 10;
                     break;
                 case 3:
-                    blocos[i][j].posicaoNaImagem.x = 1;
-                    blocos[i][j].posicaoNaImagem.y = 11;
+                    blocos[i][j].posicaoNaImagem.x = 0;
+                    blocos[i][j].posicaoNaImagem.y = 8;
                     break;
                 case 4:
-                    blocos[i][j].posicaoNaImagem.x = 0;
+                    blocos[i][j].posicaoNaImagem.x = 1;
                     blocos[i][j].posicaoNaImagem.y = 8;
                     break;
                 case 5:
-                    blocos[i][j].posicaoNaImagem.x = 1;
-                    blocos[i][j].posicaoNaImagem.y = 8;
-                    break;
-                case 6:
                     blocos[i][j].posicaoNaImagem.x = 0;
                     blocos[i][j].posicaoNaImagem.y = 9;
                     break;
-                case 7:
+                case 6:
                     blocos[i][j].posicaoNaImagem.x = 1;
                     blocos[i][j].posicaoNaImagem.y = 9;
                     break;
@@ -75,6 +78,8 @@ void Mapa::desenha(sf::RenderWindow& window)
         for(int j = 0; j < numBlocos.y; j++)
         {
             textura.setPosition(blocos[i][j].posicaoBloco);
+            textura.setTextureRect(padrao.corpoBloco);
+            window.draw(textura);
             textura.setTextureRect(blocos[i][j].corpoBloco);
             window.draw(textura);
         }
