@@ -1,7 +1,7 @@
 #include "Colisor.h"
 
-Colisor::Colisor(sf::RectangleShape& body) :
-    body(body)
+Colisor::Colisor(sf::RectangleShape& corpo) :
+    corpo(corpo)
 {
     //ctor
 }
@@ -11,62 +11,47 @@ Colisor::~Colisor()
     //dtor
 }
 
-bool Colisor::CheckCollision(Colisor other, sf::Vector2f& direction, float push)
+bool Colisor::ChecaColisao(Colisor outro, sf::Vector2f& direcao)
 {
-    sf::Vector2f otherPosition = other.GetPosition();
-    sf::Vector2f otherHalfSize = other.GetHalfSize();
-    sf::Vector2f thisPosition = GetPosition();
-    sf::Vector2f thisHalfSize = GetHalfSize();
+    sf::Vector2f posicaoOutro = outro.GetPosicao();
+    sf::Vector2f metadeOutro = outro.GetMetade();
+    sf::Vector2f posicao = GetPosicao();
+    sf::Vector2f metade = GetMetade();
 
-    float deltaX = otherPosition.x - thisPosition.x;
-    float deltaY = otherPosition.y - thisPosition.y;
+    float deltaX = posicaoOutro.x - posicao.x;
+    float deltaY = posicaoOutro.y - posicao.y;
 
-    float intersectX = abs(deltaX) - (otherHalfSize.x + thisHalfSize.x);
-    float intersectY = abs(deltaY) - (otherHalfSize.y + thisHalfSize.y);
+    float intersecaoX = abs(deltaX) - (metadeOutro.x + metade.x);
+    float intersecaoY = abs(deltaY) - (metadeOutro.y + metade.y);
 
-    if(intersectX < 0.0f && intersectY < 0.0f)
+    if(intersecaoX < 0.0f && intersecaoY < 0.0f)
     {
-        push = std::min(std::max(push, 0.0f), 1.0f);
-
-        if(intersectX > intersectY)
+        if(intersecaoX > intersecaoY)
         {
             if(deltaX > 0.0f)
             {
-                Move(intersectX * (1.0f - push), 0.0f);
-                other.Move(-intersectX * push, 0.0f);
-
-                direction.x = 1.0f;
-                direction.y = 0.0f;
+                direcao.x = 1.0f;
+                direcao.y = 0.0f;
             }
             else
             {
-                Move(-intersectX * (1.0f - push), 0.0f);
-                other.Move(intersectX * push, 0.0f);
-
-                direction.x = -1.0f;
-                direction.y = 0.0f;
+                direcao.x = -1.0f;
+                direcao.y = 0.0f;
             }
         }
         else
         {
             if(deltaY > 0.0f)
             {
-                Move(0.0f, intersectY * (1.0f - push));
-                other.Move(0.0f, -intersectY * push);
-
-                direction.x = 0.0f;
-                direction.y = 1.0f;
+                direcao.x = 0.0f;
+                direcao.y = 1.0f;
             }
             else
             {
-                Move(0.0f, -intersectY * (1.0f - push));
-                other.Move(0.0f, intersectY * push);
-
-                direction.x = 0.0f;
-                direction.y = -1.0f;
+                direcao.x = 0.0f;
+                direcao.y = -1.0f;
             }
         }
-
         return true;
     }
     return false;

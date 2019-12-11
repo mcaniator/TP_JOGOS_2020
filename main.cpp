@@ -85,22 +85,22 @@ void calculaDeslocamento(Jogador* p, float deltaTime)
     x = obtemPosicaoX(p);
     y = obtemPosicaoY(p);
 
-///EXERCICIO 4
+///EXERCICIO 4                                                         TEM QUE CONSERTAR COM AS CONDIÇOES NOVAS
 
-float vx, vy;
-vx = obtemVelocidadeX(p);
-vy = obtemVelocidadeY(p);
+///float vx, vy;
+///vx = obtemVelocidadeX(p);
+///vy = obtemVelocidadeY(p);
 
-vx = vx + (500 * deltaTime * sentidoMovimentoLateral(p));
-vy = vy + (500 * deltaTime * sentidoMovimentoVertical(p));
-x = x + vx * deltaTime;
-y = y + vy * deltaTime;
-atualizaVelocidadeX(p, vx);
-atualizaVelocidadeY(p, vy);
+///vx = vx + (500 * deltaTime * sentidoMovimentoLateral(p));
+///vy = vy + (500 * deltaTime * sentidoMovimentoVertical(p));
+///x = x + vx * deltaTime;
+///y = y + vy * deltaTime;
+///atualizaVelocidadeX(p, vx);
+///atualizaVelocidadeY(p, vy);
 
     ///Essas duas linhas abaixo devem ser excluidas para o funcionamento do exercicio 4;
-    //x = x + deslocamentoLateral(p, deltaTime);
-    //y = y + deslocamentoVertical(p, deltaTime);
+    x = x + deslocamentoLateral(p, deltaTime);
+    y = y + deslocamentoVertical(p, deltaTime);
     atualizaPosicao(p, x, y);
 }
 
@@ -120,7 +120,7 @@ int main()
 
     std::vector<Plataforma> platforms;
 
-    platforms.push_back(Plataforma(NULL, sf::Vector2f(96.0f, 96.0f), sf::Vector2f(384.0f, 384.0f)));
+    platforms.push_back(Plataforma(NULL, sf::Vector2f(384.0f, 384.0f), sf::Vector2f(96.0f, 96.0f)));
 
 
     float deltaTime = 0.0f;
@@ -154,18 +154,18 @@ int main()
         ////
         ////JOGO
         //MOVIMENTACAO
-        jogador.Update(deltaTime);
-        calculaDeslocamento(&jogador, deltaTime);
 
         sf::Vector2f direction;
 
         for(unsigned int i = 0; i < platforms.size(); i++)
         {
             Plataforma& platform = platforms[i];
-            if(platform.GetColisor().CheckCollision(jogador.GetColisor(), direction, 1.0f))
+            if(platform.GetColisor().ChecaColisao(jogador.GetColisor(), direction))
                 jogador.OnCollision(direction);
         }
 
+        jogador.Update(deltaTime);
+        calculaDeslocamento(&jogador, deltaTime);
 
         //ATUALIZA CONFIGURACOES
         view.setCenter(jogador.GetPosition());
@@ -174,14 +174,14 @@ int main()
 
         //DESENHA OS OBJETOS
 
+        mapa.desenha(window);
+        jogador.Draw(window);
         for(unsigned int i = 0; i < platforms.size(); i++)
         {
             Plataforma& platform = platforms[i];
             platform.Draw(window);
         }
 
-        mapa.desenha(window);
-        jogador.Draw(window);
         //
         ////
 

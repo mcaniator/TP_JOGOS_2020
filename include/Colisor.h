@@ -5,26 +5,17 @@
 class Colisor
 {
 public:
-    Colisor(sf::RectangleShape& body);
+    Colisor(sf::RectangleShape& corpo);
     virtual ~Colisor();
 
-    void Move(float dx, float dy)
-    {
-        body.move(dx, dy);
-    }
+    bool ChecaColisao(Colisor outro, sf::Vector2f& direcao);
 
-    bool CheckCollision(Colisor other, sf::Vector2f& direction, float push);
-    sf::Vector2f GetPosition()
-    {
-        return body.getPosition();
-    }
-    sf::Vector2f GetHalfSize()
-    {
-        return body.getSize() / 2.0f;
-    }
+    sf::Vector2f GetPosicao() { return corpo.getPosition(); };
+
+    sf::Vector2f GetMetade() { return corpo.getSize() / 2.0f; };
 
 private:
-    sf::RectangleShape& body;
+    sf::RectangleShape& corpo;
 };
 
 #endif // Colisor_H

@@ -122,21 +122,21 @@ void Jogador::Draw(sf::RenderWindow& window)
     window.draw(texturaJogador);
 }
 
-void Jogador::OnCollision(sf::Vector2f direction)
+void Jogador::OnCollision(sf::Vector2f direcao)
 {
-    if(direction.x < 0.0f)
+    if(direcao.x < 0.0f)
     {
         sentidoMovimentoX = 0;
     }
-    else if(direction.x > 0.0f)
+    else if(direcao.x > 0.0f)
     {
         sentidoMovimentoX = 0;
     }
-    if(direction.y < 0.0f)
+    if(direcao.y < 0.0f)
     {
         sentidoMovimentoY = 0;
     }
-    else if(direction.y > 0.0f)
+    else if(direcao.y > 0.0f)
     {
         sentidoMovimentoY = 0;
     }
