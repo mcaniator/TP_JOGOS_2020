@@ -112,6 +112,7 @@ int main()
     texturaJogador.loadFromFile("jogador.png");
     sf::Texture texturaMapa;
     texturaMapa.loadFromFile("mapa.png");
+    char direcao;
 
     Mapa mapa(&texturaMapa);
 
@@ -155,13 +156,13 @@ int main()
         ////JOGO
         //MOVIMENTACAO
 
-        sf::Vector2f direction;
+
 
         for(unsigned int i = 0; i < platforms.size(); i++)
         {
             Plataforma& platform = platforms[i];
-            if(platform.GetColisor().ChecaColisao(jogador.GetColisor(), direction))
-                jogador.OnCollision(direction);
+            if(platform.GetColisor().ChecaColisao(jogador.GetColisor(), direcao))
+                jogador.EmColisao(direcao);
         }
 
         jogador.Update(deltaTime);

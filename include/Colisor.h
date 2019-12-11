@@ -8,7 +8,9 @@ public:
     Colisor(sf::RectangleShape& corpo);
     virtual ~Colisor();
 
-    bool ChecaColisao(Colisor outro, sf::Vector2f& direcao);
+    bool ChecaColisao(Colisor outro, char direcao);
+
+    void Move(float dx, float dy) { corpo.move(dx, dy); };
 
     sf::Vector2f GetPosicao() { return corpo.getPosition(); };
 

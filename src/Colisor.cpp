@@ -11,7 +11,7 @@ Colisor::~Colisor()
     //dtor
 }
 
-bool Colisor::ChecaColisao(Colisor outro, sf::Vector2f& direcao)
+bool Colisor::ChecaColisao(Colisor outro, char direcao)
 {
     sf::Vector2f posicaoOutro = outro.GetPosicao();
     sf::Vector2f metadeOutro = outro.GetMetade();
@@ -30,26 +30,26 @@ bool Colisor::ChecaColisao(Colisor outro, sf::Vector2f& direcao)
         {
             if(deltaX > 0.0f)
             {
-                direcao.x = 1.0f;
-                direcao.y = 0.0f;
+                outro.Move(-intersecaoX, 0.0f);
+                direcao = 'e';
             }
             else
             {
-                direcao.x = -1.0f;
-                direcao.y = 0.0f;
+                outro.Move(intersecaoX, 0.0f);
+                direcao = 'd';
             }
         }
         else
         {
             if(deltaY > 0.0f)
             {
-                direcao.x = 0.0f;
-                direcao.y = 1.0f;
+                outro.Move(0.0f, -intersecaoY);
+                direcao = 'b';
             }
             else
             {
-                direcao.x = 0.0f;
-                direcao.y = -1.0f;
+                outro.Move(0.0f, intersecaoY);
+                direcao = 'c';
             }
         }
         return true;
