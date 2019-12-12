@@ -7,17 +7,15 @@
 class Plataforma
 {
 public:
-    Plataforma(sf::Texture* texture, sf::Vector2f size, sf::Vector2f position);
+    Plataforma(sf::Texture* textura, sf::Vector2f posicao, sf::Vector2f tamanho);
     virtual ~Plataforma();
 
-    void Draw(sf::RenderWindow& window);
-    Colisor GetColisor()
-    {
-        return Colisor(body);
-    }
+    void desenha(sf::RenderWindow& window);
+
+    Colisor getColisor() { return Colisor(corpo); };
 
 private:
-    sf::RectangleShape body;
+    sf::RectangleShape corpo;
 };
 
 #endif // Plataforma_H

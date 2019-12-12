@@ -1,11 +1,11 @@
 #include "Plataforma.h"
 
-Plataforma::Plataforma(sf::Texture* texture, sf::Vector2f position, sf::Vector2f size)
+Plataforma::Plataforma(sf::Texture* textura, sf::Vector2f posicao, sf::Vector2f tamanho)
 {
-    body.setSize(size);
-    body.setOrigin(size / 2.0f);
-    body.setTexture(texture);
-    body.setPosition(position);
+    corpo.setSize(tamanho);
+    corpo.setOrigin(tamanho / 2.0f);
+    corpo.setTexture(textura);
+    corpo.setPosition(posicao);
 }
 
 Plataforma::~Plataforma()
@@ -13,7 +13,7 @@ Plataforma::~Plataforma()
     //dtor
 }
 
-void Plataforma::Draw(sf::RenderWindow& window)
+void Plataforma::desenha(sf::RenderWindow& window)
 {
-    window.draw(body);
+    window.draw(corpo);
 }

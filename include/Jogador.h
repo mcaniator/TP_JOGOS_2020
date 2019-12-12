@@ -7,67 +7,32 @@
 class Jogador
 {
 public:
-    Jogador(sf::Texture* texture, sf::Vector2u tamanhoDaImagem, float switchTime, float vel);
+    Jogador(sf::Texture* textura, sf::Vector2u tamanhoDaImagem, float tempoTroca, float vel);
     virtual ~Jogador();
 
-    void Update(float deltaTime);
-    void Draw(sf::RenderWindow& window);
-    void EmColisao(char direcao);
+    void atualiza(float deltaTempo);
+    void desenha(sf::RenderWindow& window);
+    void emColisao(char direcao);
+    bool colisaoBordasX();
+    bool colisaoBordasY();
 
-    sf::Vector2f GetPosition()
-    {
-        return corpoJogador.getPosition();
-    }
+    sf::Vector2f getPosicao() { return corpoJogador.getPosition(); };
 
-    float getX()
-    {
-        return corpoJogador.getPosition().x;
-    }
+    float getX() { return corpoJogador.getPosition().x; };
+    float getY() { return corpoJogador.getPosition().y; };
 
-    float getY()
-    {
-        return corpoJogador.getPosition().y;
-    }
+    float getVX() { return velocidade.x; };
+    float getVY() { return velocidade.y; };
 
-    float getVX()
-    {
-        return velocidade.x;
-    }
+    void setVX(float novaVX) { velocidade.x = novaVX; };
+    void setVY(float novaVY) { velocidade.y = novaVY; };
 
-    float getVY()
-    {
-        return velocidade.y;
-    }
+    int sentidoMovimentoLateral() { return sentidoMovimentoX; };
+    int sentidoMovimentoVertical() { return sentidoMovimentoY; };
 
-    void setVX(float newVX)
-    {
-        velocidade.x = newVX;
-    }
+    void set(float x, float y) { corpoJogador.setPosition(x, y); };
 
-    void setVY(float newVY)
-    {
-        velocidade.y = newVY;
-    }
-
-    int sentidoMovimentoLateral()
-    {
-        return sentidoMovimentoX;
-    }
-
-    int sentidoMovimentoVertical()
-    {
-        return sentidoMovimentoY;
-    }
-
-    void set(float x, float y)
-    {
-        corpoJogador.setPosition(x, y);
-    }
-
-    Colisor GetColisor()
-    {
-        return Colisor(corpoJogador);
-    }
+    Colisor getColisor() { return Colisor(corpoJogador); };
 
 private:
     sf::RectangleShape corpoJogador;
@@ -81,7 +46,6 @@ private:
     int sentidoMovimentoX;
     int sentidoMovimentoY;
     sf::Vector2f velocidade;
-    int velMax;
 
 };
 

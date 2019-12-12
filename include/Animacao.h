@@ -6,25 +6,24 @@ class Animacao
 {
     ///FUNCOES
 public:
-    Animacao(sf::Texture* texture, sf::Vector2u tamanhoDaImagem, float switchTime);
+    Animacao(sf::Texture* textura, sf::Vector2u tamanhoDaImagem, float tempoTroca);
     virtual ~Animacao();
 
-    void Update(int linha, float deltaTime, bool faceRight);
+    void atualiza(int linha, float deltaTempo, bool emMovimento);
 
     void setNumFrames(int numFrames) { tamanhoDaImagem.x = numFrames; };
-    void setFrameAtual(int frame) { currentImage.x = frame; };
-private:
+    void setFrameAtual(int frame) { imagemAtual.x = frame; };
 
     ///VARIAVEIS
 public:
-    sf::IntRect uvRect;
+    sf::IntRect frameRet;
 
 private:
     sf::Vector2u tamanhoDaImagem;
-    sf::Vector2u currentImage;
+    sf::Vector2u imagemAtual;
 
-    float totalTime;
-    float switchTime;
+    float tempoTotal;
+    float tempoTroca;
 };
 
 #endif // Animacao_H

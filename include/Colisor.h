@@ -8,13 +8,13 @@ public:
     Colisor(sf::RectangleShape& corpo);
     virtual ~Colisor();
 
-    bool ChecaColisao(Colisor outro, char direcao);
+    bool checaColisao(Colisor outro, char direcao);
 
     void Move(float dx, float dy) { corpo.move(dx, dy); };
 
-    sf::Vector2f GetPosicao() { return corpo.getPosition(); };
+    sf::Vector2f getPosicao() { return corpo.getPosition(); };
 
-    sf::Vector2f GetMetade() { return corpo.getSize() / 2.0f; };
+    sf::Vector2f getMetade() { return corpo.getSize() / 2.0f; };
 
 private:
     sf::RectangleShape& corpo;

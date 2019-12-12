@@ -1,14 +1,14 @@
 #include "Animacao.h"
 
-Animacao::Animacao(sf::Texture* texture, sf::Vector2u tamanhoDaImagem, float switchTime)
+Animacao::Animacao(sf::Texture* textura, sf::Vector2u tamanhoDaImagem, float tempoTroca)
 {
     this->tamanhoDaImagem = tamanhoDaImagem;
-    this->switchTime = switchTime;
-    totalTime = 0.0f;
-    currentImage.x = 0;
+    this->tempoTroca = tempoTroca;
+    tempoTotal = 0.0f;
+    imagemAtual.x = 0;
 
-    uvRect.width = texture->getSize().x / (float)tamanhoDaImagem.x;
-    uvRect.height = texture->getSize().y / (float)tamanhoDaImagem.y;
+    frameRet.width = textura->getSize().x / (float)tamanhoDaImagem.x;
+    frameRet.height = textura->getSize().y / (float)tamanhoDaImagem.y;
 }
 
 Animacao::~Animacao()
@@ -16,26 +16,26 @@ Animacao::~Animacao()
     //dtor
 }
 
-void Animacao::Update(int linha, float deltaTime, bool emMovimento)
+void Animacao::atualiza(int linha, float deltaTempo, bool emMovimento)
 {
-    currentImage.y = linha;
-    totalTime += 5 * deltaTime;
+    imagemAtual.y = linha;
+    tempoTotal += 5 * deltaTempo;
 
-    if(totalTime >= switchTime)
+    if(tempoTotal >= tempoTroca)
     {
-        totalTime -= switchTime;
-        currentImage.x++;
+        tempoTotal -= tempoTroca;
+        imagemAtual.x++;
 
-        if(currentImage.x >= tamanhoDaImagem.x)
+        if(imagemAtual.x >= tamanhoDaImagem.x)
         {
             if(emMovimento)
-                currentImage.x = 1;
+                imagemAtual.x = 1;
             else
-                currentImage.x = 0;
+                imagemAtual.x = 0;
         }
     }
 
-    uvRect.left = currentImage.x * uvRect.width;
-    uvRect.width = abs(uvRect.width);
-    uvRect.top = currentImage.y * uvRect.height;
+    frameRet.left = imagemAtual.x * frameRet.width;
+    frameRet.width = abs(frameRet.width);
+    frameRet.top = imagemAtual.y * frameRet.height;
 }

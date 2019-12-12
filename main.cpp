@@ -65,21 +65,21 @@ void ResizeView(const sf::RenderWindow& window, sf::View& view)
 ///----------------------------------------------------------------------------------///
 
 ///EXERCICIO 1
-float deslocamentoLateral(Jogador* p, float deltaTime)
+float deslocamentoLateral(Jogador* p, float deltaTempo)
 {
     float vx = obtemVelocidadeX(p);
-    return vx * deltaTime * sentidoMovimentoLateral(p);
+    return vx * deltaTempo * sentidoMovimentoLateral(p);
 }
 
 ///EXERCICIO 2
-float deslocamentoVertical(Jogador* p, float deltaTime)
+float deslocamentoVertical(Jogador* p, float deltaTempo)
 {
     float vy = obtemVelocidadeY(p);
-    return vy * deltaTime * sentidoMovimentoVertical(p);
+    return vy * deltaTempo * sentidoMovimentoVertical(p);
 }
 
 ///EXERCICIO 3
-void calculaDeslocamento(Jogador* p, float deltaTime)
+void calculaDeslocamento(Jogador* p, float deltaTempo)
 {
     float x, y;
     x = obtemPosicaoX(p);
@@ -91,49 +91,58 @@ void calculaDeslocamento(Jogador* p, float deltaTime)
 ///vx = obtemVelocidadeX(p);
 ///vy = obtemVelocidadeY(p);
 
-///vx = vx + (500 * deltaTime * sentidoMovimentoLateral(p));
-///vy = vy + (500 * deltaTime * sentidoMovimentoVertical(p));
-///x = x + vx * deltaTime;
-///y = y + vy * deltaTime;
+///vx = vx + (500 * deltaTempo * sentidoMovimentoLateral(p));
+///vy = vy + (500 * deltaTempo * sentidoMovimentoVertical(p));
+///x = x + vx * deltaTempo;
+///y = y + vy * deltaTempo;
 ///atualizaVelocidadeX(p, vx);
 ///atualizaVelocidadeY(p, vy);
 
     ///Essas duas linhas abaixo devem ser excluidas para o funcionamento do exercicio 4;
-    x = x + deslocamentoLateral(p, deltaTime);
-    y = y + deslocamentoVertical(p, deltaTime);
+    x = x + deslocamentoLateral(p, deltaTempo);
+    y = y + deslocamentoVertical(p, deltaTempo);
     atualizaPosicao(p, x, y);
 }
 
 int main()
 {
+    //VARIAVEIS DA CONFIGURACAO
     sf::RenderWindow window(sf::VideoMode(800, 512), "Jogo Aula 01", sf::Style::Close);
     sf::View view(sf::Vector2f(0, 0), sf::Vector2f(VIEW_HEIGHT, VIEW_HEIGHT));
+
+    //VARIAVEIS DO JOGO
     sf::Texture texturaJogador;
     texturaJogador.loadFromFile("jogador.png");
     sf::Texture texturaMapa;
     texturaMapa.loadFromFile("mapa.png");
-    char direcao;
+
+    char direcao = '0';
 
     Mapa mapa(&texturaMapa);
 
     Jogador jogador(&texturaJogador, sf::Vector2u(13, 21), 0.3f, 180.0f);
 
+    std::vector<Plataforma> platformas;
+        platformas.push_back(Plataforma(NULL, sf::Vector2f(384.0f, 384.0f), sf::Vector2f(96.0f, 96.0f)));
+        platformas.push_back(Plataforma(NULL, sf::Vector2f(215.0f, 480.0f), sf::Vector2f(48.0f, 576.0f)));
+        platformas.push_back(Plataforma(NULL, sf::Vector2f(745.0f, 480.0f), sf::Vector2f(48.0f, 576.0f)));
+        platformas.push_back(Plataforma(NULL, sf::Vector2f(480.0f, 167.0f), sf::Vector2f(480.0f, 48.0f)));
+        platformas.push_back(Plataforma(NULL, sf::Vector2f(480.0f, 793.0f), sf::Vector2f(480.0f, 48.0f)));
 
-    std::vector<Plataforma> platforms;
-
-    platforms.push_back(Plataforma(NULL, sf::Vector2f(384.0f, 384.0f), sf::Vector2f(96.0f, 96.0f)));
-
-
-    float deltaTime = 0.0f;
+    //CONFIGURA TEMPO
+    float deltaTempo = 0.0f;
     sf::Clock clock;
 
+    //CONFIGURA VIEW
     ResizeView(window, view);
+
     while(window.isOpen())
     {
-        ////CONFIGURACOES
-        deltaTime = clock.restart().asSeconds();
-        if(deltaTime > 1.0f / 20.0f)
-            deltaTime = 1.0f / 20.0f;
+        ////CONFIGURACOES GERAIS
+
+        deltaTempo = clock.restart().asSeconds();
+        if(deltaTempo > 1.0f / 20.0f)
+            deltaTempo = 1.0f / 20.0f;
 
         sf::Event evnt;
         while(window.pollEvent(evnt))
@@ -143,50 +152,47 @@ int main()
                 case sf::Event::Closed:
                     window.close();
                     break;
-                case sf::Event::TextEntered:
-                    if (evnt.text.unicode < 128)
-                    {
-                        printf("%c",evnt.text.unicode);
-                    }
                 default:
                     break;
             }
         }
-        ////
+
         ////JOGO
+
         //MOVIMENTACAO
 
-
-
-        for(unsigned int i = 0; i < platforms.size(); i++)
+        for(unsigned int i = 0; i < platformas.size(); i++)
         {
-            Plataforma& platform = platforms[i];
-            if(platform.GetColisor().ChecaColisao(jogador.GetColisor(), direcao))
-                jogador.EmColisao(direcao);
+            Plataforma& platforma = platformas[i];
+            if(platforma.getColisor().checaColisao(jogador.getColisor(), direcao))
+            {
+                jogador.emColisao(direcao);
+            }
         }
 
-        jogador.Update(deltaTime);
-        calculaDeslocamento(&jogador, deltaTime);
+        jogador.atualiza(deltaTempo);
+        calculaDeslocamento(&jogador, deltaTempo);
 
         //ATUALIZA CONFIGURACOES
-        view.setCenter(jogador.GetPosition());
+
+        view.setCenter(jogador.getPosicao());
         window.setView(view);
         window.clear(sf::Color(150,150,150));
 
         //DESENHA OS OBJETOS
 
         mapa.desenha(window);
-        jogador.Draw(window);
-        for(unsigned int i = 0; i < platforms.size(); i++)
+        jogador.desenha(window);
+
+        for(unsigned int i = 0; i < platformas.size(); i++)
         {
-            Plataforma& platform = platforms[i];
-            platform.Draw(window);
+            Plataforma& platforma = platformas[i];
+            platforma.desenha(window);
         }
 
-        //
         ////
-
         window.display();
     }
+
     return 0;
 }

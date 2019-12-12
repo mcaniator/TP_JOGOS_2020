@@ -11,12 +11,12 @@ Colisor::~Colisor()
     //dtor
 }
 
-bool Colisor::ChecaColisao(Colisor outro, char direcao)
+bool Colisor::checaColisao(Colisor outro, char direcao)
 {
-    sf::Vector2f posicaoOutro = outro.GetPosicao();
-    sf::Vector2f metadeOutro = outro.GetMetade();
-    sf::Vector2f posicao = GetPosicao();
-    sf::Vector2f metade = GetMetade();
+    sf::Vector2f posicaoOutro = outro.getPosicao();
+    sf::Vector2f metadeOutro = outro.getMetade();
+    sf::Vector2f posicao = getPosicao();
+    sf::Vector2f metade = getMetade();
 
     float deltaX = posicaoOutro.x - posicao.x;
     float deltaY = posicaoOutro.y - posicao.y;
