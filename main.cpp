@@ -85,7 +85,7 @@ int calculaDeslocamento(Jogador* p, float deltaTempo)
     x = obtemPosicaoX(p);
     y = obtemPosicaoY(p);
 
-///EXERCICIO 4                                                         TEM QUE CONSERTAR COM AS CONDIÇOES NOVAS
+///EXERCICIO 4
 
 ///float vx, vy;
 ///vx = obtemVelocidadeX(p);
@@ -102,7 +102,7 @@ int calculaDeslocamento(Jogador* p, float deltaTempo)
     y = y + deslocamentoVertical(p, deltaTempo);
     atualizaPosicao(p, x, y);
 
-    return 1;
+    return 0;
 }
 
 int main()
@@ -117,7 +117,7 @@ int main()
     sf::Texture texturaMapa;
     texturaMapa.loadFromFile("mapa.png");
 
-    int acelerado = 1;
+    int acelerado = 0;
 
     char direcao;
 
