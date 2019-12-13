@@ -10,11 +10,12 @@ Jogador::Jogador(sf::Texture* textura, sf::Vector2u tamanhoDaImagem, float tempo
 {
     linha = 0;
 
-    velocidade.x = vel;
-    velocidade.y = vel;
-
+    velMax = vel;
+    velocidadeX = 0;
+    velocidadeY = 0;
     sentidoMovimentoX = 0;
     sentidoMovimentoY = 0;
+
     ultimaDirecao = 'b';
 
     corpoJogador.setSize(sf::Vector2f(30.0f, 15.0f));
@@ -31,32 +32,44 @@ Jogador::~Jogador()
 
 }
 
-void Jogador::atualiza(float deltaTempo)
+void Jogador::atualiza(float deltaTempo, int acelerado)
 {
     //COMANDOS TECLADO
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && sentidoMovimentoY == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && !colisaoBordasX())
     {
         sentidoMovimentoX = -1;
+        if(!acelerado)
+            velocidadeX = velMax;
     }
     else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && sentidoMovimentoY == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !colisaoBordasX())
     {
         sentidoMovimentoX = 1;
+        if(!acelerado)
+            velocidadeX = velMax;
     }
     else
     {
         sentidoMovimentoX = 0;
+        if(!acelerado)
+            velocidadeX = 0;
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sentidoMovimentoX == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !colisaoBordasY())
     {
         sentidoMovimentoY = -1;
+        if(!acelerado)
+            velocidadeY = velMax;
     }
     else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && sentidoMovimentoX == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !colisaoBordasY())
     {
         sentidoMovimentoY = 1;
+        if(!acelerado)
+            velocidadeY = velMax;
     }
     else
     {
         sentidoMovimentoY = 0;
+        if(!acelerado)
+            velocidadeY = 0;
     }
 
     //EM MOVIMENTO
@@ -129,22 +142,22 @@ void Jogador::emColisao(char direcao)
     if(direcao == 'd')
     {
         sentidoMovimentoX = 0;
-        velocidade.x = 0;
+        velocidadeX = 0;
     }
     else if(direcao == 'e')
     {
         sentidoMovimentoX = 0;
-        velocidade.x = 0;
+        velocidadeX = 0;
     }
     if(direcao == 'c')
     {
         sentidoMovimentoY = 0;
-        velocidade.y = 0;
+        velocidadeY = 0;
     }
     else if(direcao == 'b')
     {
         sentidoMovimentoY = 0;
-        velocidade.y = 0;
+        velocidadeY = 0;
     }
 }
 

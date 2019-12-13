@@ -79,7 +79,7 @@ float deslocamentoVertical(Jogador* p, float deltaTempo)
 }
 
 ///EXERCICIO 3
-void calculaDeslocamento(Jogador* p, float deltaTempo)
+int calculaDeslocamento(Jogador* p, float deltaTempo)
 {
     float x, y;
     x = obtemPosicaoX(p);
@@ -87,21 +87,22 @@ void calculaDeslocamento(Jogador* p, float deltaTempo)
 
 ///EXERCICIO 4                                                         TEM QUE CONSERTAR COM AS CONDIÇOES NOVAS
 
-///float vx, vy;
-///vx = obtemVelocidadeX(p);
-///vy = obtemVelocidadeY(p);
-
-///vx = vx + (500 * deltaTempo * sentidoMovimentoLateral(p));
-///vy = vy + (500 * deltaTempo * sentidoMovimentoVertical(p));
-///x = x + vx * deltaTempo;
-///y = y + vy * deltaTempo;
-///atualizaVelocidadeX(p, vx);
-///atualizaVelocidadeY(p, vy);
+float vx, vy;
+vx = obtemVelocidadeX(p);
+vy = obtemVelocidadeY(p);
+vx = vx + (1000 * deltaTempo * sentidoMovimentoLateral(p));
+vy = vy + (1000 * deltaTempo * sentidoMovimentoVertical(p));
+x = x + vx * deltaTempo;
+y = y + vy * deltaTempo;
+atualizaVelocidadeX(p, vx);
+atualizaVelocidadeY(p, vy);
 
     ///Essas duas linhas abaixo devem ser excluidas para o funcionamento do exercicio 4;
-    x = x + deslocamentoLateral(p, deltaTempo);
-    y = y + deslocamentoVertical(p, deltaTempo);
+    //x = x + deslocamentoLateral(p, deltaTempo);
+    //y = y + deslocamentoVertical(p, deltaTempo);
     atualizaPosicao(p, x, y);
+
+    return 1;
 }
 
 int main()
@@ -116,7 +117,9 @@ int main()
     sf::Texture texturaMapa;
     texturaMapa.loadFromFile("mapa.png");
 
-    char direcao = '0';
+    int acelerado = 1;
+
+    char direcao;
 
     Mapa mapa(&texturaMapa);
 
@@ -164,14 +167,14 @@ int main()
         for(unsigned int i = 0; i < platformas.size(); i++)
         {
             Plataforma& platforma = platformas[i];
-            if(platforma.getColisor().checaColisao(jogador.getColisor(), direcao))
+            if(platforma.getColisor().checaColisao(jogador.getColisor(), &direcao))
             {
                 jogador.emColisao(direcao);
             }
         }
 
-        jogador.atualiza(deltaTempo);
-        calculaDeslocamento(&jogador, deltaTempo);
+        jogador.atualiza(deltaTempo, acelerado);
+        acelerado = calculaDeslocamento(&jogador, deltaTempo);
 
         //ATUALIZA CONFIGURACOES
 
@@ -181,14 +184,14 @@ int main()
 
         //DESENHA OS OBJETOS
 
-        mapa.desenha(window);
-        jogador.desenha(window);
 
         for(unsigned int i = 0; i < platformas.size(); i++)
         {
             Plataforma& platforma = platformas[i];
             platforma.desenha(window);
         }
+        mapa.desenha(window);
+        jogador.desenha(window);
 
         ////
         window.display();
