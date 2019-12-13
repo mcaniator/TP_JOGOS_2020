@@ -32,44 +32,38 @@ Jogador::~Jogador()
 
 }
 
-void Jogador::atualiza(float deltaTempo, int acelerado)
+void Jogador::atualiza(float deltaTempo)
 {
     //COMANDOS TECLADO
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && sentidoMovimentoY == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && !colisaoBordasX())
     {
         sentidoMovimentoX = -1;
-        if(!acelerado)
-            velocidadeX = velMax;
+        velocidadeX = velMax;
     }
     else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && sentidoMovimentoY == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !colisaoBordasX())
     {
         sentidoMovimentoX = 1;
-        if(!acelerado)
-            velocidadeX = velMax;
+        velocidadeX = velMax;
     }
     else
     {
         sentidoMovimentoX = 0;
-        if(!acelerado)
-            velocidadeX = 0;
+        velocidadeX = 0;
     }
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sentidoMovimentoX == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !colisaoBordasY())
     {
         sentidoMovimentoY = -1;
-        if(!acelerado)
-            velocidadeY = velMax;
+        velocidadeY = velMax;
     }
     else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && sentidoMovimentoX == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !colisaoBordasY())
     {
         sentidoMovimentoY = 1;
-        if(!acelerado)
-            velocidadeY = velMax;
+        velocidadeY = velMax;
     }
     else
     {
         sentidoMovimentoY = 0;
-        if(!acelerado)
-            velocidadeY = 0;
+        velocidadeY = 0;
     }
 
     //EM MOVIMENTO
@@ -123,6 +117,10 @@ void Jogador::atualiza(float deltaTempo, int acelerado)
         animacao.setNumFrames(0);
         animacao.setFrameAtual(0);
     }
+
+    float dx = velocidadeX * sentidoMovimentoX * deltaTempo;
+    float dy = velocidadeY * sentidoMovimentoY * deltaTempo;
+    corpoJogador.move(dx, dy);
 
     animacao.atualiza(linha, deltaTempo, emMovimento);
     sf::Vector2f posicao = corpoJogador.getPosition();
