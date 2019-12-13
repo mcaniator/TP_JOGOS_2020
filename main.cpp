@@ -87,19 +87,19 @@ int calculaDeslocamento(Jogador* p, float deltaTempo)
 
 ///EXERCICIO 4                                                         TEM QUE CONSERTAR COM AS CONDIÇOES NOVAS
 
-float vx, vy;
-vx = obtemVelocidadeX(p);
-vy = obtemVelocidadeY(p);
-vx = vx + (1000 * deltaTempo * sentidoMovimentoLateral(p));
-vy = vy + (1000 * deltaTempo * sentidoMovimentoVertical(p));
-x = x + vx * deltaTempo;
-y = y + vy * deltaTempo;
-atualizaVelocidadeX(p, vx);
-atualizaVelocidadeY(p, vy);
+///float vx, vy;
+///vx = obtemVelocidadeX(p);
+///vy = obtemVelocidadeY(p);
+///vx = vx + (1000 * deltaTempo * sentidoMovimentoLateral(p));
+///vy = vy + (1000 * deltaTempo * sentidoMovimentoVertical(p));
+///x = x + vx * deltaTempo;
+///y = y + vy * deltaTempo;
+///atualizaVelocidadeX(p, vx);
+///atualizaVelocidadeY(p, vy);
 
     ///Essas duas linhas abaixo devem ser excluidas para o funcionamento do exercicio 4;
-    //x = x + deslocamentoLateral(p, deltaTempo);
-    //y = y + deslocamentoVertical(p, deltaTempo);
+    x = x + deslocamentoLateral(p, deltaTempo);
+    y = y + deslocamentoVertical(p, deltaTempo);
     atualizaPosicao(p, x, y);
 
     return 1;
