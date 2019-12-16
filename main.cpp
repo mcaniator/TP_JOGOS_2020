@@ -72,12 +72,31 @@ int colisaoBordaY(float posY, float tamanhoY)
 }
 
 ///EXERCICIO 2
-int colidiu(float jogX, float compJog, float jogY, float largJog, float objX, float compObj, float objY, float largObj)
+int colidiu(float jogX, float compJog, float jogY, float altJog, float objX, float compObj, float objY, float altObj)
 {
-    if((fabs(jogX - objX) <= (compJog + compObj) / 2) || (fabs(jogX - objX) <= (compJog + compObj) / 2))
+    if((fabs(jogX - objX) <= (compJog + compObj) / 2) || (fabs(jogY - objY) <= (altJog + altObj) / 2))
         return 1;
     else
         return 0;
+}
+
+///EXERCICIO 3
+char ladoColisao(float jogX, float compJog, float jogY, float altJog, float objX, float compObj, float objY, float altObj)
+{
+    float e, d, c, b;
+    e = (jogX - compJog / 2) - (objX + compObj);
+    d = (jogX + compJog / 2) - (objX - compObj);
+    c = (jogY - altJog / 2) - (objY + altObj);
+    b = (jogY + altJog / 2) - (objY - altObj);
+
+    if(e < d && e < c && e < b)
+        return 'e';
+    else if(d < e && d < c && d < b)
+        return 'd';
+    else if(c < d && c < e && c < b)
+        return 'c';
+    else if(b < d && b < c && b < e)
+        return 'b';
 }
 
 int main()
@@ -98,8 +117,8 @@ int main()
 
     Jogador jogador(&texturaJogador, sf::Vector2u(13, 21), 0.3f, 180.0f);
 
-    std::vector<Plataforma> platformas;
-        platformas.push_back(Plataforma(NULL, sf::Vector2f(384.0f, 384.0f), sf::Vector2f(96.0f, 96.0f)));
+    std::vector<Plataforma> plataformas;
+        plataformas.push_back(Plataforma(NULL, sf::Vector2f(384.0f, 384.0f), sf::Vector2f(96.0f, 96.0f)));
 
     //CONFIGURA TEMPO
     float deltaTempo = 0.0f;
@@ -133,16 +152,17 @@ int main()
 
         //MOVIMENTACAO
 
-        for(unsigned int i = 0; i < platformas.size(); i++)
+        for(unsigned int i = 0; i < plataformas.size(); i++)
         {
-            Plataforma& platforma = platformas[i];
-            if(platforma.getColisor().checaColisao(jogador.getColisor(), &direcao))
+            Plataforma& plataforma = plataformas[i];
+            if(colidiu(jogador.getX(), jogador.getComprimento(), jogador.getY(), jogador.getAltura(), plataforma.getX(), plataforma.getComprimento(), plataforma.getY(), plataforma.getAltura()))
             {
-                jogador.emColisao(direcao);
+                direcao = ladoColisao(jogador.getX(), jogador.getComprimento(), jogador.getY(), jogador.getAltura(), plataforma.getX(), plataforma.getComprimento(), plataforma.getY(), plataforma.getAltura());
+                cout << direcao;
             }
         }
 
-        jogador.atualiza(deltaTempo, colisaoBordaX(jogador.getX(), jogador.getComprimento()), colisaoBordaY(jogador.getY(), jogador.getLargura()));
+        jogador.atualiza(deltaTempo, colisaoBordaX(jogador.getX(), jogador.getComprimento()), colisaoBordaY(jogador.getY(), jogador.getAltura()), direcao);
 
         //ATUALIZA CONFIGURACOES
 
@@ -153,10 +173,10 @@ int main()
         //DESENHA OS OBJETOS
 
 
-        for(unsigned int i = 0; i < platformas.size(); i++)
+        for(unsigned int i = 0; i < plataformas.size(); i++)
         {
-            Plataforma& platforma = platformas[i];
-            platforma.desenha(window);
+            Plataforma& plataforma = plataformas[i];
+            plataforma.desenha(window);
         }
         mapa.desenha(window);
         jogador.desenha(window);

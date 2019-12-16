@@ -15,7 +15,7 @@ public:
     float getX() { return corpo.getPosition().x; };
     float getY() { return corpo.getPosition().y; };
     float getComprimento() { return corpo.getSize().x; };
-    float getLargura() { return corpo.getSize().y; };
+    float getAltura() { return corpo.getSize().y; };
 
     Colisor getColisor() { return Colisor(corpo); };
 

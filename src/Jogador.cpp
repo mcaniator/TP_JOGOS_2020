@@ -32,15 +32,15 @@ Jogador::~Jogador()
 
 }
 
-void Jogador::atualiza(float deltaTempo, int colisaoBordaX, int colisaoBordaY)
+void Jogador::atualiza(float deltaTempo, int colisaoBordaX, int colisaoBordaY, char direcao)
 {
     //COMANDOS TECLADO
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && sentidoMovimentoY == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && !colisaoBordaX)
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && sentidoMovimentoY == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && !colisaoBordaX && direcao != 'e')
     {
         sentidoMovimentoX = -1;
         velocidadeX = velMax;
     }
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && sentidoMovimentoY == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !colisaoBordaX)
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && sentidoMovimentoY == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !colisaoBordaX && direcao != 'd')
     {
         sentidoMovimentoX = 1;
         velocidadeX = velMax;
@@ -50,12 +50,12 @@ void Jogador::atualiza(float deltaTempo, int colisaoBordaX, int colisaoBordaY)
         sentidoMovimentoX = 0;
         velocidadeX = 0;
     }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sentidoMovimentoX == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !colisaoBordaY)
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sentidoMovimentoX == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !colisaoBordaY && direcao != 'c')
     {
         sentidoMovimentoY = -1;
         velocidadeY = velMax;
     }
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && sentidoMovimentoX == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !colisaoBordaY)
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && sentidoMovimentoX == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !colisaoBordaY && direcao != 'b')
     {
         sentidoMovimentoY = 1;
         velocidadeY = velMax;
