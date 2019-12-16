@@ -1,9 +1,14 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <vector>
+#include <math.h>
 #include "Jogador.h"
 #include "Plataforma.h"
 #include "Mapa.h"
+#define BORDA_ESQ 240
+#define BORDA_DIR 720
+#define BORDA_CIMA 192
+#define BORDA_BAIXO 768
 
 static const float VIEW_HEIGHT = 312.0f;
 
@@ -19,6 +24,26 @@ float obtemPosicaoY(Jogador* p)
     return p->getY();
 }
 
+int teclaEsq()
+{
+    return sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
+}
+
+int teclaDir()
+{
+    return sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
+}
+
+int teclaCima()
+{
+    return sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
+}
+
+int teclaBaixo()
+{
+    return sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
+}
+
 void ResizeView(const sf::RenderWindow& window, sf::View& view)
 {
     float aspectRatio = float(window.getSize().x) / float(window.getSize().y);
@@ -30,11 +55,30 @@ void ResizeView(const sf::RenderWindow& window, sf::View& view)
 ///----------------------------------------------------------------------------------///
 
 ///EXERCICIO 1
-float deslocamentoLateral(Jogador* p, float deltaTempo)
+int colisaoBordaX(float posX, float tamanhoX)
 {
-    return 0;
+    if((posX - (tamanhoX / 2) < BORDA_ESQ && teclaEsq()) || (posX + (tamanhoX / 2) > BORDA_DIR && teclaDir()))
+        return 1;
+    else
+        return 0;
 }
 
+int colisaoBordaY(float posY, float tamanhoY)
+{
+    if((posY - (tamanhoY / 2) < BORDA_CIMA && teclaCima()) || (posY + (tamanhoY / 2) > BORDA_BAIXO && teclaBaixo()))
+        return 1;
+    else
+        return 0;
+}
+
+///EXERCICIO 2
+int colidiu(float jogX, float compJog, float jogY, float largJog, float objX, float compObj, float objY, float largObj)
+{
+    if((fabs(jogX - objX) <= (compJog + compObj) / 2) || (fabs(jogX - objX) <= (compJog + compObj) / 2))
+        return 1;
+    else
+        return 0;
+}
 
 int main()
 {
@@ -56,10 +100,6 @@ int main()
 
     std::vector<Plataforma> platformas;
         platformas.push_back(Plataforma(NULL, sf::Vector2f(384.0f, 384.0f), sf::Vector2f(96.0f, 96.0f)));
-        //platformas.push_back(Plataforma(NULL, sf::Vector2f(215.0f, 480.0f), sf::Vector2f(48.0f, 576.0f)));
-        //platformas.push_back(Plataforma(NULL, sf::Vector2f(745.0f, 480.0f), sf::Vector2f(48.0f, 576.0f)));
-        //platformas.push_back(Plataforma(NULL, sf::Vector2f(480.0f, 167.0f), sf::Vector2f(480.0f, 48.0f)));
-        //platformas.push_back(Plataforma(NULL, sf::Vector2f(480.0f, 793.0f), sf::Vector2f(480.0f, 48.0f)));
 
     //CONFIGURA TEMPO
     float deltaTempo = 0.0f;
@@ -102,7 +142,7 @@ int main()
             }
         }
 
-        jogador.atualiza(deltaTempo);
+        jogador.atualiza(deltaTempo, colisaoBordaX(jogador.getX(), jogador.getComprimento()), colisaoBordaY(jogador.getY(), jogador.getLargura()));
 
         //ATUALIZA CONFIGURACOES
 

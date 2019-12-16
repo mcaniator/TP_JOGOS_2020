@@ -10,16 +10,16 @@ class Jogador
         Jogador(sf::Texture* textura, sf::Vector2u tamanhoDaImagem, float tempoTroca, float vel);
         virtual ~Jogador();
 
-        void atualiza(float deltaTempo);
+        void atualiza(float deltaTempo, int colisaoBordaX, int colisaoBordaY);
         void desenha(sf::RenderWindow& window);
         void emColisao(char direcao);
-        bool colisaoBordasX();
-        bool colisaoBordasY();
 
         sf::Vector2f getPosicao() { return corpoJogador.getPosition(); };
 
         float getX() { return corpoJogador.getPosition().x; };
         float getY() { return corpoJogador.getPosition().y; };
+        float getComprimento() { return corpoJogador.getSize().x; };
+        float getLargura() { return corpoJogador.getSize().y; };
 
         Colisor getColisor() { return Colisor(corpoJogador); };
 

@@ -32,15 +32,15 @@ Jogador::~Jogador()
 
 }
 
-void Jogador::atualiza(float deltaTempo)
+void Jogador::atualiza(float deltaTempo, int colisaoBordaX, int colisaoBordaY)
 {
     //COMANDOS TECLADO
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && sentidoMovimentoY == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && !colisaoBordasX())
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && sentidoMovimentoY == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && !colisaoBordaX)
     {
         sentidoMovimentoX = -1;
         velocidadeX = velMax;
     }
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && sentidoMovimentoY == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !colisaoBordasX())
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && sentidoMovimentoY == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !colisaoBordaX)
     {
         sentidoMovimentoX = 1;
         velocidadeX = velMax;
@@ -50,12 +50,12 @@ void Jogador::atualiza(float deltaTempo)
         sentidoMovimentoX = 0;
         velocidadeX = 0;
     }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sentidoMovimentoX == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !colisaoBordasY())
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sentidoMovimentoX == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !colisaoBordaY)
     {
         sentidoMovimentoY = -1;
         velocidadeY = velMax;
     }
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && sentidoMovimentoX == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !colisaoBordasY())
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && sentidoMovimentoX == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !colisaoBordaY)
     {
         sentidoMovimentoY = 1;
         velocidadeY = velMax;
@@ -157,24 +157,4 @@ void Jogador::emColisao(char direcao)
         sentidoMovimentoY = 0;
         velocidadeY = 0;
     }
-}
-
-bool Jogador::colisaoBordasX()
-{
-    if((corpoJogador.getPosition().x - (corpoJogador.getSize().x / 2) < 5 * TAMANHO_BLOCOS && sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) || (corpoJogador.getPosition().x + (corpoJogador.getSize().x / 2) > (TAMANHO_MAPA_X - 5) * TAMANHO_BLOCOS && sf::Keyboard::isKeyPressed(sf::Keyboard::Right)))
-    {
-        return true;
-    }
-    else
-        return false;
-}
-
-bool Jogador::colisaoBordasY()
-{
-    if((corpoJogador.getPosition().y - (corpoJogador.getSize().y / 2) < 4 * TAMANHO_BLOCOS && sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) || (corpoJogador.getPosition().y + (corpoJogador.getSize().y / 2) > (TAMANHO_MAPA_Y - 4) * TAMANHO_BLOCOS && sf::Keyboard::isKeyPressed(sf::Keyboard::Down)))
-    {
-        return true;
-    }
-    else
-        return false;
 }
