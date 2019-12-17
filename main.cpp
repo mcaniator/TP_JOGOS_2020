@@ -74,7 +74,11 @@ int colisaoBordaY(float posY, float tamanhoY)
 ///EXERCICIO 2
 int colidiu(float jogX, float compJog, float jogY, float altJog, float objX, float compObj, float objY, float altObj)
 {
-    if((fabs(jogX - objX) <= (compJog + compObj) / 2) || (fabs(jogY - objY) <= (altJog + altObj) / 2))
+    float deltaX = fabs(jogX - objX);
+    float deltaY = fabs(jogY - objY);
+    float distMinX = (compJog + compObj) / 2;
+    float distMinY = (altJog + altObj) / 2;
+    if((deltaX <= distMinX) && (deltaY <= distMinY))
         return 1;
     else
         return 0;
@@ -84,10 +88,10 @@ int colidiu(float jogX, float compJog, float jogY, float altJog, float objX, flo
 char ladoColisao(float jogX, float compJog, float jogY, float altJog, float objX, float compObj, float objY, float altObj)
 {
     float e, d, c, b;
-    e = (jogX - compJog / 2) - (objX + compObj);
-    d = (jogX + compJog / 2) - (objX - compObj);
-    c = (jogY - altJog / 2) - (objY + altObj);
-    b = (jogY + altJog / 2) - (objY - altObj);
+    e = fabs((jogX - (compJog / 2)) - (objX + (compObj / 2)));
+    d = fabs((jogX + (compJog / 2)) - (objX - (compObj / 2)));
+    c = fabs((jogY - (altJog / 2)) - (objY + (altObj / 2)));
+    b = fabs((jogY + (altJog / 2)) - (objY - (altObj / 2)));
 
     if(e < d && e < c && e < b)
         return 'e';
@@ -97,6 +101,8 @@ char ladoColisao(float jogX, float compJog, float jogY, float altJog, float objX
         return 'c';
     else if(b < d && b < c && b < e)
         return 'b';
+    else
+        return '0';
 }
 
 int main()
@@ -152,6 +158,7 @@ int main()
 
         //MOVIMENTACAO
 
+        direcao = '\0';
         for(unsigned int i = 0; i < plataformas.size(); i++)
         {
             Plataforma& plataforma = plataformas[i];
