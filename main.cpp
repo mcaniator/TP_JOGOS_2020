@@ -3,6 +3,7 @@
 #include <vector>
 #include <math.h>
 #include "Jogador.h"
+#include "Inimigo.h"
 #include "Plataforma.h"
 #include "Mapa.h"
 #define BORDA_ESQ 240
@@ -116,12 +117,15 @@ int main()
     texturaJogador.loadFromFile("jogador.png");
     sf::Texture texturaMapa;
     texturaMapa.loadFromFile("mapa.png");
+    sf::Texture texturaInimigo;
+    texturaInimigo.loadFromFile("inimigo.png");
 
     char direcao;
 
     Mapa mapa(&texturaMapa);
 
     Jogador jogador(&texturaJogador, sf::Vector2u(13, 21), 0.3f, 180.0f);
+    Inimigo inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 180.0f);
 
     std::vector<Plataforma> plataformas;
         plataformas.push_back(Plataforma(NULL, sf::Vector2f(384.0f, 384.0f), sf::Vector2f(96.0f, 96.0f)));
@@ -165,11 +169,10 @@ int main()
             if(colidiu(jogador.getX(), jogador.getComprimento(), jogador.getY(), jogador.getAltura(), plataforma.getX(), plataforma.getComprimento(), plataforma.getY(), plataforma.getAltura()))
             {
                 direcao = ladoColisao(jogador.getX(), jogador.getComprimento(), jogador.getY(), jogador.getAltura(), plataforma.getX(), plataforma.getComprimento(), plataforma.getY(), plataforma.getAltura());
-                cout << direcao;
             }
         }
-
         jogador.atualiza(deltaTempo, colisaoBordaX(jogador.getX(), jogador.getComprimento()), colisaoBordaY(jogador.getY(), jogador.getAltura()), direcao);
+        inimigo.atualiza(deltaTempo, colisaoBordaX(inimigo.getX(), inimigo.getComprimento()), 0);
 
         //ATUALIZA CONFIGURACOES
 
@@ -187,6 +190,7 @@ int main()
         }
         mapa.desenha(window);
         jogador.desenha(window);
+        inimigo.desenha(window);
 
         ////
         window.display();

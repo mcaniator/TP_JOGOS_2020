@@ -2,7 +2,7 @@
 #define COLISOR_H
 #include <SFML/Graphics.hpp>
 
-class Colisor
+class Colisor ///NÃO UTILIZADA NESSE EXERCICIO
 {
 public:
     Colisor(sf::RectangleShape& corpo);
