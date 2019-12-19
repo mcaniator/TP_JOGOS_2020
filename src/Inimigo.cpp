@@ -32,22 +32,10 @@ Inimigo::~Inimigo()
 
 }
 
-void Inimigo::atualiza(float deltaTempo, int colisaoBordaX, int colisaoBordaY)
+void Inimigo::atualiza(float deltaTempo)
 {
     //COMANDOS MOVIMENTAÇAO
-    if(colisaoBordaX)
-    {
-        if(sentidoMovimentoX == 1)
-        {
-            sentidoMovimentoX = -1;
-            corpoInimigo.setPosition(TAMANHO_BLOCOS * 15 - corpoInimigo.getSize().x / 2 - 1, corpoInimigo.getPosition().y);
-        }
-        else
-        {
-            sentidoMovimentoX = 1;
-            corpoInimigo.setPosition(TAMANHO_BLOCOS * 5 + corpoInimigo.getSize().x / 2 + 1, corpoInimigo.getPosition().y);
-        }
-    }
+        ///ESTAO NA MAIN
 
     //EM MOVIMENTO
     if(sentidoMovimentoX || sentidoMovimentoY)

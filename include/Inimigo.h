@@ -9,7 +9,7 @@ class Inimigo
         Inimigo(sf::Texture* textura, sf::Vector2u tamanhoDaImagem, float tempoTroca, float vel);
         virtual ~Inimigo();
 
-        void atualiza(float deltaTempo, int colisaoBordaX, int colisaoBordaY);
+        void atualiza(float deltaTempo);
         void desenha(sf::RenderWindow& window);
         void emColisao(char direcao);
 
@@ -19,6 +19,9 @@ class Inimigo
         float getY() { return corpoInimigo.getPosition().y; };
         float getComprimento() { return corpoInimigo.getSize().x; };
         float getAltura() { return corpoInimigo.getSize().y; };
+
+        void set(float x, float y) { corpoInimigo.setPosition(x, y); };
+        void setSentidoMovimento(int s) { sentidoMovimentoX = s; }
 
         Colisor getColisor() { return Colisor(corpoInimigo); };
 

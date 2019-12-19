@@ -25,6 +25,21 @@ float obtemPosicaoY(Jogador* p)
     return p->getY();
 }
 
+float obtemPosicaoXinimigo(Inimigo* i)
+{
+    return i->getX();
+}
+
+void atualizaPosicaoXinimigo(Inimigo* i, float x)
+{
+    i->set(x, i->getY());
+}
+
+void atualizaSentidoXinimigo(Inimigo* i, int s)
+{
+    i->setSentidoMovimento(s);
+}
+
 int teclaEsq()
 {
     return sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
@@ -106,6 +121,26 @@ char ladoColisao(float jogX, float compJog, float jogY, float altJog, float objX
         return '0';
 }
 
+///EXERCICIO 4
+void moveInimigo(Inimigo* i)
+{
+    float x = obtemPosicaoXinimigo(i);
+    if(x < BORDA_ESQ)
+    {
+        atualizaSentidoXinimigo(i, 1);
+        atualizaPosicaoXinimigo(i, BORDA_ESQ + 1);
+    }
+    else if(x > BORDA_DIR)
+    {
+        atualizaSentidoXinimigo(i, -1);
+        atualizaPosicaoXinimigo(i, BORDA_DIR - 1);
+    }
+}
+
+///----------------------------------------------------------------------------------///
+///                                                                                  ///
+///----------------------------------------------------------------------------------///
+
 int main()
 {
     //VARIAVEIS DA CONFIGURACAO
@@ -125,10 +160,13 @@ int main()
     Mapa mapa(&texturaMapa);
 
     Jogador jogador(&texturaJogador, sf::Vector2u(13, 21), 0.3f, 180.0f);
-    Inimigo inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 180.0f);
+    //Inimigo inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 180.0f);
 
     std::vector<Plataforma> plataformas;
         plataformas.push_back(Plataforma(NULL, sf::Vector2f(384.0f, 384.0f), sf::Vector2f(96.0f, 96.0f)));
+
+    std::vector<Inimigo> inimigos;
+        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 180.0f));
 
     //CONFIGURA TEMPO
     float deltaTempo = 0.0f;
@@ -171,8 +209,15 @@ int main()
                 direcao = ladoColisao(jogador.getX(), jogador.getComprimento(), jogador.getY(), jogador.getAltura(), plataforma.getX(), plataforma.getComprimento(), plataforma.getY(), plataforma.getAltura());
             }
         }
+
+        for(unsigned int i = 0; i < inimigos.size(); i++)
+        {
+            Inimigo& inimigo = inimigos[i];
+            moveInimigo(&inimigo);
+            inimigo.atualiza(deltaTempo);
+        }
+
         jogador.atualiza(deltaTempo, colisaoBordaX(jogador.getX(), jogador.getComprimento()), colisaoBordaY(jogador.getY(), jogador.getAltura()), direcao);
-        inimigo.atualiza(deltaTempo, colisaoBordaX(inimigo.getX(), inimigo.getComprimento()), 0);
 
         //ATUALIZA CONFIGURACOES
 
@@ -182,15 +227,15 @@ int main()
 
         //DESENHA OS OBJETOS
 
-
-        for(unsigned int i = 0; i < plataformas.size(); i++)
-        {
-            Plataforma& plataforma = plataformas[i];
-            plataforma.desenha(window);
-        }
         mapa.desenha(window);
+
+        for(unsigned int i = 0; i < inimigos.size(); i++)
+        {
+            Inimigo& inimigo = inimigos[i];
+            inimigo.desenha(window);
+        }
+
         jogador.desenha(window);
-        inimigo.desenha(window);
 
         ////
         window.display();
