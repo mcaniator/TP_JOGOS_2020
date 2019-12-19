@@ -8,7 +8,7 @@ public:
     Colisor(sf::RectangleShape& corpo);
     virtual ~Colisor();
 
-    bool checaColisao(Colisor outro, char* direcao);
+    void checaColisao(Colisor outro);
 
     void Move(float dx, float dy) { corpo.move(dx, dy); };
 

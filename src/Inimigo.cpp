@@ -12,7 +12,7 @@ Inimigo::Inimigo(sf::Texture* textura, sf::Vector2u tamanhoDaImagem, float tempo
 
     velMax = vel;
     velocidadeX = vel;
-    velocidadeY = 0;
+    velocidadeY = vel;
     sentidoMovimentoX = 1;
     sentidoMovimentoY = 0;
 
@@ -20,7 +20,7 @@ Inimigo::Inimigo(sf::Texture* textura, sf::Vector2u tamanhoDaImagem, float tempo
 
     corpoInimigo.setSize(sf::Vector2f(30.0f, 15.0f));
     corpoInimigo.setOrigin(corpoInimigo.getSize() / 2.0f);
-    corpoInimigo.setPosition(200.0f, 400.0f);
+    corpoInimigo.setPosition(500.0f, 600.0f);
     texturaInimigo.setSize(sf::Vector2f(64.0f, 64.0f));
     texturaInimigo.setOrigin(texturaInimigo.getSize() / 2.0f);
     texturaInimigo.setPosition(0.0f, 0.0f);
@@ -32,10 +32,16 @@ Inimigo::~Inimigo()
 
 }
 
-void Inimigo::atualiza(float deltaTempo)
+void Inimigo::atualiza(float deltaTempo, float distanciaX, float distanciaY, int perseguindo)
 {
     //COMANDOS MOVIMENTAÇAO
-        ///ESTAO NA MAIN
+    if(perseguindo)
+    {
+        if(distanciaX >= -5 && distanciaX <= 5)
+            sentidoMovimentoX = 0;
+        if(distanciaY >= -5 && distanciaY <= 5)
+            sentidoMovimentoY = 0;
+    }
 
     //EM MOVIMENTO
     if(sentidoMovimentoX || sentidoMovimentoY)
@@ -105,3 +111,4 @@ void Inimigo::desenha(sf::RenderWindow& window)
     window.draw(corpoInimigo);
     window.draw(texturaInimigo);
 }
+

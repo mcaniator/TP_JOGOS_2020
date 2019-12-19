@@ -30,6 +30,11 @@ float obtemPosicaoXinimigo(Inimigo* i)
     return i->getX();
 }
 
+float obtemPosicaoYinimigo(Inimigo* i)
+{
+    return i->getY();
+}
+
 void atualizaPosicaoXinimigo(Inimigo* i, float x)
 {
     i->set(x, i->getY());
@@ -37,7 +42,12 @@ void atualizaPosicaoXinimigo(Inimigo* i, float x)
 
 void atualizaSentidoXinimigo(Inimigo* i, int s)
 {
-    i->setSentidoMovimento(s);
+    i->setSentidoMovimentoX(s);
+}
+
+void atualizaSentidoYinimigo(Inimigo* i, int s)
+{
+    i->setSentidoMovimentoY(s);
 }
 
 int teclaEsq()
@@ -122,9 +132,13 @@ char ladoColisao(float jogX, float compJog, float jogY, float altJog, float objX
 }
 
 ///EXERCICIO 4
-void moveInimigo(Inimigo* i)
+int moveInimigo(Inimigo* i, Jogador* p)
 {
     float x = obtemPosicaoXinimigo(i);
+    ///float xP = obtemPosicaoX(p);
+    ///float yI = obtemPosicaoYinimigo(i);
+    ///float yP = obtemPosicaoY(p);
+
     if(x < BORDA_ESQ)
     {
         atualizaSentidoXinimigo(i, 1);
@@ -135,6 +149,22 @@ void moveInimigo(Inimigo* i)
         atualizaSentidoXinimigo(i, -1);
         atualizaPosicaoXinimigo(i, BORDA_DIR - 1);
     }
+
+    ///EXERCICIO 5
+    ///if(yP > yI)
+    ///    atualizaSentidoYinimigo(i, 1);
+    ///else if(yP < yI)
+    ///    atualizaSentidoYinimigo(i, -1);
+    ///else
+    ///    atualizaSentidoYinimigo(i, 0);
+    ///if(xP > xI)
+    ///    atualizaSentidoXinimigo(i, 1);
+    ///else if(xP < xI)
+    ///    atualizaSentidoXinimigo(i, -1);
+    ///else
+    ///    atualizaSentidoXinimigo(i, 0);
+
+    return 0;
 }
 
 ///----------------------------------------------------------------------------------///
@@ -160,13 +190,12 @@ int main()
     Mapa mapa(&texturaMapa);
 
     Jogador jogador(&texturaJogador, sf::Vector2u(13, 21), 0.3f, 180.0f);
-    //Inimigo inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 180.0f);
 
     std::vector<Plataforma> plataformas;
         plataformas.push_back(Plataforma(NULL, sf::Vector2f(384.0f, 384.0f), sf::Vector2f(96.0f, 96.0f)));
 
     std::vector<Inimigo> inimigos;
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 180.0f));
+        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 80.0f));
 
     //CONFIGURA TEMPO
     float deltaTempo = 0.0f;
@@ -213,8 +242,17 @@ int main()
         for(unsigned int i = 0; i < inimigos.size(); i++)
         {
             Inimigo& inimigo = inimigos[i];
-            moveInimigo(&inimigo);
-            inimigo.atualiza(deltaTempo);
+            inimigo.atualiza(deltaTempo, jogador.getX() - inimigo.getX(), jogador.getY() - inimigo.getY(), moveInimigo(&inimigo, &jogador));
+        }
+
+        for(unsigned int i = 0; i < plataformas.size(); i++)
+        {
+            Plataforma& plataforma = plataformas[i];
+            for(unsigned int j = 0; j < inimigos.size(); j++)
+            {
+                Inimigo& inimigo = inimigos[j];
+                plataforma.getColisor().checaColisao(inimigo.getColisor());
+            }
         }
 
         jogador.atualiza(deltaTempo, colisaoBordaX(jogador.getX(), jogador.getComprimento()), colisaoBordaY(jogador.getY(), jogador.getAltura()), direcao);
