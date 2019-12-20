@@ -32,15 +32,22 @@ Inimigo::~Inimigo()
 
 }
 
-void Inimigo::atualiza(float deltaTempo, float distanciaX, float distanciaY, int perseguindo)
+void Inimigo::atualiza(float deltaTempo)
 {
     //COMANDOS MOVIMENTAÇAO
-    if(perseguindo)
+    float X = corpoInimigo.getPosition().x;
+    float Y = corpoInimigo.getPosition().y;
+    float metadeX = corpoInimigo.getSize().x / 2;
+
+    if(X - metadeX < BORDA_ESQ)
     {
-        if(distanciaX >= -5 && distanciaX <= 5)
-            sentidoMovimentoX = 0;
-        if(distanciaY >= -5 && distanciaY <= 5)
-            sentidoMovimentoY = 0;
+        corpoInimigo.setPosition(BORDA_ESQ + 1 + metadeX, Y);
+        sentidoMovimentoX = 1;
+    }
+    else if(X + metadeX > BORDA_DIR)
+    {
+        corpoInimigo.setPosition(BORDA_DIR - 1 - metadeX, Y);
+        sentidoMovimentoX = -1;
     }
 
     //EM MOVIMENTO

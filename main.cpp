@@ -6,69 +6,10 @@
 #include "Inimigo.h"
 #include "Plataforma.h"
 #include "Mapa.h"
-#define BORDA_ESQ 240
-#define BORDA_DIR 720
-#define BORDA_CIMA 192
-#define BORDA_BAIXO 768
 
 static const float VIEW_HEIGHT = 312.0f;
 
 using namespace std;
-
-float obtemPosicaoX(Jogador* p)
-{
-    return p->getX();
-}
-
-float obtemPosicaoY(Jogador* p)
-{
-    return p->getY();
-}
-
-float obtemPosicaoXinimigo(Inimigo* i)
-{
-    return i->getX();
-}
-
-float obtemPosicaoYinimigo(Inimigo* i)
-{
-    return i->getY();
-}
-
-void atualizaPosicaoXinimigo(Inimigo* i, float x)
-{
-    i->set(x, i->getY());
-}
-
-void atualizaSentidoXinimigo(Inimigo* i, int s)
-{
-    i->setSentidoMovimentoX(s);
-}
-
-void atualizaSentidoYinimigo(Inimigo* i, int s)
-{
-    i->setSentidoMovimentoY(s);
-}
-
-int teclaEsq()
-{
-    return sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
-}
-
-int teclaDir()
-{
-    return sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
-}
-
-int teclaCima()
-{
-    return sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
-}
-
-int teclaBaixo()
-{
-    return sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
-}
 
 void ResizeView(const sf::RenderWindow& window, sf::View& view)
 {
@@ -80,92 +21,7 @@ void ResizeView(const sf::RenderWindow& window, sf::View& view)
 ///                                  EXERCICIOS                                      ///
 ///----------------------------------------------------------------------------------///
 
-///EXERCICIO 1
-int colisaoBordaX(float posX, float tamanhoX)
-{
-    if((posX - (tamanhoX / 2) < BORDA_ESQ && teclaEsq()) || (posX + (tamanhoX / 2) > BORDA_DIR && teclaDir()))
-        return 1;
-    else
-        return 0;
-}
 
-int colisaoBordaY(float posY, float tamanhoY)
-{
-    if((posY - (tamanhoY / 2) < BORDA_CIMA && teclaCima()) || (posY + (tamanhoY / 2) > BORDA_BAIXO && teclaBaixo()))
-        return 1;
-    else
-        return 0;
-}
-
-///EXERCICIO 2
-int colidiu(float jogX, float compJog, float jogY, float altJog, float objX, float compObj, float objY, float altObj)
-{
-    float deltaX = fabs(jogX - objX);
-    float deltaY = fabs(jogY - objY);
-    float distMinX = (compJog + compObj) / 2;
-    float distMinY = (altJog + altObj) / 2;
-    if((deltaX <= distMinX) && (deltaY <= distMinY))
-        return 1;
-    else
-        return 0;
-}
-
-///EXERCICIO 3
-char ladoColisao(float jogX, float compJog, float jogY, float altJog, float objX, float compObj, float objY, float altObj)
-{
-    float e, d, c, b;
-    e = fabs((jogX - (compJog / 2)) - (objX + (compObj / 2)));
-    d = fabs((jogX + (compJog / 2)) - (objX - (compObj / 2)));
-    c = fabs((jogY - (altJog / 2)) - (objY + (altObj / 2)));
-    b = fabs((jogY + (altJog / 2)) - (objY - (altObj / 2)));
-
-    if(e < d && e < c && e < b)
-        return 'e';
-    else if(d < e && d < c && d < b)
-        return 'd';
-    else if(c < d && c < e && c < b)
-        return 'c';
-    else if(b < d && b < c && b < e)
-        return 'b';
-    else
-        return '0';
-}
-
-///EXERCICIO 4
-int moveInimigo(Inimigo* i, Jogador* p)
-{
-    float x = obtemPosicaoXinimigo(i);
-    ///float xP = obtemPosicaoX(p);
-    ///float yI = obtemPosicaoYinimigo(i);
-    ///float yP = obtemPosicaoY(p);
-
-    if(x < BORDA_ESQ)
-    {
-        atualizaSentidoXinimigo(i, 1);
-        atualizaPosicaoXinimigo(i, BORDA_ESQ + 1);
-    }
-    else if(x > BORDA_DIR)
-    {
-        atualizaSentidoXinimigo(i, -1);
-        atualizaPosicaoXinimigo(i, BORDA_DIR - 1);
-    }
-
-    ///EXERCICIO 5
-    ///if(yP > yI)
-    ///    atualizaSentidoYinimigo(i, 1);
-    ///else if(yP < yI)
-    ///    atualizaSentidoYinimigo(i, -1);
-    ///else
-    ///    atualizaSentidoYinimigo(i, 0);
-    ///if(xP > xI)
-    ///    atualizaSentidoXinimigo(i, 1);
-    ///else if(xP < xI)
-    ///    atualizaSentidoXinimigo(i, -1);
-    ///else
-    ///    atualizaSentidoXinimigo(i, 0);
-
-    return 0;
-}
 
 ///----------------------------------------------------------------------------------///
 ///                                                                                  ///
@@ -233,16 +89,13 @@ int main()
         for(unsigned int i = 0; i < plataformas.size(); i++)
         {
             Plataforma& plataforma = plataformas[i];
-            if(colidiu(jogador.getX(), jogador.getComprimento(), jogador.getY(), jogador.getAltura(), plataforma.getX(), plataforma.getComprimento(), plataforma.getY(), plataforma.getAltura()))
-            {
-                direcao = ladoColisao(jogador.getX(), jogador.getComprimento(), jogador.getY(), jogador.getAltura(), plataforma.getX(), plataforma.getComprimento(), plataforma.getY(), plataforma.getAltura());
-            }
+            jogador.getColisor().checaColisaoPlayer(plataforma.getColisor(), &direcao);
         }
 
         for(unsigned int i = 0; i < inimigos.size(); i++)
         {
             Inimigo& inimigo = inimigos[i];
-            inimigo.atualiza(deltaTempo, jogador.getX() - inimigo.getX(), jogador.getY() - inimigo.getY(), moveInimigo(&inimigo, &jogador));
+            inimigo.atualiza(deltaTempo);
         }
 
         for(unsigned int i = 0; i < plataformas.size(); i++)
@@ -255,7 +108,7 @@ int main()
             }
         }
 
-        jogador.atualiza(deltaTempo, colisaoBordaX(jogador.getX(), jogador.getComprimento()), colisaoBordaY(jogador.getY(), jogador.getAltura()), direcao);
+        jogador.atualiza(deltaTempo, direcao);
 
         //ATUALIZA CONFIGURACOES
 

@@ -4,6 +4,10 @@
 #define TAMANHO_MAPA_X 20
 #define TAMANHO_MAPA_Y 20
 #define TAMANHO_BLOCOS 48
+#define BORDA_ESQ 240
+#define BORDA_DIR 720
+#define BORDA_SUP 192
+#define BORDA_INF 768
 
 using namespace std;
 

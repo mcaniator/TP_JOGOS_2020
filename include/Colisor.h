@@ -10,6 +10,8 @@ public:
 
     void checaColisao(Colisor outro);
 
+    void checaColisaoPlayer(Colisor outro, char* direcao);
+
     void Move(float dx, float dy) { corpo.move(dx, dy); };
 
     sf::Vector2f getPosicao() { return corpo.getPosition(); };

@@ -51,3 +51,43 @@ void Colisor::checaColisao(Colisor outro)
     }
 }
 
+void Colisor::checaColisaoPlayer(Colisor outro, char* direcao)
+{
+    sf::Vector2f posicaoOutro = outro.getPosicao();
+    sf::Vector2f metadeOutro = outro.getMetade();
+    sf::Vector2f posicao = getPosicao();
+    sf::Vector2f metade = getMetade();
+
+    float deltaX = posicaoOutro.x - posicao.x;
+    float deltaY = posicaoOutro.y - posicao.y;
+
+    float intersecaoX = abs(deltaX) - (metadeOutro.x + metade.x);
+    float intersecaoY = abs(deltaY) - (metadeOutro.y + metade.y);
+
+    if(intersecaoX < 0.0f && intersecaoY < 0.0f)
+    {
+        if(intersecaoX > intersecaoY)
+        {
+            if(deltaX > 0.0f)
+            {
+                *direcao = 'd';
+            }
+            else
+            {
+                *direcao = 'e';
+            }
+        }
+        else
+        {
+            if(deltaY > 0.0f)
+            {
+                *direcao = 'b';
+            }
+            else
+            {
+                *direcao = 'c';
+            }
+        }
+    }
+}
+
