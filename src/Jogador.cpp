@@ -134,27 +134,3 @@ void Jogador::desenha(sf::RenderWindow& window)
     window.draw(corpoJogador);
     window.draw(texturaJogador);
 }
-
-void Jogador::emColisao(char direcao)
-{
-    if(direcao == 'd')
-    {
-        sentidoMovimentoX = 0;
-        velocidadeX = 0;
-    }
-    else if(direcao == 'e')
-    {
-        sentidoMovimentoX = 0;
-        velocidadeX = 0;
-    }
-    if(direcao == 'c')
-    {
-        sentidoMovimentoY = 0;
-        velocidadeY = 0;
-    }
-    else if(direcao == 'b')
-    {
-        sentidoMovimentoY = 0;
-        velocidadeY = 0;
-    }
-}

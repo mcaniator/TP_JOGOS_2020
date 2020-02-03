@@ -3,6 +3,7 @@
 #include <vector>
 #include <math.h>
 #include "Jogador.h"
+#include "Inimigo.h"
 #include "Plataforma.h"
 #include "Mapa.h"
 #define BORDA_ESQ 240
@@ -22,6 +23,31 @@ float obtemPosicaoX(Jogador* p)
 float obtemPosicaoY(Jogador* p)
 {
     return p->getY();
+}
+
+float obtemPosicaoXinimigo(Inimigo* i)
+{
+    return i->getX();
+}
+
+float obtemPosicaoYinimigo(Inimigo* i)
+{
+    return i->getY();
+}
+
+void atualizaPosicaoXinimigo(Inimigo* i, float x)
+{
+    i->set(x, i->getY());
+}
+
+void atualizaSentidoXinimigo(Inimigo* i, int s)
+{
+    i->setSentidoMovimentoX(s);
+}
+
+void atualizaSentidoYinimigo(Inimigo* i, int s)
+{
+    i->setSentidoMovimentoY(s);
 }
 
 int teclaEsq()
@@ -105,6 +131,46 @@ char ladoColisao(float jogX, float compJog, float jogY, float altJog, float objX
         return '0';
 }
 
+///EXERCICIO 4
+int moveInimigo(Inimigo* i, Jogador* p)
+{
+    float x = obtemPosicaoXinimigo(i);
+    ///float xP = obtemPosicaoX(p);
+    ///float yI = obtemPosicaoYinimigo(i);
+    ///float yP = obtemPosicaoY(p);
+
+    if(x < BORDA_ESQ)
+    {
+        atualizaSentidoXinimigo(i, 1);
+        atualizaPosicaoXinimigo(i, BORDA_ESQ + 1);
+    }
+    else if(x > BORDA_DIR)
+    {
+        atualizaSentidoXinimigo(i, -1);
+        atualizaPosicaoXinimigo(i, BORDA_DIR - 1);
+    }
+
+    ///EXERCICIO 5
+    ///if(yP > yI)
+    ///    atualizaSentidoYinimigo(i, 1);
+    ///else if(yP < yI)
+    ///    atualizaSentidoYinimigo(i, -1);
+    ///else
+    ///    atualizaSentidoYinimigo(i, 0);
+    ///if(xP > xI)
+    ///    atualizaSentidoXinimigo(i, 1);
+    ///else if(xP < xI)
+    ///    atualizaSentidoXinimigo(i, -1);
+    ///else
+    ///    atualizaSentidoXinimigo(i, 0);
+
+    return 0;
+}
+
+///----------------------------------------------------------------------------------///
+///                                                                                  ///
+///----------------------------------------------------------------------------------///
+
 int main()
 {
     //VARIAVEIS DA CONFIGURACAO
@@ -116,6 +182,8 @@ int main()
     texturaJogador.loadFromFile("jogador.png");
     sf::Texture texturaMapa;
     texturaMapa.loadFromFile("mapa.png");
+    sf::Texture texturaInimigo;
+    texturaInimigo.loadFromFile("inimigo.png");
 
     char direcao;
 
@@ -125,6 +193,9 @@ int main()
 
     std::vector<Plataforma> plataformas;
         plataformas.push_back(Plataforma(NULL, sf::Vector2f(384.0f, 384.0f), sf::Vector2f(96.0f, 96.0f)));
+
+    std::vector<Inimigo> inimigos;
+        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 80.0f));
 
     //CONFIGURA TEMPO
     float deltaTempo = 0.0f;
@@ -165,7 +236,22 @@ int main()
             if(colidiu(jogador.getX(), jogador.getComprimento(), jogador.getY(), jogador.getAltura(), plataforma.getX(), plataforma.getComprimento(), plataforma.getY(), plataforma.getAltura()))
             {
                 direcao = ladoColisao(jogador.getX(), jogador.getComprimento(), jogador.getY(), jogador.getAltura(), plataforma.getX(), plataforma.getComprimento(), plataforma.getY(), plataforma.getAltura());
-                cout << direcao;
+            }
+        }
+
+        for(unsigned int i = 0; i < inimigos.size(); i++)
+        {
+            Inimigo& inimigo = inimigos[i];
+            inimigo.atualiza(deltaTempo, jogador.getX() - inimigo.getX(), jogador.getY() - inimigo.getY(), moveInimigo(&inimigo, &jogador));
+        }
+
+        for(unsigned int i = 0; i < plataformas.size(); i++)
+        {
+            Plataforma& plataforma = plataformas[i];
+            for(unsigned int j = 0; j < inimigos.size(); j++)
+            {
+                Inimigo& inimigo = inimigos[j];
+                plataforma.getColisor().checaColisao(inimigo.getColisor());
             }
         }
 
@@ -179,13 +265,14 @@ int main()
 
         //DESENHA OS OBJETOS
 
-
-        for(unsigned int i = 0; i < plataformas.size(); i++)
-        {
-            Plataforma& plataforma = plataformas[i];
-            plataforma.desenha(window);
-        }
         mapa.desenha(window);
+
+        for(unsigned int i = 0; i < inimigos.size(); i++)
+        {
+            Inimigo& inimigo = inimigos[i];
+            inimigo.desenha(window);
+        }
+
         jogador.desenha(window);
 
         ////
