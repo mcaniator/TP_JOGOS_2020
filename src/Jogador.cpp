@@ -10,6 +10,8 @@ Jogador::Jogador(sf::Texture* textura, sf::Vector2u tamanhoDaImagem, float tempo
 {
     linha = 0;
 
+    vivo = true;
+
     velMax = vel;
     velocidadeX = 0;
     velocidadeY = 0;
@@ -35,12 +37,12 @@ Jogador::~Jogador()
 void Jogador::atualiza(float deltaTempo, int colisaoBordaX, int colisaoBordaY, char direcao)
 {
     //COMANDOS TECLADO
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && sentidoMovimentoY == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && !colisaoBordaX && direcao != 'e')
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && sentidoMovimentoY == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && !colisaoBordaX && direcao != 'e' && vivo)
     {
         sentidoMovimentoX = -1;
         velocidadeX = velMax;
     }
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && sentidoMovimentoY == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !colisaoBordaX && direcao != 'd')
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && sentidoMovimentoY == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !colisaoBordaX && direcao != 'd' && vivo)
     {
         sentidoMovimentoX = 1;
         velocidadeX = velMax;
@@ -50,12 +52,12 @@ void Jogador::atualiza(float deltaTempo, int colisaoBordaX, int colisaoBordaY, c
         sentidoMovimentoX = 0;
         velocidadeX = 0;
     }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sentidoMovimentoX == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !colisaoBordaY && direcao != 'c')
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sentidoMovimentoX == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && !colisaoBordaY && direcao != 'c' && vivo)
     {
         sentidoMovimentoY = -1;
         velocidadeY = velMax;
     }
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && sentidoMovimentoX == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !colisaoBordaY && direcao != 'b')
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && sentidoMovimentoX == 0 && !sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && !colisaoBordaY && direcao != 'b' && vivo)
     {
         sentidoMovimentoY = 1;
         velocidadeY = velMax;

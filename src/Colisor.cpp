@@ -51,3 +51,21 @@ void Colisor::checaColisao(Colisor outro)
     }
 }
 
+bool Colisor::checaColisao2(Colisor outro)
+{
+    sf::Vector2f posicaoOutro = outro.getPosicao();
+    sf::Vector2f metadeOutro = outro.getMetade();
+    sf::Vector2f posicao = getPosicao();
+    sf::Vector2f metade = getMetade();
+
+    float deltaX = posicaoOutro.x - posicao.x;
+    float deltaY = posicaoOutro.y - posicao.y;
+
+    float intersecaoX = abs(deltaX) - (metadeOutro.x + metade.x);
+    float intersecaoY = abs(deltaY) - (metadeOutro.y + metade.y);
+
+    if(intersecaoX < 0.0f && intersecaoY < 0.0f)
+        return true;
+    else
+        return false;
+}

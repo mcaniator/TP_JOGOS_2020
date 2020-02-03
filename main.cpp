@@ -134,17 +134,17 @@ char ladoColisao(float jogX, float compJog, float jogY, float altJog, float objX
 ///EXERCICIO 4
 int moveInimigo(Inimigo* i, Jogador* p)
 {
-    float x = obtemPosicaoXinimigo(i);
+    float xI = obtemPosicaoXinimigo(i);
     ///float xP = obtemPosicaoX(p);
     ///float yI = obtemPosicaoYinimigo(i);
     ///float yP = obtemPosicaoY(p);
 
-    if(x < BORDA_ESQ)
+    if(xI < BORDA_ESQ)
     {
         atualizaSentidoXinimigo(i, 1);
         atualizaPosicaoXinimigo(i, BORDA_ESQ + 1);
     }
-    else if(x > BORDA_DIR)
+    else if(xI > BORDA_DIR)
     {
         atualizaSentidoXinimigo(i, -1);
         atualizaPosicaoXinimigo(i, BORDA_DIR - 1);
@@ -243,6 +243,15 @@ int main()
         {
             Inimigo& inimigo = inimigos[i];
             inimigo.atualiza(deltaTempo, jogador.getX() - inimigo.getX(), jogador.getY() - inimigo.getY(), moveInimigo(&inimigo, &jogador));
+        }
+
+        if(jogador.getStatus())
+        {
+            for(unsigned int i = 0; i < inimigos.size(); i++)
+            {
+                Inimigo& inimigo = inimigos[i];
+                jogador.setStatus(!jogador.getColisor().checaColisao2(inimigo.getColisor()));
+            }
         }
 
         for(unsigned int i = 0; i < plataformas.size(); i++)

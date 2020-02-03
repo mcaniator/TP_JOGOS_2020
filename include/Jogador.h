@@ -16,6 +16,9 @@ class Jogador
 
         sf::Vector2f getPosicao() { return corpoJogador.getPosition(); };
 
+        bool getStatus() { return vivo; };
+        void setStatus(bool status) { vivo = status; };
+
         float getX() { return corpoJogador.getPosition().x; };
         float getY() { return corpoJogador.getPosition().y; };
         float getComprimento() { return corpoJogador.getSize().x; };
@@ -38,6 +41,7 @@ class Jogador
         int sentidoMovimentoY;
         int velMax;
 
+        bool vivo;
 };
 
 #endif // Jogador_H

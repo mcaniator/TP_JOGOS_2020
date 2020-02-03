@@ -9,6 +9,7 @@ public:
     virtual ~Colisor();
 
     void checaColisao(Colisor outro);
+    bool checaColisao2(Colisor outro);
 
     void Move(float dx, float dy) { corpo.move(dx, dy); };
 
