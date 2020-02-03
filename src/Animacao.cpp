@@ -16,7 +16,7 @@ Animacao::~Animacao()
     //dtor
 }
 
-void Animacao::atualiza(int linha, float deltaTempo, bool emMovimento)
+void Animacao::atualiza(int linha, float deltaTempo, bool emMovimento, bool vivo)
 {
     imagemAtual.y = linha;
     tempoTotal += 5 * deltaTempo;
@@ -24,9 +24,10 @@ void Animacao::atualiza(int linha, float deltaTempo, bool emMovimento)
     if(tempoTotal >= tempoTroca)
     {
         tempoTotal -= tempoTroca;
-        imagemAtual.x++;
+        if(!(!vivo && imagemAtual.x ==5))
+            imagemAtual.x++;
 
-        if(imagemAtual.x >= tamanhoDaImagem.x)
+        if((imagemAtual.x >= tamanhoDaImagem.x) && vivo)
         {
             if(emMovimento)
                 imagemAtual.x = 1;

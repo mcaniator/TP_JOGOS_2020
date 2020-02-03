@@ -75,56 +75,65 @@ void Jogador::atualiza(float deltaTempo, int colisaoBordaX, int colisaoBordaY, c
         emMovimento = false;
 
     //ANIMACAO
-    if(sentidoMovimentoX == 1)
+    if(vivo)
     {
-        linha = 11;
-        animacao.setNumFrames(9);
-        ultimaDirecao = 'd';
-    }
-    else if(sentidoMovimentoX == -1)
-    {
-        linha = 9;
-        animacao.setNumFrames(9);
-        ultimaDirecao = 'e';
-    }
-    else if(sentidoMovimentoY == 1)
-    {
-        linha = 10;
-        animacao.setNumFrames(9);
-        ultimaDirecao = 'b';
-    }
-    else if(sentidoMovimentoY == -1)
-    {
-        linha = 8;
-        animacao.setNumFrames(9);
-        ultimaDirecao = 'c';
+        if(sentidoMovimentoX == 1)
+        {
+            linha = 11;
+            animacao.setNumFrames(9);
+            ultimaDirecao = 'd';
+        }
+        else if(sentidoMovimentoX == -1)
+        {
+            linha = 9;
+            animacao.setNumFrames(9);
+            ultimaDirecao = 'e';
+        }
+        else if(sentidoMovimentoY == 1)
+        {
+            linha = 10;
+            animacao.setNumFrames(9);
+            ultimaDirecao = 'b';
+        }
+        else if(sentidoMovimentoY == -1)
+        {
+            linha = 8;
+            animacao.setNumFrames(9);
+            ultimaDirecao = 'c';
+        }
+        else
+        {
+            switch(ultimaDirecao)
+            {
+                case 'c':
+                    linha = 0;
+                    break;
+                case 'e':
+                    linha = 1;
+                    break;
+                case 'b':
+                    linha = 2;
+                    break;
+                case 'd':
+                    linha = 3;
+                    break;
+            }
+        animacao.setNumFrames(0);
+        animacao.setFrameAtual(0);
+        }
     }
     else
     {
-        switch(ultimaDirecao)
-        {
-            case 'c':
-                linha = 0;
-                break;
-            case 'e':
-                linha = 1;
-                break;
-            case 'b':
-                linha = 2;
-                break;
-            case 'd':
-                linha = 3;
-                break;
-        }
-        animacao.setNumFrames(0);
-        animacao.setFrameAtual(0);
+        linha = 20;
+        animacao.setNumFrames(6);
     }
 
+    //GERAL
     float dx = velocidadeX * sentidoMovimentoX * deltaTempo;
     float dy = velocidadeY * sentidoMovimentoY * deltaTempo;
     corpoJogador.move(dx, dy);
 
-    animacao.atualiza(linha, deltaTempo, emMovimento);
+    animacao.atualiza(linha, deltaTempo, emMovimento, vivo);
     sf::Vector2f posicao = corpoJogador.getPosition();
     posicao.y -= 27;
     texturaJogador.setPosition(posicao);

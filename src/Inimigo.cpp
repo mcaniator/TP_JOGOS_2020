@@ -99,7 +99,7 @@ void Inimigo::atualiza(float deltaTempo, float distanciaX, float distanciaY, int
     float dy = velocidadeY * sentidoMovimentoY * deltaTempo;
     corpoInimigo.move(dx, dy);
 
-    animacao.atualiza(linha, deltaTempo, emMovimento);
+    animacao.atualiza(linha, deltaTempo, emMovimento, true);
     sf::Vector2f posicao = corpoInimigo.getPosition();
     posicao.y -= 27;
     texturaInimigo.setPosition(posicao);
