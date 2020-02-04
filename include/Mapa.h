@@ -9,8 +9,6 @@
 #define BORDA_SUP 192
 #define BORDA_INF 768
 
-using namespace std;
-
 typedef struct
 {
     sf::IntRect corpoBloco;
