@@ -9,7 +9,7 @@ public:
     Animacao(sf::Texture* textura, sf::Vector2u tamanhoDaImagem, float tempoTroca);
     virtual ~Animacao();
 
-    void atualiza(int linha, float deltaTempo, bool emMovimento);
+    void atualiza(int linha, float deltaTempo, bool emMovimento, bool vivo);
 
     void setNumFrames(int numFrames) { tamanhoDaImagem.x = numFrames; };
     void setFrameAtual(int frame) { imagemAtual.x = frame; };

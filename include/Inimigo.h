@@ -13,6 +13,8 @@ class Inimigo
         void desenha(sf::RenderWindow& window);
         void emColisao(char direcao);
 
+        float getY() { return corpoInimigo.getPosition().y; };
+
         Colisor getColisor() { return Colisor(corpoInimigo); };
 
     private:

@@ -14,8 +14,10 @@ class Jogador
         void desenha(sf::RenderWindow& window);
 
         sf::Vector2f getPosicao() { return corpoJogador.getPosition(); };
+        float getY() { return corpoJogador.getPosition().y; };
 
-
+        bool getStatus() { return vivo; };
+        void setStatus(bool status) { vivo = status; };
 
         Colisor getColisor() { return Colisor(corpoJogador); };
 
@@ -34,6 +36,7 @@ class Jogador
         int sentidoMovimentoY;
         int velMax;
 
+        bool vivo;
 };
 
 #endif // Jogador_H

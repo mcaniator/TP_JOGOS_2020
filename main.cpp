@@ -98,6 +98,15 @@ int main()
             inimigo.atualiza(deltaTempo);
         }
 
+        if(jogador.getStatus())
+        {
+            for(unsigned int i = 0; i < inimigos.size(); i++)
+            {
+                Inimigo& inimigo = inimigos[i];
+                jogador.setStatus(!jogador.getColisor().checaColisao2(inimigo.getColisor()));
+            }
+        }
+
         for(unsigned int i = 0; i < plataformas.size(); i++)
         {
             Plataforma& plataforma = plataformas[i];
@@ -120,13 +129,27 @@ int main()
 
         mapa.desenha(window);
 
+        bool vivo = jogador.getStatus();
+
+        if(!vivo)
+            jogador.desenha(window);
+
         for(unsigned int i = 0; i < inimigos.size(); i++)
         {
             Inimigo& inimigo = inimigos[i];
-            inimigo.desenha(window);
+            if(inimigo.getY() < jogador.getY())
+                inimigo.desenha(window);
         }
 
-        jogador.desenha(window);
+        if(vivo)
+            jogador.desenha(window);
+
+        for(unsigned int i = 0; i < inimigos.size(); i++)
+        {
+            Inimigo& inimigo = inimigos[i];
+            if(inimigo.getY() > jogador.getY())
+                inimigo.desenha(window);
+        }
 
         ////
         window.display();

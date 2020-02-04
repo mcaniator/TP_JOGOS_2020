@@ -122,7 +122,7 @@ void Jogador::atualiza(float deltaTempo, char direcao)
     float dy = velocidadeY * sentidoMovimentoY * deltaTempo;
     corpoJogador.move(dx, dy);
 
-    animacao.atualiza(linha, deltaTempo, emMovimento);
+    animacao.atualiza(linha, deltaTempo, emMovimento, vivo);
     sf::Vector2f posicao = corpoJogador.getPosition();
     posicao.y -= 27;
     texturaJogador.setPosition(posicao);
