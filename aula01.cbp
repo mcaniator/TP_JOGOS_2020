@@ -48,6 +48,7 @@
 		<Unit filename="include/Animacao.h" />
 		<Unit filename="include/Colisor.h" />
 		<Unit filename="include/Inimigo.h" />
+		<Unit filename="include/Inventario.h" />
 		<Unit filename="include/Jogador.h" />
 		<Unit filename="include/Mapa.h" />
 		<Unit filename="include/Plataforma.h" />
@@ -55,6 +56,7 @@
 		<Unit filename="src/Animacao.cpp" />
 		<Unit filename="src/Colisor.cpp" />
 		<Unit filename="src/Inimigo.cpp" />
+		<Unit filename="src/Inventario.cpp" />
 		<Unit filename="src/Jogador.cpp" />
 		<Unit filename="src/Mapa.cpp" />
 		<Unit filename="src/Plataforma.cpp" />

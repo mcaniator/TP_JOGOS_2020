@@ -41,14 +41,21 @@ int main()
     sf::Texture texturaInimigo;
     texturaInimigo.loadFromFile("inimigo.png");
 
-    char direcao;
-
     Mapa mapa(&texturaMapa);
 
     Jogador jogador(&texturaJogador, sf::Vector2u(13, 21), 0.3f, 180.0f);
 
     std::vector<Plataforma> plataformas;
         plataformas.push_back(Plataforma(NULL, sf::Vector2f(384.0f, 384.0f), sf::Vector2f(96.0f, 96.0f)));
+        plataformas.push_back(Plataforma(NULL, sf::Vector2f(480.0f, 1104.0f), sf::Vector2f(192.0f, 384.0f)));
+        plataformas.push_back(Plataforma(NULL, sf::Vector2f(624.0f, 528.0f), sf::Vector2f(288.0f, 192.0f)));
+        plataformas.push_back(Plataforma(NULL, sf::Vector2f(864.0f, 624.0f), sf::Vector2f(192.0f, 384.0f)));
+        plataformas.push_back(Plataforma(NULL, sf::Vector2f(1056.0f, 1296.0f), sf::Vector2f(192.0f, 384.0f)));
+        plataformas.push_back(Plataforma(NULL, sf::Vector2f(1248.0f, 1200.0f), sf::Vector2f(192.0f, 192.0f)));
+        plataformas.push_back(Plataforma(NULL, sf::Vector2f(1296.0f, 576.0f), sf::Vector2f(192.0f, 192.0f)));
+        plataformas.push_back(Plataforma(NULL, sf::Vector2f(768.0f, 1104.0f), sf::Vector2f(192.0f, 192.0f)));
+        plataformas.push_back(Plataforma(NULL, sf::Vector2f(1128.0f, 888.0f), sf::Vector2f(144.0f, 144.0f)));
+        plataformas.push_back(Plataforma(NULL, sf::Vector2f(1392.0f, 1512.0f), sf::Vector2f(96.0f, 144.0f)));
 
     std::vector<Inimigo> inimigos;
         inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 80.0f));
@@ -83,19 +90,41 @@ int main()
 
         ////JOGO
 
-        //MOVIMENTACAO
+        //COLISOES
 
-        direcao = '\0';
+        char direcao;
+
         for(unsigned int i = 0; i < plataformas.size(); i++)
         {
             Plataforma& plataforma = plataformas[i];
-            jogador.getColisor().checaColisaoPlayer(plataforma.getColisor(), &direcao);
+            plataforma.getColisor().checaColisao(jogador.getColisor());
         }
 
-        for(unsigned int i = 0; i < inimigos.size(); i++)
+        for(unsigned int i = 0; i < plataformas.size(); i++)
         {
-            Inimigo& inimigo = inimigos[i];
-            inimigo.atualiza(deltaTempo);
+            Plataforma& plataforma = plataformas[i];
+            for(unsigned int j = 0; j < inimigos.size(); j++)
+            {
+                Inimigo& inimigo = inimigos[j];
+                direcao = plataforma.getColisor().checaColisao3(inimigo.getColisor());
+                switch(direcao)
+                {
+                    case 'c':
+                        inimigo.setSentidoY(-1);
+                        break;
+                    case 'b':
+                        inimigo.setSentidoY(1);
+                        break;
+                    case 'd':
+                        inimigo.setSentidoX(1);
+                        break;
+                    case 'e':
+                        inimigo.setSentidoX(-1);
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
 
         if(jogador.getStatus())
@@ -107,14 +136,12 @@ int main()
             }
         }
 
-        for(unsigned int i = 0; i < plataformas.size(); i++)
+        //MOVIMENTACAO
+
+        for(unsigned int i = 0; i < inimigos.size(); i++)
         {
-            Plataforma& plataforma = plataformas[i];
-            for(unsigned int j = 0; j < inimigos.size(); j++)
-            {
-                Inimigo& inimigo = inimigos[j];
-                plataforma.getColisor().checaColisao(inimigo.getColisor());
-            }
+            Inimigo& inimigo = inimigos[i];
+            inimigo.atualiza(deltaTempo);
         }
 
         jogador.atualiza(deltaTempo, direcao);
@@ -150,7 +177,13 @@ int main()
             if(inimigo.getY() > jogador.getY())
                 inimigo.desenha(window);
         }
-
+/*
+        for(unsigned int i = 0; i < plataformas.size(); i++)
+        {
+            Plataforma& plataforma = plataformas[i];
+            plataforma.desenha(window);
+        }
+*/
         ////
         window.display();
     }
