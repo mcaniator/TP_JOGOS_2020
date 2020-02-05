@@ -11,7 +11,7 @@ Colisor::~Colisor()
     //dtor
 }
 
-void Colisor::checaColisao(Colisor outro)
+void Colisor::checaColisaoJogadorPlataforma(Colisor outro)
 {
     sf::Vector2f posicaoOutro = outro.getPosicao();
     sf::Vector2f metadeOutro = outro.getMetade();
@@ -51,7 +51,7 @@ void Colisor::checaColisao(Colisor outro)
     }
 }
 
-char Colisor::checaColisao3(Colisor outro)
+char Colisor::checaColisaoInimigoPlataforma(Colisor outro)
 {
     sf::Vector2f posicaoOutro = outro.getPosicao();
     sf::Vector2f metadeOutro = outro.getMetade();
@@ -71,12 +71,12 @@ char Colisor::checaColisao3(Colisor outro)
             if(deltaX > 0.0f)
             {
                 outro.Move(-intersecaoX, 0.0f);
-                return 'd';
+                return 'e';
             }
             else
             {
                 outro.Move(intersecaoX, 0.0f);
-                return 'e';
+                return 'd';
             }
         }
         else
@@ -93,9 +93,11 @@ char Colisor::checaColisao3(Colisor outro)
             }
         }
     }
+    else
+        return '0';
 }
 
-bool Colisor::checaColisao2(Colisor outro)
+bool Colisor::checaColisao(Colisor outro)
 {
     sf::Vector2f posicaoOutro = outro.getPosicao();
     sf::Vector2f metadeOutro = outro.getMetade();
@@ -112,45 +114,5 @@ bool Colisor::checaColisao2(Colisor outro)
         return true;
     else
         return false;
-}
-
-void Colisor::checaColisaoPlayer(Colisor outro, char* direcao)
-{
-    sf::Vector2f posicaoOutro = outro.getPosicao();
-    sf::Vector2f metadeOutro = outro.getMetade();
-    sf::Vector2f posicao = getPosicao();
-    sf::Vector2f metade = getMetade();
-
-    float deltaX = posicaoOutro.x - posicao.x;
-    float deltaY = posicaoOutro.y - posicao.y;
-
-    float intersecaoX = abs(deltaX) - (metadeOutro.x + metade.x);
-    float intersecaoY = abs(deltaY) - (metadeOutro.y + metade.y);
-
-    if(intersecaoX < 0.0f && intersecaoY < 0.0f)
-    {
-        if(intersecaoX > intersecaoY)
-        {
-            if(deltaX > 0.0f)
-            {
-                *direcao = 'd';
-            }
-            else
-            {
-                *direcao = 'e';
-            }
-        }
-        else
-        {
-            if(deltaY > 0.0f)
-            {
-                *direcao = 'b';
-            }
-            else
-            {
-                *direcao = 'c';
-            }
-        }
-    }
 }
 

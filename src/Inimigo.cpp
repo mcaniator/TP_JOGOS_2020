@@ -13,14 +13,14 @@ Inimigo::Inimigo(sf::Texture* textura, sf::Vector2u tamanhoDaImagem, float tempo
     velMax = vel;
     velocidadeX = vel;
     velocidadeY = vel;
-    sentidoMovimentoX = 1;
-    sentidoMovimentoY = 0;
+    sentidoMovimentoX = 0;
+    sentidoMovimentoY = 1;
 
     ultimaDirecao = 'b';
 
     corpoInimigo.setSize(sf::Vector2f(30.0f, 15.0f));
     corpoInimigo.setOrigin(corpoInimigo.getSize() / 2.0f);
-    corpoInimigo.setPosition(500.0f, 600.0f);
+    corpoInimigo.setPosition(400.0f, 250.0f);
     texturaInimigo.setSize(sf::Vector2f(64.0f, 64.0f));
     texturaInimigo.setOrigin(texturaInimigo.getSize() / 2.0f);
     texturaInimigo.setPosition(0.0f, 0.0f);
@@ -38,6 +38,7 @@ void Inimigo::atualiza(float deltaTempo)
     float X = corpoInimigo.getPosition().x;
     float Y = corpoInimigo.getPosition().y;
     float metadeX = corpoInimigo.getSize().x / 2;
+    float metadeY = corpoInimigo.getSize().y / 2;
 
     if(X - metadeX < BORDA_ESQ)
     {
@@ -48,6 +49,17 @@ void Inimigo::atualiza(float deltaTempo)
     {
         corpoInimigo.setPosition(BORDA_DIR - 1 - metadeX, Y);
         sentidoMovimentoX = -1;
+    }
+
+    if(Y - metadeY < BORDA_SUP)
+    {
+        corpoInimigo.setPosition(X, BORDA_SUP + 1 + metadeY);
+        sentidoMovimentoY = 1;
+    }
+    else if(Y + metadeY > BORDA_INF)
+    {
+        corpoInimigo.setPosition(X, BORDA_INF - 1 - metadeY);
+        sentidoMovimentoY = -1;
     }
 
     //EM MOVIMENTO

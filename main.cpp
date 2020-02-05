@@ -94,10 +94,12 @@ int main()
 
         char direcao;
 
+        jogador.atualiza(deltaTempo);
+
         for(unsigned int i = 0; i < plataformas.size(); i++)
         {
             Plataforma& plataforma = plataformas[i];
-            plataforma.getColisor().checaColisao(jogador.getColisor());
+            plataforma.getColisor().checaColisaoJogadorPlataforma(jogador.getColisor());
         }
 
         for(unsigned int i = 0; i < plataformas.size(); i++)
@@ -106,20 +108,20 @@ int main()
             for(unsigned int j = 0; j < inimigos.size(); j++)
             {
                 Inimigo& inimigo = inimigos[j];
-                direcao = plataforma.getColisor().checaColisao3(inimigo.getColisor());
+                direcao = plataforma.getColisor().checaColisaoInimigoPlataforma(inimigo.getColisor());
                 switch(direcao)
                 {
                     case 'c':
-                        inimigo.setSentidoY(-1);
-                        break;
-                    case 'b':
                         inimigo.setSentidoY(1);
                         break;
+                    case 'b':
+                        inimigo.setSentidoY(-1);
+                        break;
                     case 'd':
-                        inimigo.setSentidoX(1);
+                        inimigo.setSentidoX(-1);
                         break;
                     case 'e':
-                        inimigo.setSentidoX(-1);
+                        inimigo.setSentidoX(1);
                         break;
                     default:
                         break;
@@ -132,7 +134,7 @@ int main()
             for(unsigned int i = 0; i < inimigos.size(); i++)
             {
                 Inimigo& inimigo = inimigos[i];
-                jogador.setStatus(!jogador.getColisor().checaColisao2(inimigo.getColisor()));
+                jogador.setStatus(!jogador.getColisor().checaColisao(inimigo.getColisor()));
             }
         }
 
@@ -144,7 +146,7 @@ int main()
             inimigo.atualiza(deltaTempo);
         }
 
-        jogador.atualiza(deltaTempo, direcao);
+
 
         //ATUALIZA CONFIGURACOES
 

@@ -10,7 +10,7 @@ class Jogador
         Jogador(sf::Texture* textura, sf::Vector2u tamanhoDaImagem, float tempoTroca, float vel);
         virtual ~Jogador();
 
-        void atualiza(float deltaTempo, char direcao);
+        void atualiza(float deltaTempo);
         void desenha(sf::RenderWindow& window);
 
         sf::Vector2f getPosicao() { return corpoJogador.getPosition(); };
