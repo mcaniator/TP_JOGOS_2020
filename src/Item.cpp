@@ -18,7 +18,41 @@ Item::Item(sf::Texture* textura, sf::Vector2u tamanhoDaImagem, sf::Vector2f posi
         case 'a':
             itemRet.left = 12 * itemRet.width;
             itemRet.top = 3 * itemRet.height;
-
+            break;
+        case 'b':
+            itemRet.left = 12 * itemRet.width;
+            itemRet.top = 4 * itemRet.height;
+            break;
+        case 'c':
+            itemRet.left = 12 * itemRet.width;
+            itemRet.top = 5 * itemRet.height;
+            break;
+        case 'd':
+            itemRet.left = 13 * itemRet.width;
+            itemRet.top = 0 * itemRet.height;
+            break;
+        case 'e':
+            itemRet.left = 13 * itemRet.width;
+            itemRet.top = 1 * itemRet.height;
+            break;
+        case 'f':
+            itemRet.left = 13 * itemRet.width;
+            itemRet.top = 2 * itemRet.height;
+            break;
+        case 'g':
+            itemRet.left = 3 * itemRet.width;
+            itemRet.top = 5 * itemRet.height;
+            break;
+        case 'h':
+            itemRet.left = 4 * itemRet.width;
+            itemRet.top = 5 * itemRet.height;
+            break;
+        case 'i':
+            itemRet.left = 5 * itemRet.width;
+            itemRet.top = 5 * itemRet.height;
+            break;
+        default:
+            break;
     }
 
     corpoItem.setTextureRect(itemRet);
@@ -31,5 +65,6 @@ Item::~Item()
 
 void Item::desenha(sf::RenderWindow& window)
 {
-    window.draw(corpoItem);
+    if(!coletado)
+        window.draw(corpoItem);
 }
