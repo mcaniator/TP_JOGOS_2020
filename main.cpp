@@ -8,7 +8,7 @@
 #include "Mapa.h"
 #include "Item.h"
 
-static const float VIEW_HEIGHT = 312.0f;
+static const float VIEW_HEIGHT = 322.0f;
 
 using namespace std;
 
@@ -63,7 +63,7 @@ int main()
         plataformas.push_back(Plataforma(NULL, sf::Vector2f(1392.0f, 1512.0f), sf::Vector2f(96.0f, 144.0f)));
 
     std::vector<Inimigo> inimigos;
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 80.0f));
+        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 80.0f, 0, 1));
 
     std::vector<Item> itens;
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(300.0f, 300.0f), 'a'));

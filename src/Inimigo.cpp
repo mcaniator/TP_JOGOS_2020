@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Inimigo::Inimigo(sf::Texture* textura, sf::Vector2u tamanhoDaImagem, float tempoTroca, float vel) :
+Inimigo::Inimigo(sf::Texture* textura, sf::Vector2u tamanhoDaImagem, float tempoTroca, float vel, int sentidoX, int sentidoY) :
     animacao(textura, tamanhoDaImagem, tempoTroca)
 {
     linha = 0;
@@ -13,8 +13,8 @@ Inimigo::Inimigo(sf::Texture* textura, sf::Vector2u tamanhoDaImagem, float tempo
     velMax = vel;
     velocidadeX = vel;
     velocidadeY = vel;
-    sentidoMovimentoX = 0;
-    sentidoMovimentoY = 1;
+    sentidoMovimentoX = sentidoX;
+    sentidoMovimentoY = sentidoY;
 
     ultimaDirecao = 'b';
 
