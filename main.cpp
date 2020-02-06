@@ -6,6 +6,7 @@
 #include "Inimigo.h"
 #include "Plataforma.h"
 #include "Mapa.h"
+#include "Item.h"
 
 static const float VIEW_HEIGHT = 312.0f;
 
@@ -42,8 +43,8 @@ int main()
     texturaInimigo.loadFromFile("inimigo.png");
     sf::Texture texturaIventario;
     texturaIventario.loadFromFile("inventario.png");
-    sf::Texture texturaItens;
-    texturaItens.loadFromFile("itens.png");
+    sf::Texture texturaItem;
+    texturaItem.loadFromFile("itens.png");
 
     Mapa mapa(&texturaMapa);
 
@@ -63,6 +64,9 @@ int main()
 
     std::vector<Inimigo> inimigos;
         inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 80.0f));
+
+    std::vector<Item> itens;
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(200.0f ,200.0f), 'a'));
 
     //CONFIGURA TEMPO
     float deltaTempo = 0.0f;
@@ -159,6 +163,12 @@ int main()
         //DESENHA OS OBJETOS
 
         mapa.desenha(window);
+
+        for(unsigned int i = 0; i < itens.size(); i++)
+        {
+            Item& item = itens[i];
+            item.desenha(window);
+        }
 
         bool vivo = jogador.getStatus();
 

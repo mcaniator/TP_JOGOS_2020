@@ -127,7 +127,7 @@ void Inimigo::atualiza(float deltaTempo)
 
 void Inimigo::desenha(sf::RenderWindow& window)
 {
-    window.draw(corpoInimigo);
+    //window.draw(corpoInimigo);
     window.draw(texturaInimigo);
 }
 

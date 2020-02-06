@@ -141,6 +141,6 @@ void Jogador::atualiza(float deltaTempo)
 
 void Jogador::desenha(sf::RenderWindow& window)
 {
-    window.draw(corpoJogador);
+    //window.draw(corpoJogador);
     window.draw(texturaJogador);
 }
