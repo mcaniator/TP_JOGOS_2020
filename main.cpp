@@ -40,6 +40,10 @@ int main()
     texturaMapa.loadFromFile("mapa.png");
     sf::Texture texturaInimigo;
     texturaInimigo.loadFromFile("inimigo.png");
+    sf::Texture texturaIventario;
+    texturaIventario.loadFromFile("inventario.png");
+    sf::Texture texturaItens;
+    texturaItens.loadFromFile("itens.png");
 
     Mapa mapa(&texturaMapa);
 
@@ -94,8 +98,6 @@ int main()
 
         char direcao;
 
-        jogador.atualiza(deltaTempo);
-
         for(unsigned int i = 0; i < plataformas.size(); i++)
         {
             Plataforma& plataforma = plataformas[i];
@@ -146,7 +148,7 @@ int main()
             inimigo.atualiza(deltaTempo);
         }
 
-
+        jogador.atualiza(deltaTempo);
 
         //ATUALIZA CONFIGURACOES
 
