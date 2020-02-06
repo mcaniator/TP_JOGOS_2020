@@ -35,6 +35,11 @@ float obtemPosicaoYinimigo(Inimigo* i)
     return i->getY();
 }
 
+float obtemCompInimigo(Inimigo* i)
+{
+    return i->getComprimento();
+}
+
 void atualizaPosicaoXinimigo(Inimigo* i, float x)
 {
     i->set(x, i->getY());
@@ -134,20 +139,21 @@ char ladoColisao(float jogX, float compJog, float jogY, float altJog, float objX
 ///EXERCICIO 4
 int moveInimigo(Inimigo* i, Jogador* p)
 {
+    float compI = obtemCompInimigo(i);
     float xI = obtemPosicaoXinimigo(i);
-    ///float xP = obtemPosicaoX(p);
     ///float yI = obtemPosicaoYinimigo(i);
+    ///float xP = obtemPosicaoX(p);
     ///float yP = obtemPosicaoY(p);
 
-    if(xI < BORDA_ESQ)
+    if(xI - compI / 2 < BORDA_ESQ)
     {
         atualizaSentidoXinimigo(i, 1);
-        atualizaPosicaoXinimigo(i, BORDA_ESQ + 1);
+        atualizaPosicaoXinimigo(i, BORDA_ESQ + compI / 2 + 1);
     }
-    else if(xI > BORDA_DIR)
+    else if(xI + compI / 2 > BORDA_DIR)
     {
         atualizaSentidoXinimigo(i, -1);
-        atualizaPosicaoXinimigo(i, BORDA_DIR - 1);
+        atualizaPosicaoXinimigo(i, BORDA_DIR - compI / 2 - 1);
     }
 
     ///EXERCICIO 5
