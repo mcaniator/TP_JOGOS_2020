@@ -22,7 +22,50 @@ void ResizeView(const sf::RenderWindow& window, sf::View& view)
 ///                                  EXERCICIOS                                      ///
 ///----------------------------------------------------------------------------------///
 
+void removeChar (char str[], int tam, int indice)
+{
+    for(int i = indice; str[i] != '\0'; i++)
+    {
+        str[i] = str[i + 1];
+    }
+}
 
+void montaObjetivo (char letras[], char resp[])
+{
+    int indice;
+    int tam;
+    for(tam = 0; letras[tam] != '\0'; tam++);
+    tam--;
+
+    for(int i = 0; i < 5; i++)
+    {
+        indice = rand() % (tam - i);
+        resp[i] = letras[indice];
+        removeChar(letras, tam - i, indice);
+    }
+}
+
+void organizaInventario(char coletou, char coletado[], int num[])
+{
+    if(num[coletou - 'a'] == 0)
+    {
+        int indice;
+        for(int i = 0; i < 9; i++)
+            if(num[i] != 0)
+                indice++;
+        coletado[indice] = coletou;
+        coletado[indice + 1] = '\0';
+    }
+    num[coletou - 'a']++;
+}
+
+int comparaString(char resp[], char colocados[])
+{
+    for(int i = 0; resp[i] != '\0'; i++)
+        if(resp[i] != colocados[i])
+            return 0;
+    return 1;
+}
 
 ///----------------------------------------------------------------------------------///
 ///                                                                                  ///
@@ -33,6 +76,15 @@ int main()
     //VARIAVEIS DA CONFIGURACAO
     sf::RenderWindow window(sf::VideoMode(800, 512), "Jogo Aula 02", sf::Style::Close);
     sf::View view(sf::Vector2f(0, 0), sf::Vector2f(VIEW_HEIGHT, VIEW_HEIGHT));
+
+    //VARIAVEIS DOS EXERCICIOS
+    char letras[10] = "abcdefghi";
+    char resposta[6];
+    char colocados[6];
+    char coletado[10];
+    int num[9] = {0};
+        //OBJETIVO
+        montaObjetivo(letras, resposta);
 
     //VARIAVEIS DO JOGO
     sf::Texture texturaJogador;
