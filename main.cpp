@@ -7,6 +7,7 @@
 #include "Plataforma.h"
 #include "Mapa.h"
 #include "Item.h"
+#include "Inventario.h"
 
 static const float VIEW_HEIGHT = 322.0f;
 
@@ -30,7 +31,7 @@ void removeChar (char str[], int tam, int indice)
     }
 }
 
-void montaObjetivo (char letras[], char resp[])
+void montaObjetivo (char letras[], char resposta[])
 {
     int indice;
     int tam;
@@ -40,23 +41,23 @@ void montaObjetivo (char letras[], char resp[])
     for(int i = 0; i < 5; i++)
     {
         indice = rand() % (tam - i);
-        resp[i] = letras[indice];
+        resposta[i] = letras[indice];
         removeChar(letras, tam - i, indice);
     }
 }
 
-void organizaInventario(char coletou, char coletado[], int num[])
+void organizaInventario(char coletou, char coletados[], int numcoletados[])
 {
-    if(num[coletou - 'a'] == 0)
+    if(numcoletados[coletou - 'a'] == 0)
     {
-        int indice;
+        int indice = 0;
         for(int i = 0; i < 9; i++)
-            if(num[i] != 0)
+            if(numcoletados[i] != 0)
                 indice++;
-        coletado[indice] = coletou;
-        coletado[indice + 1] = '\0';
+        coletados[indice] = coletou;
+        coletados[indice + 1] = '\0';
     }
-    num[coletou - 'a']++;
+    numcoletados[coletou - 'a']++;
 }
 
 int comparaString(char resp[], char colocados[])
@@ -80,9 +81,11 @@ int main()
     //VARIAVEIS DOS EXERCICIOS
     char letras[10] = "abcdefghi";
     char resposta[6];
+
+    char coletados[10];
+    int numcoletados[9] = {0};
+
     char colocados[6];
-    char coletado[10];
-    int num[9] = {0};
         //OBJETIVO
         montaObjetivo(letras, resposta);
 
@@ -93,14 +96,19 @@ int main()
     texturaMapa.loadFromFile("mapa.png");
     sf::Texture texturaInimigo;
     texturaInimigo.loadFromFile("inimigo.png");
-    sf::Texture texturaIventario;
-    texturaIventario.loadFromFile("inventario.png");
+    sf::Texture texturaInventario;
+    texturaInventario.loadFromFile("inventario.png");
     sf::Texture texturaItem;
     texturaItem.loadFromFile("itens.png");
+    sf::Texture texturaIndice;
+    texturaIndice.loadFromFile("indices.png");
+
 
     Mapa mapa(&texturaMapa);
 
     Jogador jogador(&texturaJogador, sf::Vector2u(13, 21), 0.3f, 180.0f);
+
+    Inventario inventario(&texturaInventario, sf::Vector2u(17, 10), &texturaItem, sf::Vector2u(16, 16), &texturaIndice, sf::Vector2u(4, 1));
 
     std::vector<Plataforma> plataformas;
         plataformas.push_back(Plataforma(NULL, sf::Vector2f(384.0f, 384.0f), sf::Vector2f(96.0f, 96.0f)));
@@ -119,14 +127,14 @@ int main()
 
     std::vector<Item> itens;
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(300.0f, 300.0f), 'a'));
-        //itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(330.0f, 300.0f), 'b'));
-        //itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(360.0f, 300.0f), 'c'));
-        //itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(390.0f, 300.0f), 'd'));
-        //itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(420.0f, 300.0f), 'e'));
-        //itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(450.0f, 300.0f), 'f'));
-        //itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(480.0f, 300.0f), 'g'));
-        //itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(510.0f, 300.0f), 'h'));
-        //itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(540.0f, 300.0f), 'i'));
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(330.0f, 300.0f), 'a'));
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(360.0f, 300.0f), 'c'));
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(390.0f, 300.0f), 'd'));
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(420.0f, 300.0f), 'e'));
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(450.0f, 300.0f), 'e'));
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(480.0f, 300.0f), 'g'));
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(510.0f, 300.0f), 'h'));
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(540.0f, 300.0f), 'h'));
 
     //CONFIGURA TEMPO
     float deltaTempo = 0.0f;
@@ -163,9 +171,14 @@ int main()
         for(unsigned int i = 0; i < itens.size(); i++)
         {
             Item& item = itens[i];
-            if(item.getColisor().checaColisao(jogador.getColisor()) && sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+            if(item.getColisor().checaColisao(jogador.getColisor()) && sf::Keyboard::isKeyPressed(sf::Keyboard::E) && !item.getStatus())
             {
                 item.coletou();
+                organizaInventario(item.getTipo(), coletados, numcoletados);
+
+                cout << coletados << endl;
+                for(int i = 0; i < 9; i++)
+                    cout << numcoletados[i];
             }
         }
 
@@ -262,13 +275,9 @@ int main()
             if(inimigo.getY() > jogador.getY())
                 inimigo.desenha(window);
         }
-/*
-        for(unsigned int i = 0; i < plataformas.size(); i++)
-        {
-            Plataforma& plataforma = plataformas[i];
-            plataforma.desenha(window);
-        }
-*/
+
+        inventario.desenha(window, jogador.getPosicao(), coletados, numcoletados);
+
         ////
         window.display();
     }

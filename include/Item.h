@@ -12,6 +12,9 @@ class Item
         void coletou(){ coletado = true; };
         void soltou(){ coletado = false; };
 
+        char getTipo(){ return tipo; };
+        bool getStatus(){ return coletado; };
+
         Colisor getColisor() { return Colisor(corpoItem); };
 
         void desenha(sf::RenderWindow& window);
