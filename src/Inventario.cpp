@@ -19,7 +19,7 @@ Inventario::Inventario(sf::Texture* texturaInventario, sf::Vector2u tamanhoDaIma
     corpoItem.setTextureRect(itemRet);
 
     //INDICE INVENTARIO
-    corpoIndice.setSize(sf::Vector2f(26.0f, 26.0f));
+    corpoIndice.setSize(sf::Vector2f(16.0f, 16.0f));
     corpoIndice.setTexture(texturaIndice);
 
     indiceRet.width = texturaIndice->getSize().x / (float)tamanhoDaImagemIndice.x;
@@ -91,11 +91,11 @@ void Inventario::desenha(sf::RenderWindow& window, sf::Vector2f posicaoJogador, 
             }
             corpoItem.setTextureRect(itemRet);
             window.draw(corpoItem);
-        }
 
-        corpoIndice.setPosition(posicaoJogador.x - 240 + (corpoInventario.getSize().x * i), posicaoJogador.y + 120);
-        indiceRet.left = numcoletados[i] * indiceRet.width;
-        corpoIndice.setTextureRect(indiceRet);
-        window.draw(corpoIndice);
+            corpoIndice.setPosition(posicaoJogador.x - 242 + (corpoInventario.getSize().x * i), posicaoJogador.y + 116);
+            indiceRet.left = numcoletados[coletados[i] - 'a'] * indiceRet.width;
+            corpoIndice.setTextureRect(indiceRet);
+            window.draw(corpoIndice);
+        }
     }
 }
