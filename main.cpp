@@ -8,6 +8,7 @@
 #include "Mapa.h"
 #include "Item.h"
 #include "Inventario.h"
+#include "Objetivo.h"
 
 static const float VIEW_HEIGHT = 322.0f;
 
@@ -126,12 +127,16 @@ int main()
     texturaItem.loadFromFile("itens.png");
     sf::Texture texturaIndice;
     texturaIndice.loadFromFile("indices.png");
+    sf::Texture texturaObjetivo;
+    texturaIndice.loadFromFile("amigo.png");
 
     Mapa mapa(&texturaMapa);
 
     Jogador jogador(&texturaJogador, sf::Vector2u(13, 21), 0.3f, 180.0f);
 
     Inventario inventario(&texturaInventario, sf::Vector2u(17, 10), &texturaItem, sf::Vector2u(16, 16), &texturaIndice, sf::Vector2u(4, 1));
+
+    Objetivo objetivo(&texturaObjetivo, sf::Vector2u(13, 21), &texturaInventario, sf::Vector2u(17, 10), &texturaItem, sf::Vector2u(16, 16));
 
     std::vector<Plataforma> plataformas;
         plataformas.push_back(Plataforma(NULL, sf::Vector2f(384.0f, 384.0f), sf::Vector2f(96.0f, 96.0f)));
@@ -332,6 +337,8 @@ int main()
         }
 
         inventario.desenha(window, jogador.getPosicao(), coletados, numcoletados);
+
+        objetivo.desenha(window);
 
         ////
         window.display();

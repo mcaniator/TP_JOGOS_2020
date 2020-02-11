@@ -25,7 +25,6 @@ Inventario::Inventario(sf::Texture* texturaInventario, sf::Vector2u tamanhoDaIma
     indiceRet.width = texturaIndice->getSize().x / (float)tamanhoDaImagemIndice.x;
     indiceRet.height = texturaIndice->getSize().y / (float)tamanhoDaImagemIndice.y;
     corpoIndice.setTextureRect(indiceRet);
-
 }
 
 Inventario::~Inventario()
