@@ -19,6 +19,30 @@ void ResizeView(const sf::RenderWindow& window, sf::View& view)
     view.setSize(VIEW_HEIGHT * aspectRatio, VIEW_HEIGHT);
 }
 
+int teclaPressionada()
+{
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
+        return 1;
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
+        return 2;
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
+        return 3;
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num4))
+        return 4;
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num5))
+        return 5;
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num6))
+        return 6;
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num7))
+        return 7;
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num8))
+        return 8;
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num9))
+        return 9;
+    else
+        return 0;
+}
+
 ///----------------------------------------------------------------------------------///
 ///                                  EXERCICIOS                                      ///
 ///----------------------------------------------------------------------------------///
@@ -103,7 +127,6 @@ int main()
     sf::Texture texturaIndice;
     texturaIndice.loadFromFile("indices.png");
 
-
     Mapa mapa(&texturaMapa);
 
     Jogador jogador(&texturaJogador, sf::Vector2u(13, 21), 0.3f, 180.0f);
@@ -127,18 +150,21 @@ int main()
 
     std::vector<Item> itens;
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(300.0f, 300.0f), 'a'));
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(330.0f, 300.0f), 'a'));
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(330.0f, 300.0f), 'b'));
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(360.0f, 300.0f), 'c'));
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(390.0f, 300.0f), 'd'));
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(420.0f, 300.0f), 'e'));
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(450.0f, 300.0f), 'e'));
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(450.0f, 300.0f), 'f'));
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(480.0f, 300.0f), 'g'));
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(510.0f, 300.0f), 'h'));
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(540.0f, 300.0f), 'h'));
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(540.0f, 300.0f), 'i'));
 
     //CONFIGURA TEMPO
     float deltaTempo = 0.0f;
     sf::Clock clock;
+
+    //DELAY TECLA
+    float delay = 1;
 
     //CONFIGURA VIEW
     ResizeView(window, view);
@@ -150,6 +176,11 @@ int main()
         deltaTempo = clock.restart().asSeconds();
         if(deltaTempo > 1.0f / 20.0f)
             deltaTempo = 1.0f / 20.0f;
+
+        if(delay > 0)
+            delay -= deltaTempo;
+        else
+            delay = 0;
 
         sf::Event evnt;
         while(window.pollEvent(evnt))
@@ -175,11 +206,35 @@ int main()
             {
                 item.coletou();
                 organizaInventario(item.getTipo(), coletados, numcoletados);
-
-                cout << coletados << endl;
-                for(int i = 0; i < 9; i++)
-                    cout << numcoletados[i];
             }
+        }
+
+        int tecla = teclaPressionada();
+
+        if(tecla != 0 && delay == 0)
+        {
+            int tamanho = 0;
+            for(int i = 0; i < 9; i++)
+                if(numcoletados[i] != 0)
+                    tamanho++;
+            if(tecla <= tamanho)
+            {
+                int indice = coletados[tecla - 1] - 'a';
+                char tipo = coletados[tecla - 1];
+
+                if(numcoletados[indice] == 1)
+                    removeChar(coletados, tamanho, tecla - 1);
+                if(numcoletados[indice] > 0)
+                    numcoletados[indice]--;
+
+                for(unsigned int i = 0; i < itens.size(); i++)
+                {
+                    Item& item = itens[i];
+                    if(item.getTipo() == tipo)
+                        item.soltou(jogador.getPosicao());
+                }
+            }
+            delay = 1;
         }
 
         //COLISOES
