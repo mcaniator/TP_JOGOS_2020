@@ -61,6 +61,7 @@ void montaObjetivo (char letras[], char resposta[])
     int indice;
     int tam;
     for(tam = 0; letras[tam] != '\0'; tam++);
+    tam;
 
     for(int i = 0; i < 5; i++)
     {
@@ -104,6 +105,9 @@ int main()
     sf::View view(sf::Vector2f(0, 0), sf::Vector2f(VIEW_HEIGHT, VIEW_HEIGHT));
 
     //VARIAVEIS DOS EXERCICIOS
+    bool terminou = false;
+    bool ganhou = false;
+
     char letras[10] = "abcdefghi";
     char resposta[6];
 
@@ -114,7 +118,6 @@ int main()
     int numRecebidos = 0;
         //OBJETIVO
         montaObjetivo(letras, resposta);
-        cout << resposta << endl;
 
     //VARIAVEIS DO JOGO
     sf::Texture texturaJogador;
@@ -131,6 +134,8 @@ int main()
     texturaIndice.loadFromFile("texturas/indices.png");
     sf::Texture texturaObjetivo;
     texturaObjetivo.loadFromFile("texturas/amigo.png");
+    sf::Texture texturaFala;
+    texturaFala.loadFromFile("texturas/fala.png");
 
     Mapa mapa(&texturaMapa);
 
@@ -138,7 +143,7 @@ int main()
 
     Inventario inventario(&texturaInventario, sf::Vector2u(17, 10), &texturaItem, sf::Vector2u(16, 16), &texturaIndice, sf::Vector2u(4, 1));
 
-    Objetivo objetivo(&texturaObjetivo, sf::Vector2u(13, 21), &texturaInventario, sf::Vector2u(17, 10), &texturaItem, sf::Vector2u(16, 16));
+    Objetivo objetivo(&texturaObjetivo, sf::Vector2u(13, 21), &texturaFala, sf::Vector2u(1, 1), &texturaItem, sf::Vector2u(16, 16));
 
     std::vector<Plataforma> plataformas;
         plataformas.push_back(Plataforma(NULL, sf::Vector2f(384.0f, 384.0f), sf::Vector2f(96.0f, 96.0f)));
@@ -157,13 +162,13 @@ int main()
 
     std::vector<Item> itens;
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(300.0f, 300.0f), 'a'));
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(330.0f, 300.0f), 'a'));
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(330.0f, 300.0f), 'b'));
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(360.0f, 300.0f), 'c'));
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(390.0f, 300.0f), 'c'));
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(390.0f, 300.0f), 'd'));
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(420.0f, 300.0f), 'e'));
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(450.0f, 300.0f), 'f'));
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(480.0f, 300.0f), 'g'));
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(510.0f, 300.0f), 'g'));
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(510.0f, 300.0f), 'h'));
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(540.0f, 300.0f), 'i'));
 
     //CONFIGURA TEMPO
@@ -224,6 +229,7 @@ int main()
             for(int i = 0; i < 9; i++)
                 if(numcoletados[i] > 0)
                     tamanho++;
+
             if(tecla <= tamanho)
             {
                 int indice = coletados[tecla - 1] - 'a';
@@ -256,7 +262,6 @@ int main()
                 recebidos[numRecebidos] = item.getTipo();
                 numRecebidos++;
                 recebidos[numRecebidos] = '\0';
-                //cout << recebidos << endl;
             }
         }
 
@@ -348,13 +353,13 @@ int main()
         }
 
         if(!naFrente)
-            objetivo.desenha(window);
+            objetivo.desenha(window, resposta);
 
         if(vivo)
             jogador.desenha(window);
 
         if(naFrente)
-            objetivo.desenha(window);
+            objetivo.desenha(window, resposta);
 
         for(unsigned int i = 0; i < inimigos.size(); i++)
         {
@@ -364,6 +369,15 @@ int main()
         }
 
         inventario.desenha(window, jogador.getPosicao(), coletados, numcoletados);
+
+        //FINAL DO JOGO
+
+        if(numRecebidos == 5 && !terminou)
+        {
+            terminou = true;
+            ganhou = comparaString(resposta, recebidos);
+            cout << ganhou;
+        }
 
         ////
         window.display();
