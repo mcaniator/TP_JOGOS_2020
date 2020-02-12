@@ -16,12 +16,6 @@ class Objetivo
 
         void desenha(sf::RenderWindow& window);
 
-        void recebe(char recebido) { recebidos[numRecebidos] = recebido;
-                                     recebidos[numRecebidos + 1] = '\0'; };
-        char getRecebidos(int indice) { return recebidos[indice]; };
-        void acrescimoRecebidos() { numRecebidos++; };
-        int getNumRecebidos() { return numRecebidos; }
-
     private:
         sf::RectangleShape corpo;
         sf::RectangleShape corpoObjetivo;

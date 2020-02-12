@@ -110,7 +110,8 @@ int main()
     char coletados[10];
     int numcoletados[9] = {0};
 
-    char colocados[6];
+    char recebidos[6];
+    int numRecebidos = 0;
         //OBJETIVO
         montaObjetivo(letras, resposta);
 
@@ -245,11 +246,13 @@ int main()
         for(unsigned int i = 0; i < itens.size(); i++)
         {
             Item& item = itens[i];
-            if(item.getColisor().checaColisao(objetivo.getColisorItens()))
+            if(item.getColisor().checaColisao(objetivo.getColisorItens()) && !item.getStatus())
             {
                 item.coletou();
-                objetivo.recebe(item.getTipo());
-                objetivo.acrescimoRecebidos();
+                recebidos[numRecebidos] = item.getTipo();
+                numRecebidos++;
+                recebidos[numRecebidos] = '\0';
+                cout << recebidos;
             }
         }
 
