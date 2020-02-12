@@ -110,25 +110,26 @@ int main()
     char coletados[10];
     int numcoletados[9] = {0};
 
-    char colocados[6];
+    char recebidos[6];
+    int numRecebidos = 0;
         //OBJETIVO
         montaObjetivo(letras, resposta);
 
     //VARIAVEIS DO JOGO
     sf::Texture texturaJogador;
-    texturaJogador.loadFromFile("jogador.png");
+    texturaJogador.loadFromFile("texturas/jogador.png");
     sf::Texture texturaMapa;
-    texturaMapa.loadFromFile("mapa.png");
+    texturaMapa.loadFromFile("texturas/mapa.png");
     sf::Texture texturaInimigo;
-    texturaInimigo.loadFromFile("inimigo.png");
+    texturaInimigo.loadFromFile("texturas/inimigo.png");
     sf::Texture texturaInventario;
-    texturaInventario.loadFromFile("inventario.png");
+    texturaInventario.loadFromFile("texturas/inventario.png");
     sf::Texture texturaItem;
-    texturaItem.loadFromFile("itens.png");
+    texturaItem.loadFromFile("texturas/itens.png");
     sf::Texture texturaIndice;
-    texturaIndice.loadFromFile("indices.png");
+    texturaIndice.loadFromFile("texturas/indices.png");
     sf::Texture texturaObjetivo;
-    texturaIndice.loadFromFile("amigo.png");
+    texturaObjetivo.loadFromFile("texturas/amigo.png");
 
     Mapa mapa(&texturaMapa);
 
@@ -236,10 +237,23 @@ int main()
                 {
                     Item& item = itens[i];
                     if(item.getTipo() == tipo)
-                        item.soltou(jogador.getPosicao());
+                        item.soltou(jogador.getPosicao().x, jogador.getPosicao().y - 20);
                 }
             }
             delay = 1;
+        }
+
+        for(unsigned int i = 0; i < itens.size(); i++)
+        {
+            Item& item = itens[i];
+            if(item.getColisor().checaColisao(objetivo.getColisorItens()) && !item.getStatus())
+            {
+                item.coletou();
+                recebidos[numRecebidos] = item.getTipo();
+                numRecebidos++;
+                recebidos[numRecebidos] = '\0';
+                cout << recebidos;
+            }
         }
 
         //COLISOES
@@ -251,6 +265,8 @@ int main()
             Plataforma& plataforma = plataformas[i];
             plataforma.getColisor().checaColisaoJogadorPlataforma(jogador.getColisor());
         }
+
+        objetivo.getColisorPlayer().checaColisaoJogadorPlataforma(jogador.getColisor());
 
         for(unsigned int i = 0; i < plataformas.size(); i++)
         {
@@ -315,6 +331,7 @@ int main()
         }
 
         bool vivo = jogador.getStatus();
+        bool naFrente = (objetivo.getY() > jogador.getY());
 
         if(!vivo)
             jogador.desenha(window);
@@ -326,8 +343,14 @@ int main()
                 inimigo.desenha(window);
         }
 
+        if(!naFrente)
+            objetivo.desenha(window);
+
         if(vivo)
             jogador.desenha(window);
+
+        if(naFrente)
+            objetivo.desenha(window);
 
         for(unsigned int i = 0; i < inimigos.size(); i++)
         {
@@ -337,8 +360,6 @@ int main()
         }
 
         inventario.desenha(window, jogador.getPosicao(), coletados, numcoletados);
-
-        objetivo.desenha(window);
 
         ////
         window.display();

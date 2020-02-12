@@ -10,8 +10,8 @@ class Item
         virtual ~Item();
 
         void coletou(){ coletado = true; };
-        void soltou(sf::Vector2f posicao){ coletado = false;
-                                           corpoItem.setPosition(posicao); };
+        void soltou(float x, float y){ coletado = false;
+                                           corpoItem.setPosition(x, y); };
 
         char getTipo(){ return tipo; };
         bool getStatus(){ return coletado; };
