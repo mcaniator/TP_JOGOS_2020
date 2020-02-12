@@ -61,7 +61,6 @@ void montaObjetivo (char letras[], char resposta[])
     int indice;
     int tam;
     for(tam = 0; letras[tam] != '\0'; tam++);
-    tam--;
 
     for(int i = 0; i < 5; i++)
     {
@@ -69,6 +68,7 @@ void montaObjetivo (char letras[], char resposta[])
         resposta[i] = letras[indice];
         removeChar(letras, tam - i, indice);
     }
+    resposta[5] = '\0';
 }
 
 void organizaInventario(char coletou, char coletados[], int numcoletados[])
@@ -114,6 +114,7 @@ int main()
     int numRecebidos = 0;
         //OBJETIVO
         montaObjetivo(letras, resposta);
+        cout << resposta << endl;
 
     //VARIAVEIS DO JOGO
     sf::Texture texturaJogador;
@@ -156,13 +157,13 @@ int main()
 
     std::vector<Item> itens;
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(300.0f, 300.0f), 'a'));
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(330.0f, 300.0f), 'b'));
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(330.0f, 300.0f), 'a'));
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(360.0f, 300.0f), 'c'));
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(390.0f, 300.0f), 'd'));
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(390.0f, 300.0f), 'c'));
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(420.0f, 300.0f), 'e'));
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(450.0f, 300.0f), 'f'));
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(480.0f, 300.0f), 'g'));
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(510.0f, 300.0f), 'h'));
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(510.0f, 300.0f), 'g'));
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(540.0f, 300.0f), 'i'));
 
     //CONFIGURA TEMPO
@@ -221,7 +222,7 @@ int main()
         {
             int tamanho = 0;
             for(int i = 0; i < 9; i++)
-                if(numcoletados[i] != 0)
+                if(numcoletados[i] > 0)
                     tamanho++;
             if(tecla <= tamanho)
             {
@@ -236,8 +237,11 @@ int main()
                 for(unsigned int i = 0; i < itens.size(); i++)
                 {
                     Item& item = itens[i];
-                    if(item.getTipo() == tipo)
+                    if(item.getTipo() == tipo && item.getStatus())
+                    {
                         item.soltou(jogador.getPosicao().x, jogador.getPosicao().y - 20);
+                        break;
+                    }
                 }
             }
             delay = 1;
@@ -246,13 +250,13 @@ int main()
         for(unsigned int i = 0; i < itens.size(); i++)
         {
             Item& item = itens[i];
-            if(item.getColisor().checaColisao(objetivo.getColisorItens()) && !item.getStatus())
+            if(item.getColisor().checaColisao(objetivo.getColisorItens()) && !item.getStatus() && numRecebidos != 5)
             {
                 item.coletou();
                 recebidos[numRecebidos] = item.getTipo();
                 numRecebidos++;
                 recebidos[numRecebidos] = '\0';
-                cout << recebidos << endl;
+                //cout << recebidos << endl;
             }
         }
 
