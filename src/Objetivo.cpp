@@ -31,6 +31,11 @@ Objetivo::Objetivo(sf::Texture* texturaObjetivo, sf::Vector2u tamanhoDaImagemObj
     itemRet.width = texturaItem->getSize().x / (float)tamanhoDaImagemItem.x;
     itemRet.height = texturaItem->getSize().y / (float)tamanhoDaImagemItem.y;
     corpoItem.setTextureRect(itemRet);
+
+    //CORPO
+    corpo.setSize(sf::Vector2f(26.0f, 15.0f));
+    corpo.setOrigin(corpo.getSize() / 2.0f);
+    corpo.setPosition(corpoObjetivo.getPosition().x + corpoObjetivo.getSize().x / 2, corpoObjetivo.getPosition().y + corpoObjetivo.getSize().y / 2 + 27);
 }
 
 Objetivo::~Objetivo()

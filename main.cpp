@@ -252,6 +252,8 @@ int main()
             plataforma.getColisor().checaColisaoJogadorPlataforma(jogador.getColisor());
         }
 
+        objetivo.getColisorPlayer().checaColisaoJogadorPlataforma(jogador.getColisor());
+
         for(unsigned int i = 0; i < plataformas.size(); i++)
         {
             Plataforma& plataforma = plataformas[i];
