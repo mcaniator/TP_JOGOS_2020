@@ -8,7 +8,7 @@ Item::Item(sf::Texture* textura, sf::Vector2u tamanhoDaImagem, sf::Vector2f posi
     corpoItem.setSize(sf::Vector2f(35.0f, 35.0f));
     corpoItem.setOrigin(corpoItem.getSize() / 2.0f);
     corpoItem.setPosition(posicao);
-    corpoItem.setTexture(textura);
+    //corpoItem.setTexture(textura);
 
     itemRet.width = textura->getSize().x / (float)tamanhoDaImagem.x;
     itemRet.height = textura->getSize().y / (float)tamanhoDaImagem.y;

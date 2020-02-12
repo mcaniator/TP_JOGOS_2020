@@ -8,6 +8,7 @@ Objetivo::Objetivo(sf::Texture* texturaObjetivo, sf::Vector2u tamanhoDaImagemObj
     //OBJETIVO
     corpoObjetivo.setPosition(500.0, 300.0);
     corpoObjetivo.setSize(sf::Vector2f(64.0f, 64.0f));
+    corpoObjetivo.setOrigin(corpoObjetivo.getSize() / 2.0f);
     corpoObjetivo.setTexture(texturaObjetivo);
 
     objetivoRet.width = texturaObjetivo->getSize().x / (float)tamanhoDaImagemObjetivo.x;
@@ -35,7 +36,7 @@ Objetivo::Objetivo(sf::Texture* texturaObjetivo, sf::Vector2u tamanhoDaImagemObj
     //CORPO
     corpo.setSize(sf::Vector2f(26.0f, 15.0f));
     corpo.setOrigin(corpo.getSize() / 2.0f);
-    corpo.setPosition(corpoObjetivo.getPosition().x + corpoObjetivo.getSize().x / 2, corpoObjetivo.getPosition().y + corpoObjetivo.getSize().y / 2 + 27);
+    corpo.setPosition(corpoObjetivo.getPosition().x, corpoObjetivo.getPosition().y + 27);
 }
 
 Objetivo::~Objetivo()

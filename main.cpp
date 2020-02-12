@@ -236,10 +236,21 @@ int main()
                 {
                     Item& item = itens[i];
                     if(item.getTipo() == tipo)
-                        item.soltou(jogador.getPosicao());
+                        item.soltou(jogador.getPosicao().x, jogador.getPosicao().y - 20);
                 }
             }
             delay = 1;
+        }
+
+        for(unsigned int i = 0; i < itens.size(); i++)
+        {
+            Item& item = itens[i];
+            if(item.getColisor().checaColisao(objetivo.getColisorItens()))
+            {
+                item.coletou();
+                objetivo.recebe(item.getTipo());
+                objetivo.acrescimoRecebidos();
+            }
         }
 
         //COLISOES
