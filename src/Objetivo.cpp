@@ -6,7 +6,7 @@ Objetivo::Objetivo(sf::Texture* texturaObjetivo, sf::Vector2u tamanhoDaImagemObj
     numRecebidos = 0;
 
     //OBJETIVO
-    corpoObjetivo.setPosition(500.0, 300.0);
+    corpoObjetivo.setPosition(500.0, 200.0);
     corpoObjetivo.setSize(sf::Vector2f(64.0f, 64.0f));
     corpoObjetivo.setOrigin(corpoObjetivo.getSize() / 2.0f);
     corpoObjetivo.setTexture(texturaObjetivo);
@@ -18,11 +18,11 @@ Objetivo::Objetivo(sf::Texture* texturaObjetivo, sf::Vector2u tamanhoDaImagemObj
     corpoObjetivo.setTextureRect(objetivoRet);
 
     //FALA OBJETIVO
-    corpoFala.setSize(sf::Vector2f(32.0f, 32.0f));
+    corpoFala.setSize(sf::Vector2f(32.0f, 96.0f));
     corpoFala.setTexture(texturaFala);
 
     falaRet.width = texturaFala->getSize().x / (float)tamanhoDaImagemFala.x;
-    falaRet.height = texturaFala->getSize().y / (float)tamanhoDaImagemFala.y;
+    falaRet.height = (texturaFala->getSize().y / (float)tamanhoDaImagemFala.y) * 3;
     corpoFala.setTextureRect(falaRet);
 
     //ITEM OBJETIVO
@@ -47,4 +47,29 @@ Objetivo::~Objetivo()
 void Objetivo::desenha(sf::RenderWindow& window)
 {
     window.draw(corpoObjetivo);
+    /*
+    for(int i = 0; i < 5; i++)
+    {
+
+        if(i == 0)
+        {
+            falaRet.left = 11 * falaRet.width;
+            falaRet.top = 32;
+            corpoFala.setTextureRect(falaRet);
+        }
+        else if(i == 4)
+        {
+            falaRet.left = 13 * falaRet.width;
+            falaRet.top = 32;
+            corpoFala.setTextureRect(falaRet);
+        }
+        else
+        {
+            falaRet.left = 12 * falaRet.width;
+            falaRet.top = 32;
+            corpoFala.setTextureRect(falaRet);
+        }
+        corpoFala.setPosition(300 + (i * 32), 200);
+        window.draw(corpoFala);
+    }*/
 }

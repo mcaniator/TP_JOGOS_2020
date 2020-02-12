@@ -252,7 +252,7 @@ int main()
                 recebidos[numRecebidos] = item.getTipo();
                 numRecebidos++;
                 recebidos[numRecebidos] = '\0';
-                cout << recebidos;
+                cout << recebidos << endl;
             }
         }
 
