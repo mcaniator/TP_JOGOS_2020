@@ -116,19 +116,19 @@ int main()
 
     //VARIAVEIS DO JOGO
     sf::Texture texturaJogador;
-    texturaJogador.loadFromFile("jogador.png");
+    texturaJogador.loadFromFile("texturas/jogador.png");
     sf::Texture texturaMapa;
-    texturaMapa.loadFromFile("mapa.png");
+    texturaMapa.loadFromFile("texturas/mapa.png");
     sf::Texture texturaInimigo;
-    texturaInimigo.loadFromFile("inimigo.png");
+    texturaInimigo.loadFromFile("texturas/inimigo.png");
     sf::Texture texturaInventario;
-    texturaInventario.loadFromFile("inventario.png");
+    texturaInventario.loadFromFile("texturas/inventario.png");
     sf::Texture texturaItem;
-    texturaItem.loadFromFile("itens.png");
+    texturaItem.loadFromFile("texturas/itens.png");
     sf::Texture texturaIndice;
-    texturaIndice.loadFromFile("indices.png");
+    texturaIndice.loadFromFile("texturas/indices.png");
     sf::Texture texturaObjetivo;
-    texturaObjetivo.loadFromFile("amigo.png");
+    texturaObjetivo.loadFromFile("texturas/amigo.png");
 
     Mapa mapa(&texturaMapa);
 
