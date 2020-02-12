@@ -128,7 +128,7 @@ int main()
     sf::Texture texturaIndice;
     texturaIndice.loadFromFile("indices.png");
     sf::Texture texturaObjetivo;
-    texturaIndice.loadFromFile("amigo.png");
+    texturaObjetivo.loadFromFile("amigo.png");
 
     Mapa mapa(&texturaMapa);
 
