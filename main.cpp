@@ -315,6 +315,7 @@ int main()
         }
 
         bool vivo = jogador.getStatus();
+        bool naFrente = (objetivo.getY() > jogador.getY());
 
         if(!vivo)
             jogador.desenha(window);
@@ -326,8 +327,14 @@ int main()
                 inimigo.desenha(window);
         }
 
+        if(!naFrente)
+            objetivo.desenha(window);
+
         if(vivo)
             jogador.desenha(window);
+
+        if(naFrente)
+            objetivo.desenha(window);
 
         for(unsigned int i = 0; i < inimigos.size(); i++)
         {
@@ -337,8 +344,6 @@ int main()
         }
 
         inventario.desenha(window, jogador.getPosicao(), coletados, numcoletados);
-
-        objetivo.desenha(window);
 
         ////
         window.display();
