@@ -14,7 +14,7 @@ class Objetivo
 
         float getY() { return corpo.getPosition().y; };
 
-        void desenha(sf::RenderWindow& window, char resposta[]);
+        void desenha(sf::RenderWindow& window, char resposta[], char recebidos[], bool ganhou, bool terminou);
 
     private:
         sf::RectangleShape corpo;

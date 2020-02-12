@@ -42,55 +42,65 @@ Objetivo::~Objetivo()
     //dtor
 }
 
-void Objetivo::desenha(sf::RenderWindow& window, char resposta[])
+void Objetivo::desenha(sf::RenderWindow& window, char resposta[], char recebidos[], bool ganhou, bool terminou)
 {
-    window.draw(corpoObjetivo);
-    window.draw(corpoFala);
-    for(int i = 0; i < 5; i++)
+    if(ganhou)
     {
-        switch(resposta[i])
+        objetivoRet.left = 5 * itemRet.width;
+        objetivoRet.top = 2 * itemRet.height;
+        corpoObjetivo.setTextureRect(objetivoRet);
+    }
+    window.draw(corpoObjetivo);
+    if(!terminou)
+    {
+        window.draw(corpoFala);
+        for(int i = 0; i < 5; i++)
         {
-            case 'a':
-                itemRet.left = 12 * itemRet.width;
-                itemRet.top = 3 * itemRet.height;
-                break;
-            case 'b':
-                itemRet.left = 12 * itemRet.width;
-                itemRet.top = 4 * itemRet.height;
-                break;
-            case 'c':
-                itemRet.left = 12 * itemRet.width;
-                itemRet.top = 5 * itemRet.height;
-                break;
-            case 'd':
-                itemRet.left = 13 * itemRet.width;
-                itemRet.top = 0 * itemRet.height;
-                break;
-            case 'e':
-                itemRet.left = 13 * itemRet.width;
-                itemRet.top = 1 * itemRet.height;
-                break;
-            case 'f':
-                itemRet.left = 13 * itemRet.width;
-                itemRet.top = 2 * itemRet.height;
-                break;
-            case 'g':
-                itemRet.left = 3 * itemRet.width;
-                itemRet.top = 5 * itemRet.height;
-                break;
-            case 'h':
-                itemRet.left = 4 * itemRet.width;
-                itemRet.top = 5 * itemRet.height;
-                break;
-            case 'i':
-                itemRet.left = 5 * itemRet.width;
-                itemRet.top = 5 * itemRet.height;
-                break;
-            default:
-                break;
+            switch(resposta[i])
+            {
+                case 'a':
+                    itemRet.left = 12 * itemRet.width;
+                    itemRet.top = 3 * itemRet.height;
+                    break;
+                case 'b':
+                    itemRet.left = 12 * itemRet.width;
+                    itemRet.top = 4 * itemRet.height;
+                    break;
+                case 'c':
+                    itemRet.left = 12 * itemRet.width;
+                    itemRet.top = 5 * itemRet.height;
+                    break;
+                case 'd':
+                    itemRet.left = 13 * itemRet.width;
+                    itemRet.top = 0 * itemRet.height;
+                    break;
+                case 'e':
+                    itemRet.left = 13 * itemRet.width;
+                    itemRet.top = 1 * itemRet.height;
+                    break;
+                case 'f':
+                    itemRet.left = 13 * itemRet.width;
+                    itemRet.top = 2 * itemRet.height;
+                    break;
+                case 'g':
+                    itemRet.left = 3 * itemRet.width;
+                    itemRet.top = 5 * itemRet.height;
+                    break;
+                case 'h':
+                    itemRet.left = 4 * itemRet.width;
+                    itemRet.top = 5 * itemRet.height;
+                    break;
+                case 'i':
+                    itemRet.left = 5 * itemRet.width;
+                    itemRet.top = 5 * itemRet.height;
+                    break;
+                default:
+                    break;
+            }
+            corpoItem.setTextureRect(itemRet);
+            corpoItem.setPosition(corpoObjetivo.getPosition().x - 64 + 32 * i, corpoObjetivo.getPosition().y - 70);
+            if(recebidos[i] != resposta[i])
+                window.draw(corpoItem);
         }
-        corpoItem.setTextureRect(itemRet);
-        corpoItem.setPosition(corpoObjetivo.getPosition().x - 64 + 32 * i, corpoObjetivo.getPosition().y - 70);
-        window.draw(corpoItem);
     }
 }

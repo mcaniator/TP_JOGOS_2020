@@ -61,8 +61,6 @@ void montaObjetivo (char letras[], char resposta[])
     int indice;
     int tam;
     for(tam = 0; letras[tam] != '\0'; tam++);
-    tam;
-
     for(int i = 0; i < 5; i++)
     {
         indice = rand() % (tam - i);
@@ -353,13 +351,13 @@ int main()
         }
 
         if(!naFrente)
-            objetivo.desenha(window, resposta);
+            objetivo.desenha(window, resposta, recebidos, ganhou, terminou);
 
         if(vivo)
             jogador.desenha(window);
 
         if(naFrente)
-            objetivo.desenha(window, resposta);
+            objetivo.desenha(window, resposta, recebidos, ganhou, terminou);
 
         for(unsigned int i = 0; i < inimigos.size(); i++)
         {
