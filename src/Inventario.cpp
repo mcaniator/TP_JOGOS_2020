@@ -2,6 +2,11 @@
 
 Inventario::Inventario(sf::Texture* texturaInventario, sf::Vector2u tamanhoDaImagemInventario, sf::Texture* texturaItem, sf::Vector2u tamanhoDaImagemItem, sf::Texture* texturaIndice, sf::Vector2u tamanhoDaImagemIndice)
 {
+    coletados[0] = '\0';
+    for(int i = 0; i < 9; i++)
+        numColetados[i] = 0;
+    coletadosDiferentes = 0;
+
     //QUADRADOS INVENTARIO
     corpoInventario.setSize(sf::Vector2f(32.0f, 32.0f));
     corpoInventario.setTexture(texturaInventario);
@@ -32,19 +37,49 @@ Inventario::~Inventario()
     //dtor
 }
 
-void Inventario::desenha(sf::RenderWindow& window, sf::Vector2f posicaoJogador, char coletados[], int numcoletados[])
+void Inventario::pegouItem(char coletou)
 {
-    int tamanho = 0;
-    for(int i = 0; i < 9; i++)
-        if(numcoletados[i] != 0)
-            tamanho++;
+    if(numColetados[coletou - 'a'] == 0)
+    {
+        coletados[coletadosDiferentes] = coletou;
+        coletados[coletadosDiferentes + 1] = '\0';
+        coletadosDiferentes++;
+    }
+    numColetados[coletou - 'a']++;
+}
 
+char Inventario::soltouItem(int tecla)
+{
+    if(tecla <= coletadosDiferentes)
+    {
+        int indice = coletados[tecla - 1] - 'a';
+        char tipo = coletados[tecla - 1];
+
+        if(numColetados[indice] == 1)
+        {
+            for(int i = tecla - 1; coletados[i] != '\0'; i++)
+            {
+                coletados[i] = coletados[i + 1];
+            }
+            coletadosDiferentes--;
+        }
+        if(numColetados[indice] > 0)
+            numColetados[indice]--;
+
+        return tipo;
+    }
+    else
+        return ' ';
+}
+
+void Inventario::desenha(sf::RenderWindow& window, sf::Vector2f posicaoJogador)
+{
     for(int i = 0; i < 9; i++)
     {
         corpoInventario.setPosition(posicaoJogador.x - 240 + (corpoInventario.getSize().x * i), posicaoJogador.y + 120);
         window.draw(corpoInventario);
 
-        if(i < tamanho)
+        if(i < coletadosDiferentes)
         {
             corpoItem.setPosition(posicaoJogador.x - 240 + (corpoInventario.getSize().x * i), posicaoJogador.y + 112);
             switch(coletados[i])
@@ -92,7 +127,7 @@ void Inventario::desenha(sf::RenderWindow& window, sf::Vector2f posicaoJogador, 
             window.draw(corpoItem);
 
             corpoIndice.setPosition(posicaoJogador.x - 242 + (corpoInventario.getSize().x * i), posicaoJogador.y + 116);
-            indiceRet.left = numcoletados[coletados[i] - 'a'] * indiceRet.width;
+            indiceRet.left = numColetados[coletados[i] - 'a'] * indiceRet.width;
             corpoIndice.setTextureRect(indiceRet);
             window.draw(corpoIndice);
         }

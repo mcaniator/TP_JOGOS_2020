@@ -215,7 +215,7 @@ int main()
             if(item.getColisor().checaColisao(jogador.getColisor()) && sf::Keyboard::isKeyPressed(sf::Keyboard::E) && !item.getStatus())
             {
                 item.coletou();
-                organizaInventario(item.getTipo(), coletados, numcoletados);
+                inventario.pegouItem(item.getTipo());
             }
         }
 
@@ -223,21 +223,9 @@ int main()
 
         if(tecla != 0 && delay == 0)
         {
-            int tamanho = 0;
-            for(int i = 0; i < 9; i++)
-                if(numcoletados[i] > 0)
-                    tamanho++;
-
-            if(tecla <= tamanho)
+            char tipo = inventario.soltouItem(tecla);
+            if(tipo != ' ')
             {
-                int indice = coletados[tecla - 1] - 'a';
-                char tipo = coletados[tecla - 1];
-
-                if(numcoletados[indice] == 1)
-                    removeChar(coletados, tamanho, tecla - 1);
-                if(numcoletados[indice] > 0)
-                    numcoletados[indice]--;
-
                 for(unsigned int i = 0; i < itens.size(); i++)
                 {
                     Item& item = itens[i];
@@ -247,8 +235,8 @@ int main()
                         break;
                     }
                 }
+            delay = 0.6;
             }
-            delay = 1;
         }
 
         for(unsigned int i = 0; i < itens.size(); i++)
@@ -369,7 +357,7 @@ int main()
         }
 
         if(!terminou)
-            inventario.desenha(window, jogador.getPosicao(), coletados, numcoletados);
+            inventario.desenha(window, jogador.getPosicao());
 
         //FINAL DO JOGO
 

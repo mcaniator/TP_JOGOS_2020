@@ -9,7 +9,10 @@ class Inventario
         Inventario(sf::Texture* texturaInventario, sf::Vector2u tamanhoDaImagemInventario, sf::Texture* texturaItem, sf::Vector2u tamanhoDaImagemItem, sf::Texture* texturaIndice, sf::Vector2u tamanhoDaImagemIndice);
         virtual ~Inventario();
 
-        void desenha(sf::RenderWindow& window, sf::Vector2f posicaoJogador, char coletados[], int numcoletados[]);
+        void pegouItem(char coletou);
+        char soltouItem(int tecla);
+
+        void desenha(sf::RenderWindow& window, sf::Vector2f posicaoJogador);
 
     private:
         sf::RectangleShape corpoInventario;
@@ -19,6 +22,9 @@ class Inventario
         sf::RectangleShape corpoIndice;
         sf::IntRect indiceRet;
 
+        char coletados[10];
+        int numColetados[9];
+        int coletadosDiferentes;
 };
 
 #endif // INVENTARIO_H

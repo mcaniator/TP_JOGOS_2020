@@ -2,10 +2,29 @@
 
 Objetivo::Objetivo(sf::Texture* texturaObjetivo, sf::Vector2u tamanhoDaImagemObjetivo, sf::Texture* texturaFala, sf::Vector2u tamanhoDaImagemFala, sf::Texture* texturaItem, sf::Vector2u tamanhoDaImagemItem)
 {
+    terminou = false;
+    ganhou = false;
+
+    for(int i = 0; i < 9; i++)
+        letras[i] = 'a' + i;
+    letras[9] = '\0';
+
+    int tam;
+    int indice;
+    for(tam = 0; letras[tam] != '\0'; tam++);
+    for(int i = 0; i < 5; i++)
+    {
+        indice = rand() % (tam - i);
+        resposta[i] = letras[indice];
+        for(int i = indice; letras[i] != '\0'; i++)
+        {
+            letras[i] = letras[i + 1];
+        }
+    }
+    resposta[5] = '\0';
+
     recebidos[0] = '\0';
     numRecebidos = 0;
-
-    //fonte.loadFromFile("Caveat-Regular.ttf");
 
     //OBJETIVO
     corpoObjetivo.setPosition(500.0, 200.0);

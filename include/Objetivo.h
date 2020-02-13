@@ -26,11 +26,17 @@ class Objetivo
         sf::RectangleShape corpoItem;
         sf::IntRect itemRet;
 
-        //sf::Text texto;
-        //sf::Font fonte;
+        bool terminou;
+        bool ganhou;
+
+        char letras[10];
+        char resposta[6];
 
         char recebidos[6];
         int numRecebidos;
+
+        //sf::Text texto;
+        //sf::Font fonte;
 };
 
 #endif // OBJETIVO_H
