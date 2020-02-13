@@ -22,6 +22,8 @@ private:
     sf::Vector2u tamanhoDaImagem;
     sf::Vector2u imagemAtual;
 
+    bool morreu;
+
     float tempoTotal;
     float tempoTroca;
 };

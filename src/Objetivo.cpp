@@ -18,10 +18,10 @@ Objetivo::Objetivo(sf::Texture* texturaObjetivo, sf::Vector2u tamanhoDaImagemObj
     corpoObjetivo.setTextureRect(objetivoRet);
 
     //FALA OBJETIVO
-    corpoFala.setSize(sf::Vector2f(185.6f, 57.6f));
+    corpoFala.setSize(sf::Vector2f(185.6f, 62.6f));
     corpoFala.setTexture(texturaFala);
     corpoFala.setOrigin(corpoFala.getSize() / 2.0f);
-    corpoFala.setPosition(corpoObjetivo.getPosition().x, corpoObjetivo.getPosition().y - 57);
+    corpoFala.setPosition(corpoObjetivo.getPosition().x, corpoObjetivo.getPosition().y - 52);
 
     //ITEM OBJETIVO
     corpoItem.setSize(sf::Vector2f(32.0f, 32.0f));
@@ -46,8 +46,8 @@ void Objetivo::desenha(sf::RenderWindow& window, char resposta[], char recebidos
 {
     if(ganhou)
     {
-        objetivoRet.left = 5 * itemRet.width;
-        objetivoRet.top = 2 * itemRet.height;
+        objetivoRet.left = 5 * objetivoRet.width;
+        objetivoRet.top = 2 * objetivoRet.height;
         corpoObjetivo.setTextureRect(objetivoRet);
     }
     window.draw(corpoObjetivo);
@@ -72,15 +72,15 @@ void Objetivo::desenha(sf::RenderWindow& window, char resposta[], char recebidos
                     break;
                 case 'd':
                     itemRet.left = 13 * itemRet.width;
-                    itemRet.top = 0 * itemRet.height;
+                    itemRet.top = 6 * itemRet.height;
                     break;
                 case 'e':
                     itemRet.left = 13 * itemRet.width;
-                    itemRet.top = 1 * itemRet.height;
+                    itemRet.top = 5 * itemRet.height;
                     break;
                 case 'f':
-                    itemRet.left = 13 * itemRet.width;
-                    itemRet.top = 2 * itemRet.height;
+                    itemRet.left = 9 * itemRet.width;
+                    itemRet.top = 3 * itemRet.height;
                     break;
                 case 'g':
                     itemRet.left = 3 * itemRet.width;

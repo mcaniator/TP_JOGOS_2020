@@ -313,13 +313,15 @@ int main()
 
         //MOVIMENTACAO
 
+
         for(unsigned int i = 0; i < inimigos.size(); i++)
         {
             Inimigo& inimigo = inimigos[i];
             inimigo.atualiza(deltaTempo);
         }
 
-        jogador.atualiza(deltaTempo);
+        if(!terminou)
+            jogador.atualiza(deltaTempo);
 
         //ATUALIZA CONFIGURACOES
 

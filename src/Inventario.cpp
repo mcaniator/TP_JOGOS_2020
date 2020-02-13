@@ -63,15 +63,15 @@ void Inventario::desenha(sf::RenderWindow& window, sf::Vector2f posicaoJogador, 
                     break;
                 case 'd':
                     itemRet.left = 13 * itemRet.width;
-                    itemRet.top = 0 * itemRet.height;
+                    itemRet.top = 6 * itemRet.height;
                     break;
                 case 'e':
                     itemRet.left = 13 * itemRet.width;
-                    itemRet.top = 1 * itemRet.height;
+                    itemRet.top = 5 * itemRet.height;
                     break;
                 case 'f':
-                    itemRet.left = 13 * itemRet.width;
-                    itemRet.top = 2 * itemRet.height;
+                    itemRet.left = 9 * itemRet.width;
+                    itemRet.top = 3 * itemRet.height;
                     break;
                 case 'g':
                     itemRet.left = 3 * itemRet.width;
