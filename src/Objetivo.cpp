@@ -5,6 +5,8 @@ Objetivo::Objetivo(sf::Texture* texturaObjetivo, sf::Vector2u tamanhoDaImagemObj
     recebidos[0] = '\0';
     numRecebidos = 0;
 
+    //fonte.loadFromFile("Caveat-Regular.ttf");
+
     //OBJETIVO
     corpoObjetivo.setPosition(500.0, 200.0);
     corpoObjetivo.setSize(sf::Vector2f(64.0f, 64.0f));
@@ -128,10 +130,31 @@ void Objetivo::desenha(sf::RenderWindow& window, char resposta[], char recebidos
 
 void Objetivo::desenhaFinal(sf::RenderWindow& window, sf::Vector2f posicao, bool ganhou)
 {
-    //texto.setFont()
-    texto.setFillColor(Color::Red);
-    texto.setCharacterSize(30);
-    texto.setPosition(posicao.x - 10, posicao.y - 10);
-    texto.setString("Voce ganhou");
-    window.draw(texto);
+    for(int i = 0; i < 5; i++)
+    {
+        if(i == 0)
+        {
+            falaRet.left = 11 * falaRet.width;
+            falaRet.top = 1 * falaRet.height / 3;
+        }
+        else if(i == 4)
+        {
+            falaRet.left = 13 * falaRet.width;
+            falaRet.top = 1 * falaRet.height / 3;
+        }
+        else
+        {
+            falaRet.left = 12 * falaRet.width;
+            falaRet.top = 1 * falaRet.height / 3;
+        }
+        corpoFala.setPosition(posicao.x - 70 + 35 * i, posicao.y);
+        corpoFala.setTextureRect(falaRet);
+        window.draw(corpoFala);
+    }
+    //texto.setFont(fonte);
+    //texto.setFillColor(sf::Color::Black);
+    //texto.setCharacterSize(30);
+    //texto.setPosition(posicao.x - 10, posicao.y - 10);
+    //texto.setString("Voce ganhou");
+    //window.draw(texto);
 }

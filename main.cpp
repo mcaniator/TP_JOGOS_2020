@@ -368,15 +368,19 @@ int main()
                 inimigo.desenha(window);
         }
 
-        inventario.desenha(window, jogador.getPosicao(), coletados, numcoletados);
+        if(!terminou)
+            inventario.desenha(window, jogador.getPosicao(), coletados, numcoletados);
 
         //FINAL DO JOGO
 
-        if(numRecebidos == 5 && !terminou)
+        if(numRecebidos == 5)
         {
-            terminou = true;
-            ganhou = comparaString(resposta, recebidos);
-            cout << ganhou;
+            if(!terminou)
+            {
+                terminou = true;
+                ganhou = comparaString(resposta, recebidos);
+                cout << ganhou;
+            }
             objetivo.desenhaFinal(window, jogador.getPosicao(), ganhou);
         }
 
