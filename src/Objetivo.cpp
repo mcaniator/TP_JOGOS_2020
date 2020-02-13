@@ -125,3 +125,13 @@ void Objetivo::desenha(sf::RenderWindow& window, char resposta[], char recebidos
         }
     }
 }
+
+void Objetivo::desenhaFinal(sf::RenderWindow& window, sf::Vector2f posicao, bool ganhou)
+{
+    //texto.setFont()
+    texto.setFillColor(Color::Red);
+    texto.setCharacterSize(30);
+    texto.setPosition(posicao.x - 10, posicao.y - 10);
+    texto.setString("Voce ganhou");
+    window.draw(texto);
+}

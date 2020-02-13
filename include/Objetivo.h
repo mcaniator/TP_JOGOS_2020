@@ -15,7 +15,7 @@ class Objetivo
         float getY() { return corpo.getPosition().y; };
 
         void desenha(sf::RenderWindow& window, char resposta[], char recebidos[], bool ganhou, bool terminou);
-        void desenhaFinal(sf::RenderWindow& window, char resposta[], char recebidos[], bool ganhou, bool terminou);
+        void desenhaFinal(sf::RenderWindow& window, sf::Vector2f posicao, bool ganhou);
 
     private:
         sf::RectangleShape corpo;
@@ -25,6 +25,8 @@ class Objetivo
         sf::IntRect falaRet;
         sf::RectangleShape corpoItem;
         sf::IntRect itemRet;
+
+        sf::Text texto;
 
         char recebidos[6];
         int numRecebidos;
