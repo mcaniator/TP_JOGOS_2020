@@ -9,12 +9,10 @@ Objetivo::Objetivo(sf::Texture* texturaObjetivo, sf::Vector2u tamanhoDaImagemObj
         letras[i] = 'a' + i;
     letras[9] = '\0';
 
-    int tam;
     int indice;
-    for(tam = 0; letras[tam] != '\0'; tam++);
     for(int i = 0; i < 5; i++)
     {
-        indice = rand() % (tam - i);
+        indice = rand() % (9 - i);
         resposta[i] = letras[indice];
         for(int i = indice; letras[i] != '\0'; i++)
         {
@@ -66,7 +64,30 @@ Objetivo::~Objetivo()
     //dtor
 }
 
-void Objetivo::desenha(sf::RenderWindow& window, char resposta[], char recebidos[], bool ganhou, bool terminou)
+void Objetivo::recebeuItem(char recebeu)
+{
+    recebidos[numRecebidos] = recebeu;
+    recebidos[numRecebidos + 1] = '\0';
+    numRecebidos++;
+
+    if(numRecebidos == 5)
+        terminou = true;
+}
+
+void Objetivo::fimDeJogo()
+{
+    ganhou = true;
+    for(int i = 0; i < 5; i++)
+    {
+        if(recebidos[i] != resposta[i])
+        {
+            ganhou = false;
+            break;
+        }
+    }
+}
+
+void Objetivo::desenha(sf::RenderWindow& window)
 {
     if(ganhou)
     {
@@ -147,7 +168,7 @@ void Objetivo::desenha(sf::RenderWindow& window, char resposta[], char recebidos
     }
 }
 
-void Objetivo::desenhaFinal(sf::RenderWindow& window, sf::Vector2f posicao, bool ganhou)
+void Objetivo::desenhaFinal(sf::RenderWindow& window, sf::Vector2f posicao)
 {
     for(int i = 0; i < 5; i++)
     {
