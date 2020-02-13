@@ -48,7 +48,7 @@ int teclaPressionada()
 ///                                  EXERCICIOS                                      ///
 ///----------------------------------------------------------------------------------///
 
-void removeChar (char str[], int tam, int indice)
+void removeChar (char str[], int indice)
 {
     for(int i = indice; str[i] != '\0'; i++)
     {
@@ -65,7 +65,7 @@ void montaObjetivo (char letras[], char resposta[])
     {
         indice = rand() % (tam - i);
         resposta[i] = letras[indice];
-        removeChar(letras, tam - i, indice);
+        removeChar(letras, indice);
     }
     resposta[5] = '\0';
 }
@@ -160,10 +160,10 @@ int main()
 
     std::vector<Item> itens;
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(300.0f, 300.0f), 'a'));
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(330.0f, 300.0f), 'b'));
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(360.0f, 300.0f), 'c'));
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(330.0f, 300.0f), 'a'));
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(360.0f, 300.0f), 'a'));
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(390.0f, 300.0f), 'd'));
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(420.0f, 300.0f), 'e'));
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(420.0f, 300.0f), 'd'));
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(450.0f, 300.0f), 'f'));
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(480.0f, 300.0f), 'g'));
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(510.0f, 300.0f), 'h'));
@@ -234,7 +234,7 @@ int main()
                 char tipo = coletados[tecla - 1];
 
                 if(numcoletados[indice] == 1)
-                    removeChar(coletados, tamanho, tecla - 1);
+                    removeChar(coletados, tecla - 1);
                 if(numcoletados[indice] > 0)
                     numcoletados[indice]--;
 
@@ -248,7 +248,7 @@ int main()
                     }
                 }
             }
-            delay = 1;
+            delay = 0.6;
         }
 
         for(unsigned int i = 0; i < itens.size(); i++)
