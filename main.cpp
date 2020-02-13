@@ -141,7 +141,7 @@ int main()
 
     Inventario inventario(&texturaInventario, sf::Vector2u(17, 10), &texturaItem, sf::Vector2u(16, 16), &texturaIndice, sf::Vector2u(4, 1));
 
-    Objetivo objetivo(&texturaObjetivo, sf::Vector2u(13, 21), &texturaFala, sf::Vector2u(1, 1), &texturaItem, sf::Vector2u(16, 16));
+    Objetivo objetivo(&texturaObjetivo, sf::Vector2u(13, 21), &texturaInventario, sf::Vector2u(17, 10), &texturaItem, sf::Vector2u(16, 16));
 
     std::vector<Plataforma> plataformas;
         plataformas.push_back(Plataforma(NULL, sf::Vector2f(384.0f, 384.0f), sf::Vector2f(96.0f, 96.0f)));

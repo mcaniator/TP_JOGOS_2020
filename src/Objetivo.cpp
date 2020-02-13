@@ -18,10 +18,13 @@ Objetivo::Objetivo(sf::Texture* texturaObjetivo, sf::Vector2u tamanhoDaImagemObj
     corpoObjetivo.setTextureRect(objetivoRet);
 
     //FALA OBJETIVO
-    corpoFala.setSize(sf::Vector2f(185.6f, 62.6f));
+    corpoFala.setSize(sf::Vector2f(35.0f, 90.0f));
     corpoFala.setTexture(texturaFala);
     corpoFala.setOrigin(corpoFala.getSize() / 2.0f);
-    corpoFala.setPosition(corpoObjetivo.getPosition().x, corpoObjetivo.getPosition().y - 52);
+    corpoFala.setPosition(corpoObjetivo.getPosition().x - 64, corpoObjetivo.getPosition().y - 48);
+
+    falaRet.width = texturaFala->getSize().x / (float)tamanhoDaImagemFala.x;
+    falaRet.height = texturaFala->getSize().y / (float)tamanhoDaImagemFala.y * 3;
 
     //ITEM OBJETIVO
     corpoItem.setSize(sf::Vector2f(32.0f, 32.0f));
@@ -53,9 +56,27 @@ void Objetivo::desenha(sf::RenderWindow& window, char resposta[], char recebidos
     window.draw(corpoObjetivo);
     if(!terminou)
     {
-        window.draw(corpoFala);
         for(int i = 0; i < 5; i++)
         {
+            if(i == 0)
+            {
+                falaRet.left = 11 * falaRet.width;
+                falaRet.top = 1 * falaRet.height / 3;
+            }
+            else if(i == 4)
+            {
+                falaRet.left = 13 * falaRet.width;
+                falaRet.top = 1 * falaRet.height / 3;
+            }
+            else
+            {
+                falaRet.left = 12 * falaRet.width;
+                falaRet.top = 1 * falaRet.height / 3;
+            }
+            corpoFala.setPosition(corpoObjetivo.getPosition().x - 70 + 35 * i, corpoObjetivo.getPosition().y - 67);
+            corpoFala.setTextureRect(falaRet);
+            window.draw(corpoFala);
+
             switch(resposta[i])
             {
                 case 'a':
@@ -98,7 +119,7 @@ void Objetivo::desenha(sf::RenderWindow& window, char resposta[], char recebidos
                     break;
             }
             corpoItem.setTextureRect(itemRet);
-            corpoItem.setPosition(corpoObjetivo.getPosition().x - 64 + 32 * i, corpoObjetivo.getPosition().y - 70);
+            corpoItem.setPosition(corpoObjetivo.getPosition().x - 64 + 32 * i, corpoObjetivo.getPosition().y - 73);
             if(recebidos[i] != resposta[i])
                 window.draw(corpoItem);
         }
