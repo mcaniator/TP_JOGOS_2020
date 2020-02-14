@@ -85,7 +85,6 @@ void Mapa::desenha(sf::RenderWindow& window)
     {
         for(int j = 0; j < numBlocos.y; j++)
         {
-
             textura.setPosition(blocos[i][j].posicaoBloco);
             textura.setTextureRect(padrao.corpoBloco);
             window.draw(textura);
@@ -94,3 +93,4 @@ void Mapa::desenha(sf::RenderWindow& window)
         }
     }
 }
+

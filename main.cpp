@@ -20,6 +20,16 @@ void ResizeView(const sf::RenderWindow& window, sf::View& view)
     view.setSize(VIEW_HEIGHT * aspectRatio, VIEW_HEIGHT);
 }
 
+float obtemPosX(Jogador* j)
+{
+    return j.getX();
+}
+
+float obtemPosY(Jogador* j)
+{
+    return j.getY();
+}
+
 int teclaPressionada()
 {
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
@@ -48,7 +58,48 @@ int teclaPressionada()
 ///                                  EXERCICIOS                                      ///
 ///----------------------------------------------------------------------------------///
 
+///EXERCICIO 1
+typedef struct
+{
+    int mapa[TAMANHO_MAPA_X][TAMANHO_MAPA_Y];
+    int coordenadasJogador[2];
+}Minimapa;
 
+///EXERCICIO 2
+void atualizaCoordenadasJogador(Minimapa minimapa, Jogador* j)
+{
+    minimapa.coordenadasJogador[0] = int(obtemPosX(j) / TAMANHO_BLOCOS);
+    minimapa.coordenadasJogador[1] = int(obtemPosY(j) / TAMANHO_BLOCOS);
+}
+
+///EXERCICIO 3
+void atualizaMinimapa(Minimapa minimapa, Jogador* j)
+{
+    for(int i = 0; i < TAMANHO_MAPA_X; i++)
+    {
+        for(int j = 0; j < TAMANHO_MAPA_Y; j++)
+            minimapa.mapa[i][j] = 2; //TROCA PARA 0 NO 2o EXERCICIO
+    }
+    minimapa.mapa[minimapa.coordenadasJogador[0], minimapa.coordenadasJogador[1]] = 1;
+
+    ///EXERCICIO 4
+    float centroX, centroY, jogadorX, jogadorY;
+
+    jogadorX = obtemPosX(j);
+    jogadorY = obtemPosY(j);
+
+    for(int i = 0; i < TAMANHO_MAPA_X; i++)
+    {
+        for(int j = 0; j < TAMANHO_MAPA_Y; j++)
+        {
+            centroX = i * TAMANHO_BLOCOS + TAMANHO_BLOCOS / 2;
+            centroY = j * TAMANHO_BLOCOS + TAMANHO_BLOCOS / 2;
+
+            if(sqrt(pow(jogadorX - centroX, 2) + pow(jogadorY - centroY, 2)) < 100)
+                minimapa.mapa[i][j] = 0;
+        }
+    }
+}
 
 ///----------------------------------------------------------------------------------///
 ///                                                                                  ///
@@ -59,6 +110,9 @@ int main()
     //VARIAVEIS DA CONFIGURACAO
     sf::RenderWindow window(sf::VideoMode(800, 512), "Jogo Aula 02", sf::Style::Close);
     sf::View view(sf::Vector2f(0, 0), sf::Vector2f(VIEW_HEIGHT, VIEW_HEIGHT));
+
+    //VARIAVEL EXERCICIO
+    Minimapa minimapa;
 
     //VARIAVEIS DO JOGO
     sf::Texture texturaJogador;
