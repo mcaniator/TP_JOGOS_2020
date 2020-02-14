@@ -26,8 +26,8 @@ class Objetivo
         sf::RectangleShape corpoItem;
         sf::IntRect itemRet;
 
-        //sf::Text texto;
-        //sf::Font fonte;
+        sf::Text texto;
+        sf::Font fonte;
 
         char recebidos[6];
         int numRecebidos;

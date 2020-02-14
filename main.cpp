@@ -381,7 +381,7 @@ int main()
                 ganhou = comparaString(resposta, recebidos);
                 cout << ganhou;
             }
-            objetivo.desenhaFinal(window, jogador.getPosicao(), ganhou);
+            objetivo.desenhaFinal(window, view.getCenter(), ganhou);
         }
 
         ////
