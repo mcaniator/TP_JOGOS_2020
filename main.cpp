@@ -305,7 +305,7 @@ int main()
         if(objetivo.getTerminou())
         {
             objetivo.fimDeJogo();
-            objetivo.desenhaFinal(window, jogador.getPosicao());
+            objetivo.desenhaFinal(window, view.getCenter());
         }
 
         ////

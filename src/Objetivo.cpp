@@ -2,6 +2,8 @@
 
 Objetivo::Objetivo(sf::Texture* texturaObjetivo, sf::Vector2u tamanhoDaImagemObjetivo, sf::Texture* texturaFala, sf::Vector2u tamanhoDaImagemFala, sf::Texture* texturaItem, sf::Vector2u tamanhoDaImagemItem)
 {
+    fonte.loadFromFile("bitmapFont.ttf");
+
     terminou = false;
     ganhou = false;
 
@@ -170,6 +172,7 @@ void Objetivo::desenha(sf::RenderWindow& window)
 
 void Objetivo::desenhaFinal(sf::RenderWindow& window, sf::Vector2f posicao)
 {
+    corpoFala.setSize(sf::Vector2f(40.0f, 90.0f));
     for(int i = 0; i < 5; i++)
     {
         if(i == 0)
@@ -187,14 +190,17 @@ void Objetivo::desenhaFinal(sf::RenderWindow& window, sf::Vector2f posicao)
             falaRet.left = 12 * falaRet.width;
             falaRet.top = 1 * falaRet.height / 3;
         }
-        corpoFala.setPosition(posicao.x - 70 + 35 * i, posicao.y);
+        corpoFala.setPosition(posicao.x - 80 + 40 * i, posicao.y);
         corpoFala.setTextureRect(falaRet);
         window.draw(corpoFala);
     }
-    //texto.setFont(fonte);
-    //texto.setFillColor(sf::Color::Black);
-    //texto.setCharacterSize(30);
-    //texto.setPosition(posicao.x - 10, posicao.y - 10);
-    //texto.setString("Voce ganhou");
-    //window.draw(texto);
+    texto.setFont(fonte);
+    texto.setFillColor(sf::Color::Black);
+    texto.setCharacterSize(22);
+    if(ganhou)
+        texto.setString("Você ganhou!");
+    else
+        texto.setString("Você perdeu!");
+    texto.setPosition(posicao.x - texto.getLocalBounds().width / 2, posicao.y - texto.getLocalBounds().height / 2 - 7);
+    window.draw(texto);
 }

@@ -41,8 +41,8 @@ class Objetivo
         char recebidos[6];
         int numRecebidos;
 
-        //sf::Text texto;
-        //sf::Font fonte;
+        sf::Text texto;
+        sf::Font fonte;
 };
 
 #endif // OBJETIVO_H
