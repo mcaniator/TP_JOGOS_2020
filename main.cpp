@@ -20,16 +20,6 @@ void ResizeView(const sf::RenderWindow& window, sf::View& view)
     view.setSize(VIEW_HEIGHT * aspectRatio, VIEW_HEIGHT);
 }
 
-float obtemPosX(Jogador* j)
-{
-    return j.getX();
-}
-
-float obtemPosY(Jogador* j)
-{
-    return j.getY();
-}
-
 int teclaPressionada()
 {
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
@@ -54,6 +44,16 @@ int teclaPressionada()
         return 0;
 }
 
+float obtemPosX(Jogador* j)
+{
+    return j->getX();
+}
+
+float obtemPosY(Jogador* j)
+{
+    return j->getY();
+}
+
 ///----------------------------------------------------------------------------------///
 ///                                  EXERCICIOS                                      ///
 ///----------------------------------------------------------------------------------///
@@ -61,32 +61,49 @@ int teclaPressionada()
 ///EXERCICIO 1
 typedef struct
 {
+    float posicaoJogador[2];
+    int campoDeVisao;
+}DadosJogador; //DO JOGADOR
+
+typedef struct
+{
     int mapa[TAMANHO_MAPA_X][TAMANHO_MAPA_Y];
-    int coordenadasJogador[2];
+    int coordenadasJogadorX;
+    int coordenadasJogadorY;
+    DadosJogador dados;
 }Minimapa;
 
 ///EXERCICIO 2
-void atualizaCoordenadasJogador(Minimapa minimapa, Jogador* j)
+DadosJogador atualizaDadosJogador(Jogador* j)
 {
-    minimapa.coordenadasJogador[0] = int(obtemPosX(j) / TAMANHO_BLOCOS);
-    minimapa.coordenadasJogador[1] = int(obtemPosY(j) / TAMANHO_BLOCOS);
+    DadosJogador dados;
+    dados.posicaoJogador[0] = obtemPosX(j);
+    dados.posicaoJogador[1] = obtemPosY(j);
+
+    return dados;
+}
+
+void atualizaDadosJogadorMapa(Minimapa& minimapa, Jogador* j)
+{
+    minimapa.dados = atualizaDadosJogador(j);
+    minimapa.coordenadasJogadorX = int(minimapa.dados.posicaoJogador[0] / TAMANHO_BLOCOS);
+    minimapa.coordenadasJogadorY = int(minimapa.dados.posicaoJogador[1] / TAMANHO_BLOCOS);
 }
 
 ///EXERCICIO 3
-void atualizaMinimapa(Minimapa minimapa, Jogador* j)
+void atualizaMinimapa(Minimapa& minimapa)
 {
     for(int i = 0; i < TAMANHO_MAPA_X; i++)
     {
         for(int j = 0; j < TAMANHO_MAPA_Y; j++)
             minimapa.mapa[i][j] = 2; //TROCA PARA 0 NO 2o EXERCICIO
     }
-    minimapa.mapa[minimapa.coordenadasJogador[0], minimapa.coordenadasJogador[1]] = 1;
 
     ///EXERCICIO 4
     float centroX, centroY, jogadorX, jogadorY;
 
-    jogadorX = obtemPosX(j);
-    jogadorY = obtemPosY(j);
+    jogadorX = minimapa.dados.posicaoJogador[0];
+    jogadorY = minimapa.dados.posicaoJogador[1];
 
     for(int i = 0; i < TAMANHO_MAPA_X; i++)
     {
@@ -95,10 +112,11 @@ void atualizaMinimapa(Minimapa minimapa, Jogador* j)
             centroX = i * TAMANHO_BLOCOS + TAMANHO_BLOCOS / 2;
             centroY = j * TAMANHO_BLOCOS + TAMANHO_BLOCOS / 2;
 
-            if(sqrt(pow(jogadorX - centroX, 2) + pow(jogadorY - centroY, 2)) < 100)
+            if(sqrt(pow(jogadorX - centroX, 2) + pow(jogadorY - centroY, 2)) < minimapa.dados.campoDeVisao)
                 minimapa.mapa[i][j] = 0;
         }
     }
+    minimapa.mapa[minimapa.coordenadasJogadorX][minimapa.coordenadasJogadorY] = 1;
 }
 
 ///----------------------------------------------------------------------------------///
@@ -108,11 +126,12 @@ void atualizaMinimapa(Minimapa minimapa, Jogador* j)
 int main()
 {
     //VARIAVEIS DA CONFIGURACAO
-    sf::RenderWindow window(sf::VideoMode(800, 512), "Jogo Aula 02", sf::Style::Close);
+    sf::RenderWindow window(sf::VideoMode(800, 512), "Jogo Aula 04", sf::Style::Close);
     sf::View view(sf::Vector2f(0, 0), sf::Vector2f(VIEW_HEIGHT, VIEW_HEIGHT));
 
     //VARIAVEL EXERCICIO
     Minimapa minimapa;
+        minimapa.dados.campoDeVisao = 100;
 
     //VARIAVEIS DO JOGO
     sf::Texture texturaJogador;
@@ -296,7 +315,6 @@ int main()
 
         //MOVIMENTACAO
 
-
         for(unsigned int i = 0; i < inimigos.size(); i++)
         {
             Inimigo& inimigo = inimigos[i];
@@ -311,6 +329,10 @@ int main()
         view.setCenter(jogador.getPosicao());
         window.setView(view);
         window.clear(sf::Color(150,150,150));
+
+        //MINIMAPA
+        atualizaDadosJogadorMapa(minimapa, &jogador);
+        atualizaMinimapa(minimapa);
 
         //DESENHA OS OBJETOS
 
@@ -352,7 +374,12 @@ int main()
         }
 
         if(!objetivo.getTerminou())
+        {
             inventario.desenha(window, jogador.getPosicao());
+            mapa.desenhaMinimapa(window, view.getCenter());
+            mapa.desenhaMinimapa2(window, view.getCenter(), minimapa.mapa);
+        }
+
 
         //FINAL DO JOGO
 
@@ -368,3 +395,4 @@ int main()
 
     return 0;
 }
+
