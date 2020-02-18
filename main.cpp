@@ -93,27 +93,27 @@ void atualizaDadosJogadorMapa(Minimapa& minimapa, Jogador* j)
 ///EXERCICIO 3
 void atualizaMinimapa(Minimapa& minimapa)
 {
-    for(int i = 0; i < TAMANHO_MAPA_X; i++)
-    {
-        for(int j = 0; j < TAMANHO_MAPA_Y; j++)
-            minimapa.mapa[i][j] = 2; //TROCA PARA 0 NO 2o EXERCICIO
-    }
-
     ///EXERCICIO 4
     float centroX, centroY, jogadorX, jogadorY;
-
     jogadorX = minimapa.dados.posicaoJogador[0];
     jogadorY = minimapa.dados.posicaoJogador[1];
+    ///
 
     for(int i = 0; i < TAMANHO_MAPA_X; i++)
     {
         for(int j = 0; j < TAMANHO_MAPA_Y; j++)
         {
+            minimapa.mapa[i][j] = 2;
+
+            ///EXERCICIO 4
             centroX = i * TAMANHO_BLOCOS + TAMANHO_BLOCOS / 2;
             centroY = j * TAMANHO_BLOCOS + TAMANHO_BLOCOS / 2;
 
             if(sqrt(pow(jogadorX - centroX, 2) + pow(jogadorY - centroY, 2)) < minimapa.dados.campoDeVisao)
+            {
                 minimapa.mapa[i][j] = 0;
+            }
+            ///
         }
     }
     minimapa.mapa[minimapa.coordenadasJogadorX][minimapa.coordenadasJogadorY] = 1;
@@ -131,7 +131,7 @@ int main()
 
     //VARIAVEL EXERCICIO
     Minimapa minimapa;
-        minimapa.dados.campoDeVisao = 100;
+        minimapa.dados.campoDeVisao = 50;
 
     //VARIAVEIS DO JOGO
     sf::Texture texturaJogador;
@@ -331,6 +331,7 @@ int main()
         window.clear(sf::Color(150,150,150));
 
         //MINIMAPA
+
         atualizaDadosJogadorMapa(minimapa, &jogador);
         atualizaMinimapa(minimapa);
 
@@ -376,8 +377,7 @@ int main()
         if(!objetivo.getTerminou())
         {
             inventario.desenha(window, jogador.getPosicao());
-            mapa.desenhaMinimapa(window, view.getCenter());
-            mapa.desenhaMinimapa2(window, view.getCenter(), minimapa.mapa);
+            mapa.desenhaMinimapa(window, view.getCenter(), minimapa.mapa);
         }
 
 
