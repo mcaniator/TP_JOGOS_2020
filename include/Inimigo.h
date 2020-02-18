@@ -11,12 +11,11 @@ class Inimigo
 
         void atualiza(float deltaTempo);
         void desenha(sf::RenderWindow& window);
-        void emColisao(char direcao);
+
+        float getY() { return corpoInimigo.getPosition().y; };
 
         void setSentidoX(int sentido) { sentidoMovimentoX = sentido; };
         void setSentidoY(int sentido) { sentidoMovimentoY = sentido; };
-
-        float getY() { return corpoInimigo.getPosition().y; };
 
         Colisor getColisor() { return Colisor(corpoInimigo); };
 

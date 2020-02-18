@@ -12,23 +12,26 @@ class Objetivo
         Colisor getColisorPlayer() { return Colisor(corpo); };
         Colisor getColisorItens() { return Colisor(corpoObjetivo); };
 
-        void recebeuItem(char recebeu);
+        float getY() { return corpo.getPosition().y; };
 
+        void recebeuItem(char recebeu);
         bool getTerminou(){ return terminou; };
         int getNumRecebidos() { return numRecebidos; };
-        void fimDeJogo();
 
-        float getY() { return corpo.getPosition().y; };
+        void fimDeJogo();
 
         void desenha(sf::RenderWindow& window);
         void desenhaFinal(sf::RenderWindow& window, sf::Vector2f posicao);
 
     private:
         sf::RectangleShape corpo;
+
         sf::RectangleShape corpoObjetivo;
         sf::IntRect objetivoRet;
+
         sf::RectangleShape corpoFala;
         sf::IntRect falaRet;
+
         sf::RectangleShape corpoItem;
         sf::IntRect itemRet;
 

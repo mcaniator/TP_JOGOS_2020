@@ -2,13 +2,13 @@
 #include <iostream>
 #include <vector>
 #include <math.h>
-#include "Jogador.h"
 #include "Inimigo.h"
-#include "Plataforma.h"
-#include "Mapa.h"
-#include "Item.h"
 #include "Inventario.h"
+#include "Item.h"
+#include "Jogador.h"
+#include "Mapa.h"
 #include "Objetivo.h"
+#include "Plataforma.h"
 
 static const float VIEW_HEIGHT = 322.0f;
 
@@ -63,7 +63,7 @@ typedef struct
 {
     float posicaoJogador[2];
     int campoDeVisao;
-}DadosJogador; //DO JOGADOR
+}DadosJogador;
 
 typedef struct
 {
@@ -104,17 +104,14 @@ void atualizaMinimapa(Minimapa& minimapa)
     {
         for(int j = 0; j < TAMANHO_MAPA_Y; j++)
         {
-            minimapa.mapa[i][j] = 2;
+            minimapa.mapa[i][j] = 2; ///NO EXERCICIO 3 ELE RECEBE 0 PARA SER TRANSPARENTE
 
             ///EXERCICIO 4
             centroX = i * TAMANHO_BLOCOS + TAMANHO_BLOCOS / 2;
             centroY = j * TAMANHO_BLOCOS + TAMANHO_BLOCOS / 2;
 
-
             if(sqrt(pow(jogadorX - centroX, 2) + pow(jogadorY - centroY, 2)) < minimapa.dados.campoDeVisao)
-            {
                 minimapa.mapa[i][j] = 0;
-            }
             ///
         }
     }
@@ -149,8 +146,6 @@ int main()
     texturaIndice.loadFromFile("texturas/indices.png");
     sf::Texture texturaObjetivo;
     texturaObjetivo.loadFromFile("texturas/amigo.png");
-    sf::Texture texturaFala;
-    texturaFala.loadFromFile("texturas/fala.png");
 
     Mapa mapa(&texturaMapa, sf::Vector2u(16, 16), &texturaInventario, sf::Vector2u(17, 10));
 
@@ -229,10 +224,19 @@ int main()
         for(unsigned int i = 0; i < itens.size(); i++)
         {
             Item& item = itens[i];
+
+            //PEGAR ITEM
             if(item.getColisor().checaColisao(jogador.getColisor()) && sf::Keyboard::isKeyPressed(sf::Keyboard::E) && !item.getStatus())
             {
                 item.coletou();
                 inventario.pegouItem(item.getTipo());
+            }
+
+            //ENTREGAR ITEM
+            if(item.getColisor().checaColisao(objetivo.getColisorItens()) && !item.getStatus() && objetivo.getNumRecebidos() != 5)
+            {
+                item.coletou();
+                objetivo.recebeuItem(item.getTipo());
             }
         }
 
@@ -256,16 +260,6 @@ int main()
             }
         }
 
-        for(unsigned int i = 0; i < itens.size(); i++)
-        {
-            Item& item = itens[i];
-            if(item.getColisor().checaColisao(objetivo.getColisorItens()) && !item.getStatus() && objetivo.getNumRecebidos() != 5)
-            {
-                item.coletou();
-                objetivo.recebeuItem(item.getTipo());
-            }
-        }
-
         //COLISOES
 
         char direcao;
@@ -273,17 +267,15 @@ int main()
         for(unsigned int i = 0; i < plataformas.size(); i++)
         {
             Plataforma& plataforma = plataformas[i];
+
+            //JOGADOR x PLATAFORMA
             plataforma.getColisor().checaColisaoJogadorPlataforma(jogador.getColisor());
-        }
 
-        objetivo.getColisorPlayer().checaColisaoJogadorPlataforma(jogador.getColisor());
-
-        for(unsigned int i = 0; i < plataformas.size(); i++)
-        {
-            Plataforma& plataforma = plataformas[i];
             for(unsigned int j = 0; j < inimigos.size(); j++)
             {
                 Inimigo& inimigo = inimigos[j];
+
+                //INIMIGO x PLATAFORMA
                 direcao = plataforma.getColisor().checaColisaoInimigoPlataforma(inimigo.getColisor());
                 switch(direcao)
                 {
@@ -302,17 +294,14 @@ int main()
                     default:
                         break;
                 }
+
+                //INIMIGO x JOGADOR
+                if(jogador.getStatus())
+                    jogador.setStatus(!jogador.getColisor().checaColisao(inimigo.getColisor()));
             }
         }
 
-        if(jogador.getStatus())
-        {
-            for(unsigned int i = 0; i < inimigos.size(); i++)
-            {
-                Inimigo& inimigo = inimigos[i];
-                jogador.setStatus(!jogador.getColisor().checaColisao(inimigo.getColisor()));
-            }
-        }
+        objetivo.getColisorPlayer().checaColisaoJogadorPlataforma(jogador.getColisor());
 
         //MOVIMENTACAO
 
@@ -338,8 +327,10 @@ int main()
         for(unsigned int i = 0; i < itens.size(); i++)
         {
             Item& item = itens[i];
-            if(!item.getStatus())
-                minimapa.mapa[int(item.getX() / TAMANHO_BLOCOS)][int(item.getY() / TAMANHO_BLOCOS)] = 3;
+            int x = int(item.getX() / TAMANHO_BLOCOS);
+            int y = int(item.getY() / TAMANHO_BLOCOS);
+            if(!item.getStatus() && minimapa.mapa[x][y] != 1 && minimapa.mapa[x][y] != 2)
+                minimapa.mapa[x][y] = 3;
         }
 
         //DESENHA OS OBJETOS

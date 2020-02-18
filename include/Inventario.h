@@ -17,8 +17,10 @@ class Inventario
     private:
         sf::RectangleShape corpoInventario;
         sf::IntRect inventarioRet;
+
         sf::RectangleShape corpoItem;
         sf::IntRect itemRet;
+
         sf::RectangleShape corpoIndice;
         sf::IntRect indiceRet;
 

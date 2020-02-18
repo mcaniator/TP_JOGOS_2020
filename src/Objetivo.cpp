@@ -7,6 +7,7 @@ Objetivo::Objetivo(sf::Texture* texturaObjetivo, sf::Vector2u tamanhoDaImagemObj
     terminou = false;
     ganhou = false;
 
+    //MONTA RESPOSTA
     for(int i = 0; i < 9; i++)
         letras[i] = 'a' + i;
     letras[9] = '\0';
@@ -172,6 +173,11 @@ void Objetivo::desenha(sf::RenderWindow& window)
 
 void Objetivo::desenhaFinal(sf::RenderWindow& window, sf::Vector2f posicao)
 {
+    texto.setPosition(posicao.x - texto.getLocalBounds().width / 2, posicao.y - texto.getLocalBounds().height / 2 - 7);
+    texto.setFont(fonte);
+    texto.setFillColor(sf::Color::Black);
+    texto.setCharacterSize(22);
+
     corpoFala.setSize(sf::Vector2f(40.0f, 90.0f));
     for(int i = 0; i < 5; i++)
     {
@@ -194,13 +200,11 @@ void Objetivo::desenhaFinal(sf::RenderWindow& window, sf::Vector2f posicao)
         corpoFala.setTextureRect(falaRet);
         window.draw(corpoFala);
     }
-    texto.setFont(fonte);
-    texto.setFillColor(sf::Color::Black);
-    texto.setCharacterSize(22);
+
     if(ganhou)
         texto.setString("Você ganhou!");
     else
         texto.setString("Você perdeu!");
-    texto.setPosition(posicao.x - texto.getLocalBounds().width / 2, posicao.y - texto.getLocalBounds().height / 2 - 7);
+
     window.draw(texto);
 }
