@@ -5,7 +5,7 @@
 #include "Plataforma.h"
 #include "Mapa.h"
 
-static const float VIEW_HEIGHT = 312.0f;
+static const float VIEW_HEIGHT = 322.0f;
 
 using namespace std;
 
@@ -67,42 +67,24 @@ void ResizeView(const sf::RenderWindow& window, sf::View& view)
 ///EXERCICIO 1
 float deslocamentoLateral(Jogador* p, float deltaTempo)
 {
-    float vx = obtemVelocidadeX(p);
-    return vx * deltaTempo * sentidoMovimentoLateral(p);
+    return 0;
 }
 
 ///EXERCICIO 2
 float deslocamentoVertical(Jogador* p, float deltaTempo)
 {
-    float vy = obtemVelocidadeY(p);
-    return vy * deltaTempo * sentidoMovimentoVertical(p);
+    return 0;
 }
 
 ///EXERCICIO 3
 int calculaDeslocamento(Jogador* p, float deltaTempo)
 {
-    float x, y;
-    x = obtemPosicaoX(p);
-    y = obtemPosicaoY(p);
-
-///EXERCICIO 4
-///float vx, vy;
-///vx = obtemVelocidadeX(p);
-///vy = obtemVelocidadeY(p);
-///vx = vx + (500 * deltaTempo * sentidoMovimentoLateral(p));
-///vy = vy + (500 * deltaTempo * sentidoMovimentoVertical(p));
-///atualizaVelocidadeX(p, vx);
-///atualizaVelocidadeY(p, vy);
-///x = x + vx * deltaTempo;
-///y = y + vy * deltaTempo;
-
-    ///Essas duas linhas abaixo devem ser excluidas para o funcionamento do exercicio 4;
-    x = x + deslocamentoLateral(p, deltaTempo);
-    y = y + deslocamentoVertical(p, deltaTempo);
-    atualizaPosicao(p, x, y);
-
     return 0;
 }
+
+///----------------------------------------------------------------------------------///
+///                                                                                  ///
+///----------------------------------------------------------------------------------///
 
 int main()
 {
