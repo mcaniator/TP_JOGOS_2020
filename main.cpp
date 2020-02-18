@@ -11,7 +11,7 @@
 #define BORDA_CIMA 192
 #define BORDA_BAIXO 768
 
-static const float VIEW_HEIGHT = 312.0f;
+static const float VIEW_HEIGHT = 322.0f;
 
 using namespace std;
 
@@ -185,11 +185,11 @@ int main()
 
     //VARIAVEIS DO JOGO
     sf::Texture texturaJogador;
-    texturaJogador.loadFromFile("jogador.png");
+    texturaJogador.loadFromFile("texturas/jogador.png");
     sf::Texture texturaMapa;
-    texturaMapa.loadFromFile("mapa.png");
+    texturaMapa.loadFromFile("texturas/mapa.png");
     sf::Texture texturaInimigo;
-    texturaInimigo.loadFromFile("inimigo.png");
+    texturaInimigo.loadFromFile("texturas/inimigo.png");
 
     char direcao;
 
