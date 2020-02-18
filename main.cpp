@@ -48,6 +48,7 @@ int teclaPressionada()
 ///                                  EXERCICIOS                                      ///
 ///----------------------------------------------------------------------------------///
 
+///EXERCICIO 1
 void removeChar (char str[], int indice)
 {
     for(int i = indice; str[i] != '\0'; i++)
@@ -56,6 +57,7 @@ void removeChar (char str[], int indice)
     }
 }
 
+///EXERCICIO 2
 void montaObjetivo (char letras[], char resposta[])
 {
     int indice;
@@ -70,6 +72,7 @@ void montaObjetivo (char letras[], char resposta[])
     resposta[5] = '\0';
 }
 
+///EXERCICIO 3
 void organizaInventario(char coletou, char coletados[], int numcoletados[])
 {
     if(numcoletados[coletou - 'a'] == 0)
@@ -84,6 +87,7 @@ void organizaInventario(char coletou, char coletados[], int numcoletados[])
     numcoletados[coletou - 'a']++;
 }
 
+///EXERCICIO 4
 int comparaString(char resp[], char colocados[])
 {
     for(int i = 0; resp[i] != '\0'; i++)
