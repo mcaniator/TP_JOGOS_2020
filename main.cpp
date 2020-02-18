@@ -86,16 +86,15 @@ int calculaDeslocamento(Jogador* p, float deltaTempo)
     y = obtemPosicaoY(p);
 
 ///EXERCICIO 4
-
 ///float vx, vy;
 ///vx = obtemVelocidadeX(p);
 ///vy = obtemVelocidadeY(p);
-///vx = vx + (1000 * deltaTempo * sentidoMovimentoLateral(p));
-///vy = vy + (1000 * deltaTempo * sentidoMovimentoVertical(p));
-///x = x + vx * deltaTempo;
-///y = y + vy * deltaTempo;
+///vx = vx + (500 * deltaTempo * sentidoMovimentoLateral(p));
+///vy = vy + (500 * deltaTempo * sentidoMovimentoVertical(p));
 ///atualizaVelocidadeX(p, vx);
 ///atualizaVelocidadeY(p, vy);
+///x = x + vx * deltaTempo;
+///y = y + vy * deltaTempo;
 
     ///Essas duas linhas abaixo devem ser excluidas para o funcionamento do exercicio 4;
     x = x + deslocamentoLateral(p, deltaTempo);
@@ -127,6 +126,7 @@ int main()
 
     std::vector<Plataforma> platformas;
         platformas.push_back(Plataforma(NULL, sf::Vector2f(384.0f, 384.0f), sf::Vector2f(96.0f, 96.0f)));
+        platformas.push_back(Plataforma(NULL, sf::Vector2f(528.0f, 576.0f), sf::Vector2f(192.0f, 192.0f)));
         platformas.push_back(Plataforma(NULL, sf::Vector2f(215.0f, 480.0f), sf::Vector2f(48.0f, 576.0f)));
         platformas.push_back(Plataforma(NULL, sf::Vector2f(745.0f, 480.0f), sf::Vector2f(48.0f, 576.0f)));
         platformas.push_back(Plataforma(NULL, sf::Vector2f(480.0f, 167.0f), sf::Vector2f(480.0f, 48.0f)));
