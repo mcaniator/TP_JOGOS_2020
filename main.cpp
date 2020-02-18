@@ -233,41 +233,37 @@ int main()
 
         ////JOGO
 
-        //MOVIMENTACAO
+        //COLISAO
 
         direcao = '\0';
         for(unsigned int i = 0; i < plataformas.size(); i++)
         {
             Plataforma& plataforma = plataformas[i];
+
+            //PLATAFORMA x JOGADOR
             if(colidiu(jogador.getX(), jogador.getComprimento(), jogador.getY(), jogador.getAltura(), plataforma.getX(), plataforma.getComprimento(), plataforma.getY(), plataforma.getAltura()))
             {
                 direcao = ladoColisao(jogador.getX(), jogador.getComprimento(), jogador.getY(), jogador.getAltura(), plataforma.getX(), plataforma.getComprimento(), plataforma.getY(), plataforma.getAltura());
             }
+
+            //PLATAFORMA x INIMIGO
+            for(unsigned int j = 0; j < inimigos.size(); j++)
+            {
+                Inimigo& inimigo = inimigos[j];
+                plataforma.getColisor().checaColisao(inimigo.getColisor());
+
+                //INIMIGO x JOGADOR
+                if(jogador.getStatus())
+                    jogador.setStatus(!jogador.getColisor().checaColisao2(inimigo.getColisor()));
+            }
         }
+
+        //MOVIMENTACAO
 
         for(unsigned int i = 0; i < inimigos.size(); i++)
         {
             Inimigo& inimigo = inimigos[i];
             inimigo.atualiza(deltaTempo, jogador.getX() - inimigo.getX(), jogador.getY() - inimigo.getY(), moveInimigo(&inimigo, &jogador));
-        }
-
-        if(jogador.getStatus())
-        {
-            for(unsigned int i = 0; i < inimigos.size(); i++)
-            {
-                Inimigo& inimigo = inimigos[i];
-                jogador.setStatus(!jogador.getColisor().checaColisao2(inimigo.getColisor()));
-            }
-        }
-
-        for(unsigned int i = 0; i < plataformas.size(); i++)
-        {
-            Plataforma& plataforma = plataformas[i];
-            for(unsigned int j = 0; j < inimigos.size(); j++)
-            {
-                Inimigo& inimigo = inimigos[j];
-                plataforma.getColisor().checaColisao(inimigo.getColisor());
-            }
         }
 
         jogador.atualiza(deltaTempo, colisaoBordaX(jogador.getX(), jogador.getComprimento()), colisaoBordaY(jogador.getY(), jogador.getAltura()), direcao);

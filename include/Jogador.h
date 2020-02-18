@@ -12,7 +12,6 @@ class Jogador
 
         void atualiza(float deltaTempo, int colisaoBordaX, int colisaoBordaY, char direcao);
         void desenha(sf::RenderWindow& window);
-        void emColisao(char direcao);
 
         sf::Vector2f getPosicao() { return corpoJogador.getPosition(); };
 
@@ -24,6 +23,7 @@ class Jogador
         float getComprimento() { return corpoJogador.getSize().x; };
         float getAltura() { return corpoJogador.getSize().y; };
 
+        void emColisao(char direcao);
         Colisor getColisor() { return Colisor(corpoJogador); };
 
     private:

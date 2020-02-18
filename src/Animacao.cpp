@@ -2,6 +2,8 @@
 
 Animacao::Animacao(sf::Texture* textura, sf::Vector2u tamanhoDaImagem, float tempoTroca)
 {
+    morreu = false;
+
     this->tamanhoDaImagem = tamanhoDaImagem;
     this->tempoTroca = tempoTroca;
     tempoTotal = 0.0f;
@@ -21,10 +23,16 @@ void Animacao::atualiza(int linha, float deltaTempo, bool emMovimento, bool vivo
     imagemAtual.y = linha;
     tempoTotal += 5 * deltaTempo;
 
+    if(!vivo && !morreu)
+    {
+        imagemAtual.x = 0;
+        morreu = true;
+    }
+
     if(tempoTotal >= tempoTroca)
     {
         tempoTotal -= tempoTroca;
-        if(!(!vivo && imagemAtual.x ==5))
+        if(!(!vivo && imagemAtual.x == 5))
             imagemAtual.x++;
 
         if((imagemAtual.x >= tamanhoDaImagem.x) && vivo)

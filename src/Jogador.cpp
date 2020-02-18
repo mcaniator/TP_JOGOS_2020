@@ -142,6 +142,5 @@ void Jogador::atualiza(float deltaTempo, int colisaoBordaX, int colisaoBordaY, c
 
 void Jogador::desenha(sf::RenderWindow& window)
 {
-    window.draw(corpoJogador);
     window.draw(texturaJogador);
 }

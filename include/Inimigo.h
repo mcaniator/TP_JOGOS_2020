@@ -11,7 +11,6 @@ class Inimigo
 
         void atualiza(float deltaTempo, float distanciaX, float distanciaY, int perseguindo);
         void desenha(sf::RenderWindow& window);
-        void emColisao(char direcao);
 
         sf::Vector2f getPosicao() { return corpoInimigo.getPosition(); };
 
@@ -24,6 +23,7 @@ class Inimigo
         void setSentidoMovimentoX(int s) { sentidoMovimentoX = s; }
         void setSentidoMovimentoY(int s) { sentidoMovimentoY = s; }
 
+        void emColisao(char direcao);
         Colisor getColisor() { return Colisor(corpoInimigo); };
 
     private:

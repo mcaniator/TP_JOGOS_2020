@@ -24,6 +24,8 @@ private:
 
     float tempoTotal;
     float tempoTroca;
+
+    bool morreu;
 };
 
 #endif // Animacao_H
