@@ -99,7 +99,7 @@ int comparaString(char resp[], char colocados[])
 int main()
 {
     //VARIAVEIS DA CONFIGURACAO
-    sf::RenderWindow window(sf::VideoMode(800, 512), "Jogo Aula 02", sf::Style::Close);
+    sf::RenderWindow window(sf::VideoMode(800, 512), "Jogo Aula 03", sf::Style::Close);
     sf::View view(sf::Vector2f(0, 0), sf::Vector2f(VIEW_HEIGHT, VIEW_HEIGHT));
 
     //VARIAVEIS DOS EXERCICIOS
@@ -212,10 +212,21 @@ int main()
         for(unsigned int i = 0; i < itens.size(); i++)
         {
             Item& item = itens[i];
+
+            //ITEM PEGO
             if(item.getColisor().checaColisao(jogador.getColisor()) && sf::Keyboard::isKeyPressed(sf::Keyboard::E) && !item.getStatus())
             {
                 item.coletou();
                 organizaInventario(item.getTipo(), coletados, numcoletados);
+            }
+
+            //ITEM COLETADO
+            if(item.getColisor().checaColisao(objetivo.getColisorItens()) && !item.getStatus() && numRecebidos != 5)
+            {
+                item.coletou();
+                recebidos[numRecebidos] = item.getTipo();
+                numRecebidos++;
+                recebidos[numRecebidos] = '\0';
             }
         }
 
@@ -249,18 +260,6 @@ int main()
                 }
             }
             delay = 0.6;
-        }
-
-        for(unsigned int i = 0; i < itens.size(); i++)
-        {
-            Item& item = itens[i];
-            if(item.getColisor().checaColisao(objetivo.getColisorItens()) && !item.getStatus() && numRecebidos != 5)
-            {
-                item.coletou();
-                recebidos[numRecebidos] = item.getTipo();
-                numRecebidos++;
-                recebidos[numRecebidos] = '\0';
-            }
         }
 
         //COLISOES
@@ -379,7 +378,6 @@ int main()
             {
                 terminou = true;
                 ganhou = comparaString(resposta, recebidos);
-                cout << ganhou;
             }
             objetivo.desenhaFinal(window, view.getCenter(), ganhou);
         }

@@ -14,6 +14,7 @@ public:
 
     float getX() { return corpo.getPosition().x; };
     float getY() { return corpo.getPosition().y; };
+
     float getComprimento() { return corpo.getSize().x; };
     float getAltura() { return corpo.getSize().y; };
 

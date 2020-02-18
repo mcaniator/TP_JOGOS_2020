@@ -19,10 +19,13 @@ class Objetivo
 
     private:
         sf::RectangleShape corpo;
+
         sf::RectangleShape corpoObjetivo;
         sf::IntRect objetivoRet;
+
         sf::RectangleShape corpoFala;
         sf::IntRect falaRet;
+
         sf::RectangleShape corpoItem;
         sf::IntRect itemRet;
 
