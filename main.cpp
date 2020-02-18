@@ -79,6 +79,7 @@ DadosJogador atualizaDadosJogador(Jogador* j)
     DadosJogador dados;
     dados.posicaoJogador[0] = obtemPosX(j);
     dados.posicaoJogador[1] = obtemPosY(j);
+    dados.campoDeVisao = 48 * 10;
 
     return dados;
 }
@@ -109,6 +110,7 @@ void atualizaMinimapa(Minimapa& minimapa)
             centroX = i * TAMANHO_BLOCOS + TAMANHO_BLOCOS / 2;
             centroY = j * TAMANHO_BLOCOS + TAMANHO_BLOCOS / 2;
 
+
             if(sqrt(pow(jogadorX - centroX, 2) + pow(jogadorY - centroY, 2)) < minimapa.dados.campoDeVisao)
             {
                 minimapa.mapa[i][j] = 0;
@@ -131,7 +133,6 @@ int main()
 
     //VARIAVEL EXERCICIO
     Minimapa minimapa;
-        minimapa.dados.campoDeVisao = 50;
 
     //VARIAVEIS DO JOGO
     sf::Texture texturaJogador;
@@ -151,7 +152,7 @@ int main()
     sf::Texture texturaFala;
     texturaFala.loadFromFile("texturas/fala.png");
 
-    Mapa mapa(&texturaMapa);
+    Mapa mapa(&texturaMapa, sf::Vector2u(16, 16), &texturaInventario, sf::Vector2u(17, 10));
 
     Jogador jogador(&texturaJogador, sf::Vector2u(13, 21), 0.3f, 180.0f);
 
@@ -376,10 +377,9 @@ int main()
 
         if(!objetivo.getTerminou())
         {
-            inventario.desenha(window, jogador.getPosicao());
+            inventario.desenha(window, view.getCenter());
             mapa.desenhaMinimapa(window, view.getCenter(), minimapa.mapa);
         }
-
 
         //FINAL DO JOGO
 

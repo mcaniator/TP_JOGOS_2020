@@ -2,22 +2,29 @@
 #include <SFML/Graphics.hpp>
 
 
-Mapa::Mapa(sf::Texture *texturaMapa)
+Mapa::Mapa(sf::Texture *texturaMapa, sf::Vector2u tamanhoDaImagemMapa, sf::Texture *texturaBorda, sf::Vector2u tamanhoDaImagemBorda)
 {
     minimapa.setSize(sf::Vector2f(3.0f, 3.0f));
     filtro.setSize(minimapa.getSize());
+
+    borda.setTexture(texturaBorda);
+    borda.setSize(sf::Vector2f(minimapa.getSize().x * TAMANHO_MAPA_X, minimapa.getSize().y * TAMANHO_MAPA_Y));
+    sf::IntRect retBorda;
+    retBorda.width = texturaBorda->getSize().x / (float)tamanhoDaImagemBorda.x * 3;
+    retBorda.height = texturaBorda->getSize().y / (float)tamanhoDaImagemBorda.y * 3;
+    retBorda.left = retBorda.width / 3 * 0;
+    retBorda.top = retBorda.height /3 * 4;
+    borda.setTextureRect(retBorda);
+
 
     numBlocos.x = TAMANHO_MAPA_X;
     numBlocos.y = TAMANHO_MAPA_Y;
     tamanhoBlocos = TAMANHO_BLOCOS;
 
-    tamanhoDaImagem.x = 16;
-    tamanhoDaImagem.y = 16;
-
     padrao.posicaoNaImagem.x = 0;
     padrao.posicaoNaImagem.y = 0;
-    padrao.corpoBloco.width = texturaMapa->getSize().x / (float)tamanhoDaImagem.x;
-    padrao.corpoBloco.height = texturaMapa->getSize().y / (float)tamanhoDaImagem.y;
+    padrao.corpoBloco.width = texturaMapa->getSize().x / (float)tamanhoDaImagemMapa.x;
+    padrao.corpoBloco.height = texturaMapa->getSize().y / (float)tamanhoDaImagemMapa.y;
     padrao.corpoBloco.left = padrao.corpoBloco.width * padrao.posicaoNaImagem.x;
     padrao.corpoBloco.top = padrao.corpoBloco.height * padrao.posicaoNaImagem.y;
 
@@ -64,8 +71,8 @@ Mapa::Mapa(sf::Texture *texturaMapa)
                     blocos[i][j].posicaoNaImagem.y = 1;
                     break;
             }
-            blocos[i][j].corpoBloco.width = texturaMapa->getSize().x / (float)tamanhoDaImagem.x;
-            blocos[i][j].corpoBloco.height = texturaMapa->getSize().y / (float)tamanhoDaImagem.y;
+            blocos[i][j].corpoBloco.width = texturaMapa->getSize().x / (float)tamanhoDaImagemMapa.x;
+            blocos[i][j].corpoBloco.height = texturaMapa->getSize().y / (float)tamanhoDaImagemMapa.y;
             blocos[i][j].corpoBloco.left = padrao.corpoBloco.width * blocos[i][j].posicaoNaImagem.x;
             blocos[i][j].corpoBloco.top = padrao.corpoBloco.height * blocos[i][j].posicaoNaImagem.y;
             blocos[i][j].posicaoBloco.x = tamanhoBlocos * i;
@@ -105,13 +112,16 @@ void Mapa::desenhaMinimapa(sf::RenderWindow& window, sf::Vector2f posicao, int m
     sf::Color grey(128, 128, 128);
     sf::Color brown(139,69,19);
 
+    borda.setPosition(posicao.x + 126, posicao.y + 38);
+    window.draw(borda);
+
     for(int i = 0; i < TAMANHO_MAPA_X; i++)
     {
         for(int j = 0; j < TAMANHO_MAPA_Y; j++)
         {
             tipo = tipoBlocos[i][j];
             tipo2 = mapa[i][j];
-            minimapa.setPosition(posicao.x + 80 + 3 * i, posicao.y + 38 + 3 * j);
+            minimapa.setPosition(posicao.x + 126 + 3 * i, posicao.y + 38 + 3 * j);
             filtro.setPosition(minimapa.getPosition());
 
             //PRIMEIRO
@@ -133,8 +143,8 @@ void Mapa::desenhaMinimapa(sf::RenderWindow& window, sf::Vector2f posicao, int m
 
             if(i == 0 || i == TAMANHO_MAPA_X - 1 || j == 0 || j == TAMANHO_MAPA_Y - 1)
             {
-                minimapa.setFillColor(brown);
-                filtro.setFillColor(brown);
+                minimapa.setFillColor(sf::Color::Transparent);
+                filtro.setFillColor(sf::Color::Transparent);
             }
 
             window.draw(minimapa);

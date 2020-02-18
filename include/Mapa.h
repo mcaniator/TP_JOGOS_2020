@@ -19,7 +19,7 @@ typedef struct
 class Mapa
 {
     public:
-        Mapa(sf::Texture *texturaMapa);
+        Mapa(sf::Texture *texturaMapa, sf::Vector2u tamanhoDaImagemMapa, sf::Texture *texturaBorda, sf::Vector2u tamanhoDaImagemBorda);
         virtual ~Mapa();
         void desenha(sf::RenderWindow& window);
         void desenhaMinimapa(sf::RenderWindow& window, sf::Vector2f posicao, int mapa[TAMANHO_MAPA_X][TAMANHO_MAPA_Y]);
@@ -33,6 +33,7 @@ class Mapa
 
         sf::RectangleShape minimapa;
         sf::RectangleShape filtro;
+        sf::RectangleShape borda;
 
         Bloco padrao;
         Bloco blocos[TAMANHO_MAPA_X][TAMANHO_MAPA_Y];

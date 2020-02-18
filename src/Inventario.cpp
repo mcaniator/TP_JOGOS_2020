@@ -72,16 +72,17 @@ char Inventario::soltouItem(int tecla)
         return ' ';
 }
 
-void Inventario::desenha(sf::RenderWindow& window, sf::Vector2f posicaoJogador)
+void Inventario::desenha(sf::RenderWindow& window, sf::Vector2f posicao)
 {
     for(int i = 0; i < 9; i++)
     {
-        corpoInventario.setPosition(posicaoJogador.x - 240 + (corpoInventario.getSize().x * i), posicaoJogador.y + 120);
+        //cout <<
+        corpoInventario.setPosition(posicao.x - 240 + (corpoInventario.getSize().x * i), posicao.y + 120);
         window.draw(corpoInventario);
 
         if(i < coletadosDiferentes)
         {
-            corpoItem.setPosition(posicaoJogador.x - 240 + (corpoInventario.getSize().x * i), posicaoJogador.y + 112);
+            corpoItem.setPosition(posicao.x - 240 + (corpoInventario.getSize().x * i), posicao.y + 112);
             switch(coletados[i])
             {
                 case 'a':
@@ -126,7 +127,7 @@ void Inventario::desenha(sf::RenderWindow& window, sf::Vector2f posicaoJogador)
             corpoItem.setTextureRect(itemRet);
             window.draw(corpoItem);
 
-            corpoIndice.setPosition(posicaoJogador.x - 242 + (corpoInventario.getSize().x * i), posicaoJogador.y + 116);
+            corpoIndice.setPosition(posicao.x - 242 + (corpoInventario.getSize().x * i), posicao.y + 116);
             indiceRet.left = numColetados[coletados[i] - 'a'] * indiceRet.width;
             corpoIndice.setTextureRect(indiceRet);
             window.draw(corpoIndice);
