@@ -24,8 +24,10 @@ class Mapa
     private:
         sf::Vector2i numBlocos;
         int tamanhoBlocos;
+
         sf::Vector2i tamanhoDaImagem;
         sf::RectangleShape textura;
+
         Bloco padrao;
         Bloco blocos[TAMANHO_MAPA_X][TAMANHO_MAPA_Y];
         int tipoBlocos[TAMANHO_MAPA_X][TAMANHO_MAPA_Y] = {

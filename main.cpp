@@ -113,9 +113,9 @@ int main()
 
     //VARIAVEIS DO JOGO
     sf::Texture texturaJogador;
-    texturaJogador.loadFromFile("jogador.png");
+    texturaJogador.loadFromFile("texturas/jogador.png");
     sf::Texture texturaMapa;
-    texturaMapa.loadFromFile("mapa.png");
+    texturaMapa.loadFromFile("texturas/mapa.png");
 
     int acelerado = 0;
 

@@ -133,7 +133,6 @@ void Jogador::atualiza(float deltaTempo, int acelerado)
 
 void Jogador::desenha(sf::RenderWindow& window)
 {
-    window.draw(corpoJogador);
     window.draw(texturaJogador);
 }
 

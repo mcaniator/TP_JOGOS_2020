@@ -12,9 +12,6 @@ class Jogador
 
         void atualiza(float deltaTempo, int acelerado);
         void desenha(sf::RenderWindow& window);
-        void emColisao(char direcao);
-        bool colisaoBordasX();
-        bool colisaoBordasY();
 
         sf::Vector2f getPosicao() { return corpoJogador.getPosition(); };
 
@@ -32,6 +29,9 @@ class Jogador
 
         void set(float x, float y) { corpoJogador.setPosition(x, y); };
 
+        void emColisao(char direcao);
+        bool colisaoBordasX();
+        bool colisaoBordasY();
         Colisor getColisor() { return Colisor(corpoJogador); };
 
     private:
