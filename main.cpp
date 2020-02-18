@@ -335,6 +335,12 @@ int main()
 
         atualizaDadosJogadorMapa(minimapa, &jogador);
         atualizaMinimapa(minimapa);
+        for(unsigned int i = 0; i < itens.size(); i++)
+        {
+            Item& item = itens[i];
+            if(!item.getStatus())
+                minimapa.mapa[int(item.getX() / TAMANHO_BLOCOS)][int(item.getY() / TAMANHO_BLOCOS)] = 3;
+        }
 
         //DESENHA OS OBJETOS
 

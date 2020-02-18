@@ -134,12 +134,15 @@ void Mapa::desenhaMinimapa(sf::RenderWindow& window, sf::Vector2f posicao, int m
 
             //SEGUNDO
 
-            if(tipo2 == 1)
-                filtro.setFillColor(sf::Color::Red);
+            if(tipo2 == 3)
+                filtro.setFillColor(sf::Color::Blue);
             else if(tipo2 == 2)
                 filtro.setFillColor(sf::Color::Black);
+            else if(tipo2 == 1)
+                filtro.setFillColor(sf::Color::Red);
             else
                 filtro.setFillColor(sf::Color::Transparent);
+
 
             if(i == 0 || i == TAMANHO_MAPA_X - 1 || j == 0 || j == TAMANHO_MAPA_Y - 1)
             {

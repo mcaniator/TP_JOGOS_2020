@@ -11,7 +11,10 @@ class Item
 
         void coletou(){ coletado = true; };
         void soltou(float x, float y){ coletado = false;
-                                           corpoItem.setPosition(x, y); };
+                                       corpoItem.setPosition(x, y); };
+
+        float getX() { return corpoItem.getPosition().x; };
+        float getY() { return corpoItem.getPosition().y; };
 
         char getTipo(){ return tipo; };
         bool getStatus(){ return coletado; };
