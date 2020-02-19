@@ -168,35 +168,35 @@ int main()
         plataformas.push_back(Plataforma(NULL, sf::Vector2f(1392.0f, 1512.0f), sf::Vector2f(96.0f, 144.0f)));
 
     std::vector<Inimigo> inimigos;
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 80.0f, 0, 1));
+        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 80.0f, sf::Vector2f(624.0f, 288.0f), 0, 1));
 
     std::vector<Item> itens;
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1296.0f, 1008.0f), 'a'));///27 21
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1248.0f, 1344.0f), 'a'));///26 28
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1488.0f, 1536.0f), 'a'));///31 32
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1248.0f, 1344.0f), 'b'));///26 28
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1488.0f, 1536.0f), 'c'));///31 32
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(336.0f , 672.0f ), 'd'));///7  14
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(288.0f , 1056.0f), 'd'));///6  22
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(288.0f , 1056.0f), 'e'));///6  22
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(960.0f , 1008.0f), 'f'));///18 24
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1488.0f, 1248.0f), 'g'));///6  8
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(318.0f , 1152.0f), 'g'));///6  24
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(318.0f , 1152.0f), 'h'));///6  24
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(960.0f , 864.0f ), 'i'));///20 18
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(480.0f , 336.0f ), 'i'));///10 7
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(624.0f , 1440.0f), 'i'));///6  28
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1392.0f, 720.0f ), 'i'));///29 15
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(288.0f , 288.0f ), 'i'));///6  6
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(336.0f , 1488.0f), 'i'));///7  31
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1056.0f, 672.0f ), 'i'));///22 14
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1248.0f, 384.0f ), 'i'));///8  15
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(624.0f , 1056.0f), 'i'));///13 22
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(480.0f , 336.0f ), 'a'));///10 7
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(624.0f , 1440.0f), 'b'));///6  28
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1392.0f, 720.0f ), 'c'));///29 15
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(288.0f , 288.0f ), 'd'));///6  6
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(336.0f , 1488.0f), 'e'));///7  31
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1056.0f, 672.0f ), 'f'));///22 14
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1248.0f, 384.0f ), 'g'));///8  15
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(624.0f , 1056.0f), 'h'));///13 22
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1056.0f, 288.0f ), 'i'));///22 6
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(624.0f , 720.0f ), 'i'));///13 15
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(672.0f , 912.0f ), 'i'));///14 19
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(768.0f , 288.0f ), 'i'));///16 6
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(480.0f , 768.0f ), 'i'));///10 16
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(864.0f , 1248.0f), 'i'));///18 26
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1440.0f, 288.0f ), 'i'));///30 6
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(288.0f , 864.0f ), 'i'));///6  18
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(912.0f , 1536.0f), 'i'));///19 32
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(624.0f , 720.0f ), 'a'));///13 15
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(672.0f , 912.0f ), 'b'));///14 19
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(768.0f , 288.0f ), 'c'));///16 6
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(480.0f , 768.0f ), 'd'));///10 16
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(864.0f , 1248.0f), 'e'));///18 26
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1440.0f, 288.0f ), 'f'));///30 6
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(288.0f , 864.0f ), 'g'));///6  18
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(912.0f , 1536.0f), 'h'));///19 32
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1392.0f, 720.0f ), 'i'));///29 15
 
     //CONFIGURA TEMPO
