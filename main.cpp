@@ -127,6 +127,7 @@ int main()
     //VARIAVEIS DA CONFIGURACAO
     sf::RenderWindow window(sf::VideoMode(800, 512), "Jogo Aula 04", sf::Style::Close);
     sf::View view(sf::Vector2f(0, 0), sf::Vector2f(VIEW_HEIGHT, VIEW_HEIGHT));
+    srand(time(0));
 
     //VARIAVEL EXERCICIO
     Minimapa minimapa;
@@ -156,19 +157,34 @@ int main()
     Objetivo objetivo(&texturaObjetivo, sf::Vector2u(13, 21), &texturaInventario, sf::Vector2u(17, 10), &texturaItem, sf::Vector2u(16, 16));
 
     std::vector<Plataforma> plataformas;
-        plataformas.push_back(Plataforma(NULL, sf::Vector2f(384.0f, 384.0f), sf::Vector2f(96.0f, 96.0f)));
-        plataformas.push_back(Plataforma(NULL, sf::Vector2f(480.0f, 1104.0f), sf::Vector2f(192.0f, 384.0f)));
-        plataformas.push_back(Plataforma(NULL, sf::Vector2f(624.0f, 528.0f), sf::Vector2f(288.0f, 192.0f)));
-        plataformas.push_back(Plataforma(NULL, sf::Vector2f(864.0f, 624.0f), sf::Vector2f(192.0f, 384.0f)));
+        plataformas.push_back(Plataforma(NULL, sf::Vector2f(384.0f , 384.0f ), sf::Vector2f(96.0f , 96.0f )));
+        plataformas.push_back(Plataforma(NULL, sf::Vector2f(480.0f , 1104.0f), sf::Vector2f(192.0f, 384.0f)));
+        plataformas.push_back(Plataforma(NULL, sf::Vector2f(624.0f , 528.0f ), sf::Vector2f(288.0f, 192.0f)));
+        plataformas.push_back(Plataforma(NULL, sf::Vector2f(864.0f , 624.0f ), sf::Vector2f(192.0f, 384.0f)));
         plataformas.push_back(Plataforma(NULL, sf::Vector2f(1056.0f, 1296.0f), sf::Vector2f(192.0f, 384.0f)));
         plataformas.push_back(Plataforma(NULL, sf::Vector2f(1248.0f, 1200.0f), sf::Vector2f(192.0f, 192.0f)));
-        plataformas.push_back(Plataforma(NULL, sf::Vector2f(1296.0f, 576.0f), sf::Vector2f(192.0f, 192.0f)));
-        plataformas.push_back(Plataforma(NULL, sf::Vector2f(768.0f, 1104.0f), sf::Vector2f(192.0f, 192.0f)));
-        plataformas.push_back(Plataforma(NULL, sf::Vector2f(1128.0f, 888.0f), sf::Vector2f(144.0f, 144.0f)));
-        plataformas.push_back(Plataforma(NULL, sf::Vector2f(1392.0f, 1512.0f), sf::Vector2f(96.0f, 144.0f)));
+        plataformas.push_back(Plataforma(NULL, sf::Vector2f(1296.0f, 576.0f ), sf::Vector2f(192.0f, 192.0f)));
+        plataformas.push_back(Plataforma(NULL, sf::Vector2f(768.0f , 1104.0f), sf::Vector2f(192.0f, 192.0f)));
+        plataformas.push_back(Plataforma(NULL, sf::Vector2f(1128.0f, 888.0f ), sf::Vector2f(144.0f, 144.0f)));
+        plataformas.push_back(Plataforma(NULL, sf::Vector2f(1392.0f, 1512.0f), sf::Vector2f(96.0f , 144.0f)));
 
     std::vector<Inimigo> inimigos;
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 80.0f, sf::Vector2f(624.0f, 288.0f), 0, 1));
+        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(672.0f , 288.0f ), 0, 1));///14 6  Y
+        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(336.0f , 528.0f ), 1, 0));///7  11 X
+        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(816.0f , 912.0f ), 0, 1));///17 19 Y
+        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(288.0f , 1000.0f), 1, 0));///6  20 X
+        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(288.0f , 1248.0f), 1, 0));///6  26 X
+        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(528.0f , 816.0f ), 0, 1));///11 17 Y
+        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(768.0f , 1300.0f), 0, 1));///15 25 Y
+        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(1056.0f, 1536.0f), 0, 1));///22 32 Y
+        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(1128.0f, 1008.0f), 0, 1));///23 21 Y
+        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(1200.0f, 888.0f ), 1, 0));///28 18 X
+        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(1056.0f, 578.0f ), 1, 0));///22 12 X
+        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(1440.0f, 578.0f ), 1, 0));///30 12 X
+        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(1296.0f, 360.0f ), 0, 1));///27 7  Y
+        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(864.0f , 120.0f ), 0, 1));///18 6  Y
+        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(1440.0f, 1200.0f), 1, 0));///30 25 X
+        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(482.0f , 1440.0f), 0, 1));///10 30 Y
 
     std::vector<Item> itens;
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1296.0f, 1008.0f), 'a'));///27 21
@@ -182,7 +198,7 @@ int main()
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(960.0f , 864.0f ), 'i'));///20 18
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(480.0f , 336.0f ), 'a'));///10 7
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(624.0f , 1440.0f), 'b'));///6  28
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1392.0f, 720.0f ), 'c'));///29 15
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1200.0f, 720.0f ), 'c'));///25 15
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(288.0f , 288.0f ), 'd'));///6  6
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(336.0f , 1488.0f), 'e'));///7  31
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1056.0f, 672.0f ), 'f'));///22 14
