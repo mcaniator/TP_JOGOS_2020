@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Inimigo::Inimigo(sf::Texture* textura, sf::Vector2u tamanhoDaImagem, float tempoTroca, float vel, int sentidoX, int sentidoY) :
+Inimigo::Inimigo(sf::Texture* textura, sf::Vector2u tamanhoDaImagem, float tempoTroca, float vel, sf::Vector2f posicao, int sentidoX, int sentidoY) :
     animacao(textura, tamanhoDaImagem, tempoTroca)
 {
     linha = 0;
@@ -20,7 +20,7 @@ Inimigo::Inimigo(sf::Texture* textura, sf::Vector2u tamanhoDaImagem, float tempo
 
     corpoInimigo.setSize(sf::Vector2f(30.0f, 15.0f));
     corpoInimigo.setOrigin(corpoInimigo.getSize() / 2.0f);
-    corpoInimigo.setPosition(400.0f, 250.0f);
+    corpoInimigo.setPosition(posicao);
     texturaInimigo.setSize(sf::Vector2f(64.0f, 64.0f));
     texturaInimigo.setOrigin(texturaInimigo.getSize() / 2.0f);
     texturaInimigo.setPosition(0.0f, 0.0f);

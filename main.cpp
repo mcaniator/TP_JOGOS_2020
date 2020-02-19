@@ -371,7 +371,7 @@ int main()
                 inimigo.desenha(window);
         }
 
-        if(!terminou)
+        if(!terminou && jogador.getStatus())
             inventario.desenha(window, jogador.getPosicao(), coletados, numcoletados);
 
         //FINAL DO JOGO
