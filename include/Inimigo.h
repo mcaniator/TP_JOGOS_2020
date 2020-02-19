@@ -6,7 +6,7 @@
 class Inimigo
 {
     public:
-        Inimigo(sf::Texture* textura, sf::Vector2u tamanhoDaImagem, float tempoTroca, float vel, int sentidoX, int sentidoY);
+        Inimigo(sf::Texture* textura, sf::Vector2u tamanhoDaImagem, float tempoTroca, float vel, sf::Vector2f posicao, int sentidoX, int sentidoY);
         virtual ~Inimigo();
 
         void atualiza(float deltaTempo);
