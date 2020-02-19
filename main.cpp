@@ -407,7 +407,7 @@ int main()
                 inimigo.desenha(window);
         }
 
-        if(!objetivo.getTerminou())
+        if(!objetivo.getTerminou() && jogador.getStatus())
         {
             inventario.desenha(window, view.getCenter());
             mapa.desenhaMinimapa(window, view.getCenter(), minimapa.mapa);
