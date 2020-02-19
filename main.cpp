@@ -105,6 +105,7 @@ int main()
     //VARIAVEIS DA CONFIGURACAO
     sf::RenderWindow window(sf::VideoMode(800, 512), "Jogo Aula 03", sf::Style::Close);
     sf::View view(sf::Vector2f(0, 0), sf::Vector2f(VIEW_HEIGHT, VIEW_HEIGHT));
+    srand(time(0));
 
     //VARIAVEIS DOS EXERCICIOS
     bool terminou = false;
@@ -136,8 +137,6 @@ int main()
     texturaIndice.loadFromFile("texturas/indices.png");
     sf::Texture texturaObjetivo;
     texturaObjetivo.loadFromFile("texturas/amigo.png");
-    sf::Texture texturaFala;
-    texturaFala.loadFromFile("texturas/fala.png");
 
     Mapa mapa(&texturaMapa);
 
