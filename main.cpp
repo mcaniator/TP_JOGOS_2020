@@ -51,49 +51,25 @@ int teclaPressionada()
 ///EXERCICIO 1
 void removeChar (char str[], int indice)
 {
-    for(int i = indice; str[i] != '\0'; i++)
-    {
-        str[i] = str[i + 1];
-    }
+
 }
 
 ///EXERCICIO 2
 void montaObjetivo (char letras[], char resposta[])
 {
-    int indice;
-    int tam;
-    for(tam = 0; letras[tam] != '\0'; tam++);
-    for(int i = 0; i < 5; i++)
-    {
-        indice = rand() % (tam - i);
-        resposta[i] = letras[indice];
-        removeChar(letras, indice);
-    }
-    resposta[5] = '\0';
+
 }
 
 ///EXERCICIO 3
 void organizaInventario(char coletou, char coletados[], int numcoletados[])
 {
-    if(numcoletados[coletou - 'a'] == 0)
-    {
-        int indice = 0;
-        for(int i = 0; i < 9; i++)
-            if(numcoletados[i] != 0)
-                indice++;
-        coletados[indice] = coletou;
-        coletados[indice + 1] = '\0';
-    }
-    numcoletados[coletou - 'a']++;
+
 }
 
 ///EXERCICIO 4
 int comparaString(char resp[], char colocados[])
 {
-    for(int i = 0; resp[i] != '\0'; i++)
-        if(resp[i] != colocados[i])
-            return 0;
-    return 1;
+    return 0;
 }
 
 ///----------------------------------------------------------------------------------///
