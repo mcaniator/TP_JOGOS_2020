@@ -1,6 +1,6 @@
 #ifndef ANIMACAO_H
 #define ANIMACAO_H
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 
 class Animacao
 {
