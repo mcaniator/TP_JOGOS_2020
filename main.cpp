@@ -302,20 +302,20 @@ int main()
 
         char direcao;
 
-        for(unsigned int i = 0; i < plataformas.size(); i++)
-        {
-            Plataforma& plataforma = plataformas[i];
-            plataforma.getColisor().checaColisaoJogadorPlataforma(jogador.getColisor());
-        }
-
         objetivo.getColisorPlayer().checaColisaoJogadorPlataforma(jogador.getColisor());
 
         for(unsigned int i = 0; i < plataformas.size(); i++)
         {
             Plataforma& plataforma = plataformas[i];
+
+            //JOGADOR x PLATAFORMA
+            plataforma.getColisor().checaColisaoJogadorPlataforma(jogador.getColisor());
+
             for(unsigned int j = 0; j < inimigos.size(); j++)
             {
                 Inimigo& inimigo = inimigos[j];
+
+                //INIMIGO x PLATAFORMA
                 direcao = plataforma.getColisor().checaColisaoInimigoPlataforma(inimigo.getColisor());
                 switch(direcao)
                 {
@@ -334,15 +334,10 @@ int main()
                     default:
                         break;
                 }
-            }
-        }
 
-        if(jogador.getStatus())
-        {
-            for(unsigned int i = 0; i < inimigos.size(); i++)
-            {
-                Inimigo& inimigo = inimigos[i];
-                jogador.setStatus(!jogador.getColisor().checaColisao(inimigo.getColisor()));
+                //INIMIGO x JOGADOR
+                if(jogador.getStatus())
+                    jogador.setStatus(!jogador.getColisor().checaColisao(inimigo.getColisor()));
             }
         }
 
