@@ -366,7 +366,6 @@ int main()
             if(!item.getStatus() && minimapa.mapa[x][y] != 1 && minimapa.mapa[x][y] != 2)
                 minimapa.mapa[x][y] = 3;
         }
-        cout << "( " << int(jogador.getX()/TAMANHO_BLOCOS) << " , " << int(jogador.getY()/TAMANHO_BLOCOS) << " )" << endl;
 
         //DESENHA OS OBJETOS
 
