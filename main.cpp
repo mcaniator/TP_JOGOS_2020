@@ -61,61 +61,31 @@ float obtemPosY(Jogador* j)
 ///EXERCICIO 1
 typedef struct
 {
-    float posicaoJogador[2];
-    int campoDeVisao;
+
 }DadosJogador;
 
 typedef struct
 {
-    int mapa[TAMANHO_MAPA_X][TAMANHO_MAPA_Y];
-    int coordenadasJogadorX;
-    int coordenadasJogadorY;
-    DadosJogador dados;
+
 }Minimapa;
 
 ///EXERCICIO 2
 DadosJogador atualizaDadosJogador(Jogador* j)
 {
     DadosJogador dados;
-    dados.posicaoJogador[0] = obtemPosX(j);
-    dados.posicaoJogador[1] = obtemPosY(j);
-    dados.campoDeVisao = 48 * 10;
-
     return dados;
 }
 
+///EXERCICIO 3
 void atualizaDadosJogadorMapa(Minimapa& minimapa, Jogador* j)
 {
-    minimapa.dados = atualizaDadosJogador(j);
-    minimapa.coordenadasJogadorX = int(minimapa.dados.posicaoJogador[0] / TAMANHO_BLOCOS);
-    minimapa.coordenadasJogadorY = int(minimapa.dados.posicaoJogador[1] / TAMANHO_BLOCOS);
+
 }
 
-///EXERCICIO 3
+///EXERCICIO 4
 void atualizaMinimapa(Minimapa& minimapa)
 {
-    ///EXERCICIO 4
-    float centroX, centroY, jogadorX, jogadorY;
-    jogadorX = minimapa.dados.posicaoJogador[0];
-    jogadorY = minimapa.dados.posicaoJogador[1];
-    ///
 
-    for(int i = 0; i < TAMANHO_MAPA_X; i++)
-    {
-        for(int j = 0; j < TAMANHO_MAPA_Y; j++)
-        {
-            minimapa.mapa[i][j] = 2; ///NO EXERCICIO 3 ELE RECEBE 0 PARA SER TRANSPARENTE
-
-            ///EXERCICIO 4
-            centroX = i * TAMANHO_BLOCOS + TAMANHO_BLOCOS / 2;
-            centroY = j * TAMANHO_BLOCOS + TAMANHO_BLOCOS / 2;
-
-            if(sqrt(pow(jogadorX - centroX, 2) + pow(jogadorY - centroY, 2)) < minimapa.dados.campoDeVisao)
-                minimapa.mapa[i][j] = 0;
-            ///
-        }
-    }
-    minimapa.mapa[minimapa.coordenadasJogadorX][minimapa.coordenadasJogadorY] = 1;
 }
 
 ///----------------------------------------------------------------------------------///
