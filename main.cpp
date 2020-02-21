@@ -66,7 +66,7 @@ typedef struct
 
 typedef struct
 {
-
+    int mapa[TAMANHO_MAPA_X][TAMANHO_MAPA_Y];
 }Minimapa;
 
 ///EXERCICIO 2
