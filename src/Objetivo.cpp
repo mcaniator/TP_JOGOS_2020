@@ -156,9 +156,9 @@ void Objetivo::desenhaFinal(sf::RenderWindow& window, sf::Vector2f posicao, bool
     texto.setFillColor(sf::Color::Black);
     texto.setCharacterSize(22);
     if(ganhou)
-        texto.setString("Você ganhou!");
+        texto.setString("Voce ganhou!");
     else
-        texto.setString("Você perdeu!");
+        texto.setString("Voce perdeu!");
     texto.setPosition(posicao.x - texto.getLocalBounds().width / 2, posicao.y - texto.getLocalBounds().height / 2 - 7);
     window.draw(texto);
 }
