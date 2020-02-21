@@ -202,9 +202,9 @@ void Objetivo::desenhaFinal(sf::RenderWindow& window, sf::Vector2f posicao)
     }
 
     if(ganhou)
-        texto.setString("Você ganhou!");
+        texto.setString("Voce ganhou!");
     else
-        texto.setString("Você perdeu!");
+        texto.setString("Voce perdeu!");
 
     window.draw(texto);
 }
