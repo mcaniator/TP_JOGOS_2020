@@ -79,7 +79,7 @@ float deslocamentoVertical(Jogador* p, float deltaTempo)
 }
 
 ///EXERCICIO 3
-int calculaDeslocamento(Jogador* p, float deltaTempo)
+int movimentaPersonagem(Jogador* p, float deltaTempo)
 {
     float x, y;
     x = obtemPosicaoX(p);
@@ -174,7 +174,7 @@ int main()
         }
 
         jogador.atualiza(deltaTempo, acelerado);
-        acelerado = calculaDeslocamento(&jogador, deltaTempo);
+        acelerado = movimentaPersonagem(&jogador, deltaTempo);
 
         //ATUALIZA CONFIGURACOES
 
