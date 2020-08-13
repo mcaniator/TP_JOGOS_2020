@@ -61,12 +61,16 @@ float obtemPosY(Jogador* j)
 ///EXERCICIO 1
 typedef struct
 {
-
+    float posicaoJogador[2];
+    int campoDeVisao;
 }DadosJogador;
 
 typedef struct
 {
     int mapa[TAMANHO_MAPA_X][TAMANHO_MAPA_Y];
+    int coordenadasJogadorX;
+    int coordenadasJogadorY;
+    DadosJogador dados;
 }Minimapa;
 
 ///EXERCICIO 2
