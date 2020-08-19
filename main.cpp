@@ -9,6 +9,8 @@
 #include "Item.h"
 #include "Inventario.h"
 #include "Objetivo.h"
+#include "Cena.h"
+
 #define BORDA_ESQ 240
 #define BORDA_DIR 1584
 #define BORDA_CIMA 192
@@ -48,6 +50,89 @@ int teclaPressionada()
         return 0;
 }
 
+float obtemXPlataforma(Cena* c, int i)
+{
+    return c->getPlatX(i);
+}
+
+float obtemCompPlataforma(Cena* c, int i)
+{
+    return c->getPlatComp(i);
+}
+
+float obtemYPlataforma(Cena* c, int i)
+{
+    return c->getPlatY(i);
+}
+
+float obtemAltPlataforma(Cena* c, int i)
+{
+    return c->getPlatAlt(i);
+}
+
+float obtemXItem(Cena* c, int i)
+{
+    return c->getItemX(i);
+}
+
+float obtemYItem(Cena* c, int i)
+{
+    return c->getItemY(i);
+}
+
+float obtemTamanhoItem(Cena* c, int i)
+{
+    return c->getItemTamanho(i);
+}
+
+void atualizaPosicaoItem(Cena* c, int i, float x, float y)
+{
+    c->setItemX(i, x);
+    c->setItemY(i, y);
+}
+
+void atualizaTipoItem(Cena* c, int i, char tipo)
+{
+    c->setItemTipo(i, tipo);
+}
+
+float obtemXInimigo(Cena* c, int i)
+{
+    return c->getInimX(i);
+}
+
+float obtemCompInimigo(Cena* c, int i)
+{
+    return c->getInimComp(i);
+}
+
+float obtemYInimigo(Cena* c, int i)
+{
+    return c->getInimY(i);
+}
+
+float obtemAltInimigo(Cena* c, int i)
+{
+    return c->getInimAlt(i);
+}
+
+void atualizaPosicaoInimigo(Cena* c, int i, float x, float y)
+{
+    c->setInimX(i, x);
+    c->setInimY(i, y);
+}
+
+void atualizaMovInimigo(Cena* c, int i, int x, int y)
+{
+    c->setInimMovX(i, x);
+    c->setInimMovY(i, y);
+}
+
+void atualizaVelInimigo(Cena* c, int i, float vel)
+{
+    c->setInimVel(i, vel);
+}
+
 ///----------------------------------------------------------------------------------///
 ///                                     TESTE                                        ///
 ///----------------------------------------------------------------------------------///
@@ -64,45 +149,150 @@ int colidiu(float itemX, float compItem, float itemY, float altItem, float objX,
         return 0;
 }
 
-void criaItens(float xItens[], float yItens[], float tamanhoItens, char tipoItens[], float platX[], float platY[], float compPlat[], float altPlat[])
+int colidiuPlataformasItens(Cena* c, int indiceItem)
+{
+    float platX, platY, compPlat, altPlat;
+    float itemX = obtemXItem(c, indiceItem);
+    float itemY = obtemYItem(c, indiceItem);
+    float compItem = obtemTamanhoItem(c, indiceItem), altItem = compItem;
+
+    for(int i = 0; i < NUMERO_PLATAFORMAS; i++)
+    {
+        platX = obtemXPlataforma(c, i);
+        platY = obtemYPlataforma(c, i);
+        compPlat = obtemCompPlataforma(c, i);
+        altPlat = obtemAltPlataforma(c, i);
+        if(colidiu(itemX, compItem, itemY, altItem, platX, compPlat, platY, altPlat))
+            return 1;
+    }
+    return 0;
+}
+
+int colidiuPlataformasInimigos(Cena* c, int indiceInimigo)
+{
+    float platX, platY, compPlat, altPlat;
+    float inimigoX = obtemXInimigo(c, indiceInimigo);
+    float inimigoY = obtemYInimigo(c, indiceInimigo);
+    float inimigoComp = obtemCompInimigo(c, indiceInimigo);
+    float inimigoAlt = obtemAltInimigo(c, indiceInimigo);
+
+    for(int i = 0; i < NUMERO_PLATAFORMAS; i++)
+    {
+        platX = obtemXPlataforma(c, i);
+        platY = obtemYPlataforma(c, i);
+        compPlat = obtemCompPlataforma(c, i);
+        altPlat = obtemAltPlataforma(c, i);
+        if(colidiu(inimigoX, inimigoComp, inimigoY, inimigoAlt, platX, compPlat, platY, altPlat))
+            return 1;
+    }
+    return 0;
+}
+
+int colidiuItens(Cena* c, int indiceItem)
+{
+    float item2X, item2Y, compItem2, altItem2;
+
+    float itemX = obtemXItem(c, indiceItem);
+    float itemY = obtemYItem(c, indiceItem);
+    float compItem = obtemTamanhoItem(c, indiceItem);
+    float altItem = compItem;
+
+    for(int i = 0; i < indiceItem; i++)
+    {
+        item2X = obtemXItem(c, i);
+        item2Y = obtemYItem(c, i);
+        compItem2 = obtemTamanhoItem(c, i);
+        altItem2 = compItem2;
+        if(colidiu(itemX, compItem, itemY, altItem, item2X, compItem2, item2Y, altItem2))
+            return 1;
+    }
+    return 0;
+}
+
+int colidiuInimigos(Cena* c, int indiceInimigo)
+{
+    float inimigo2X, inimigo2Y, inimigo2Comp, inimigo2Alt;
+
+    float inimigoX = obtemXInimigo(c, indiceInimigo);
+    float inimigoY = obtemYInimigo(c, indiceInimigo);
+    float inimigoComp = obtemCompInimigo(c, indiceInimigo);
+    float inimigoAlt  =  obtemAltInimigo(c, indiceInimigo);
+
+    for(int i = 0; i < indiceInimigo; i++)
+    {
+        inimigo2X = obtemXInimigo(c, i);
+        inimigo2Y = obtemYInimigo(c, i);
+        inimigo2Comp = obtemCompInimigo(c, i);
+        inimigo2Alt  =  obtemAltInimigo(c, i);
+        if(colidiu(inimigoX, inimigoComp, inimigoY, inimigoAlt, inimigo2X, inimigo2Comp, inimigo2Y, inimigo2Alt))
+            return 1;
+    }
+    return 0;
+}
+
+void criaItens(Cena* c)
 {
     int colisaoPlat = 1;
     int colisaoItens = 1;
-    int marcador = 0;
 
-    for(int i = 0; i < 27; i++)
+    float xItem, yItem, tamanhoItem;
+    char tipoItem;
+
+    for(int i = 0; i < NUMERO_ITENS; i++)
     {
-        tipoItens[i] = 'a' + (i%9);
+        tipoItem = 'a' + (i%9);
+        atualizaTipoItem(c, i, tipoItem);
+
         colisaoPlat = 1;
         colisaoItens = 1;
 
         while(colisaoPlat || colisaoItens)
         {
-            colisaoPlat = 0;
-            colisaoItens = 0;
+            tamanhoItem = obtemTamanhoItem(c, i);
+            xItem = BORDA_ESQ + tamanhoItem / 2.0 + (rand() % (int)(BORDA_DIR - BORDA_ESQ - tamanhoItem));
+            yItem = BORDA_CIMA + tamanhoItem / 2.0 + (rand() % (int)(BORDA_BAIXO - BORDA_CIMA - tamanhoItem));
+            atualizaPosicaoItem(c, i, xItem, yItem);
 
-            xItens[i] = BORDA_ESQ + tamanhoItens / 2 + (rand() % (BORDA_DIR - BORDA_ESQ - (int)tamanhoItens / 2));
-            yItens[i] = BORDA_CIMA + tamanhoItens / 2 + (rand() % (BORDA_BAIXO - BORDA_CIMA - (int)tamanhoItens / 2));
+            colisaoPlat = colidiuPlataformasItens(c, i);
 
-            marcador = 0;
-            for(int j = 0; j < 10; j++)
-            {
-                if(colidiu(xItens[i], tamanhoItens, yItens[i], tamanhoItens, platX[j], compPlat[j], platY[j], altPlat[j]))
-                {
-                    marcador = 1;
-                    colisaoPlat = 1;
-                    break;
-                }
-            }
+            if(!colisaoPlat)
+                colisaoItens = colidiuItens(c, i);
+        }
+    }
+}
 
-            if(!marcador)
-            {
-                for(int j = 0; j < i ; j++)
-                {
-                    if(colidiu(xItens[i], tamanhoItens, yItens[i], tamanhoItens, xItens[j], tamanhoItens, yItens[j], tamanhoItens))
-                        colisaoItens = 1;
-                }
-            }
+void criaInimigos(Cena* c)
+{
+    int colisaoPlat = 1;
+    int colisaoInimigos = 1;
+
+    float xInimigo, yInimigo, compInimigo, altInimigo, velInimigo;
+    int movX, movY;
+
+    for(int i = 0; i < NUMERO_INIMIGOS; i++)
+    {
+        movX = rand()%2;
+        movY = !movX;
+        atualizaMovInimigo(c, i, movX, movY);
+
+        velInimigo = 60 + rand()%60;
+        atualizaVelInimigo(c, i, velInimigo);
+
+        colisaoPlat = 1;
+        colisaoInimigos = 1;
+
+        while(colisaoPlat || colisaoInimigos)
+        {
+            compInimigo = obtemCompInimigo(c, i);
+            altInimigo = obtemAltInimigo(c, i);
+            xInimigo = BORDA_ESQ + compInimigo / 2.0 + (rand() % (int)(BORDA_DIR - BORDA_ESQ - compInimigo));
+            yInimigo = BORDA_CIMA + altInimigo / 2.0 + (rand() % (int)(BORDA_BAIXO - BORDA_CIMA - altInimigo));
+            atualizaPosicaoInimigo(c, i, xInimigo, yInimigo);
+
+            colisaoPlat = colidiuPlataformasInimigos(c, i);
+
+            if(!colisaoPlat)
+                colisaoInimigos = colidiuInimigos(c, i);
         }
     }
 }
@@ -114,8 +304,9 @@ void criaItens(float xItens[], float yItens[], float tamanhoItens, char tipoIten
 int main()
 {
     //VARIAVEIS DA CONFIGURACAO
-    sf::RenderWindow window(sf::VideoMode(800, 512), "Jogo Aula 02", sf::Style::Close);
+    sf::RenderWindow window(sf::VideoMode(800, 512), "Jogo Aula 03", sf::Style::Close);
     sf::View view(sf::Vector2f(0, 0), sf::Vector2f(VIEW_HEIGHT, VIEW_HEIGHT));
+    srand(time(0));
 
     //VARIAVEIS DO JOGO
     sf::Texture texturaJogador;
@@ -143,104 +334,36 @@ int main()
 
     Objetivo objetivo(&texturaObjetivo, sf::Vector2u(13, 21), &texturaInventario, sf::Vector2u(17, 10), &texturaItem, sf::Vector2u(16, 16));
 
-    float xPlataformas[10] = {384,  480,  624,  864, 1056, 1248, 1296,  768, 1128, 1392};
-    float yPlataformas[10] = {384, 1104,  528,  624, 1296, 1200,  576, 1104,  888, 1512};
-    float compPlataformas[10] = {96, 192, 288, 192, 192, 192, 192, 192, 144,  96};
-    float altPlataformas[10] =  {96, 384, 192, 384, 384, 192, 192, 192, 144, 144};
+    ////CRIA CENA
+
+    float xPlataformas[NUMERO_PLATAFORMAS] = {500, 384,  480,  624,  864, 1056, 1248, 1296,  768, 1128, 1392};
+    float compPlataformas[NUMERO_PLATAFORMAS] = {26, 96, 192, 288, 192, 192, 192, 192, 192, 144,  96};
+    float yPlataformas[NUMERO_PLATAFORMAS] = {227, 384, 1104,  528,  624, 1296, 1200,  576, 1104,  888, 1512};
+    float altPlataformas[NUMERO_PLATAFORMAS] =  {15, 96, 384, 192, 384, 384, 192, 192, 192, 144, 144};
+
+    Cena dadosCena(xPlataformas, compPlataformas, yPlataformas, altPlataformas);
+
+    ////PLATAFORMAS
 
     std::vector<Plataforma> plataformas;
-    for(int i = 0; i < 10; i++)
-        plataformas.push_back(Plataforma(NULL, sf::Vector2f(xPlataformas[i], yPlataformas[i]), sf::Vector2f(compPlataformas[i], altPlataformas[i])));
-    /*
-        plataformas.push_back(Plataforma(NULL, sf::Vector2f(384.0f, 384.0f), sf::Vector2f(96.0f, 96.0f)));
-        plataformas.push_back(Plataforma(NULL, sf::Vector2f(480.0f, 1104.0f), sf::Vector2f(192.0f, 384.0f)));
-        plataformas.push_back(Plataforma(NULL, sf::Vector2f(624.0f, 528.0f), sf::Vector2f(288.0f, 192.0f)));
-        plataformas.push_back(Plataforma(NULL, sf::Vector2f(864.0f, 624.0f), sf::Vector2f(192.0f, 384.0f)));
-        plataformas.push_back(Plataforma(NULL, sf::Vector2f(1056.0f, 1296.0f), sf::Vector2f(192.0f, 384.0f)));
-        plataformas.push_back(Plataforma(NULL, sf::Vector2f(1248.0f, 1200.0f), sf::Vector2f(192.0f, 192.0f)));
-        plataformas.push_back(Plataforma(NULL, sf::Vector2f(1296.0f, 576.0f), sf::Vector2f(192.0f, 192.0f)));
-        plataformas.push_back(Plataforma(NULL, sf::Vector2f(768.0f, 1104.0f), sf::Vector2f(192.0f, 192.0f)));
-        plataformas.push_back(Plataforma(NULL, sf::Vector2f(1128.0f, 888.0f), sf::Vector2f(144.0f, 144.0f)));
-        plataformas.push_back(Plataforma(NULL, sf::Vector2f(1392.0f, 1512.0f), sf::Vector2f(96.0f, 144.0f)));
-    */
+    for(int i = 0; i < NUMERO_PLATAFORMAS; i++)
+        plataformas.push_back(Plataforma(NULL, sf::Vector2f(obtemXPlataforma(&dadosCena, i), obtemYPlataforma(&dadosCena, i)), sf::Vector2f(obtemCompPlataforma(&dadosCena, i), obtemAltPlataforma(&dadosCena, i))));
+
+    ////INIMIGO
+
+    criaInimigos(&dadosCena);
 
     std::vector<Inimigo> inimigos;
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(672.0f , 288.0f ), 0, 1));///14 6  Y
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(336.0f , 528.0f ), 1, 0));///7  11 X
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(816.0f , 912.0f ), 0, 1));///17 19 Y
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(288.0f , 1000.0f), 1, 0));///6  20 X
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(288.0f , 1248.0f), 1, 0));///6  26 X
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(528.0f , 816.0f ), 0, 1));///11 17 Y
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(768.0f , 1300.0f), 0, 1));///15 25 Y
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(1056.0f, 1536.0f), 0, 1));///22 32 Y
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(1128.0f, 1008.0f), 0, 1));///23 21 Y
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(1200.0f, 888.0f ), 1, 0));///28 18 X
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(1056.0f, 578.0f ), 1, 0));///22 12 X
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(1440.0f, 578.0f ), 1, 0));///30 12 X
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(1296.0f, 360.0f ), 0, 1));///27 7  Y
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(864.0f , 120.0f ), 0, 1));///18 6  Y
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(1440.0f, 1200.0f), 1, 0));///30 25 X
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(482.0f , 1440.0f), 0, 1));///10 30 Y
+    for(int i = 0; i < NUMERO_INIMIGOS; i++)
+        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, dadosCena.getInimVel(i), sf::Vector2f(dadosCena.getInimX(i) , dadosCena.getInimY(i)), dadosCena.getInimMovX(i), dadosCena.getInimMovY(i)));
 
-        /*
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(672.0f , 288.0f ), 1, 1));///14 6  Y
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(336.0f , 528.0f ), 1, 1));///7  11 X
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(816.0f , 912.0f ), 1, 1));///17 19 Y
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(288.0f , 1000.0f), 1, 1));///6  20 X
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(288.0f , 1248.0f), 1, 1));///6  26 X
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(528.0f , 816.0f ), 1, 1));///11 17 Y
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(768.0f , 1300.0f), 1, 1));///15 25 Y
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(1056.0f, 1536.0f), 1, 1));///22 32 Y
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(1128.0f, 1008.0f), 1, 1));///23 21 Y
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(1200.0f, 888.0f ), 1, 1));///28 18 X
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(1056.0f, 578.0f ), 1, 1));///22 12 X
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(1440.0f, 578.0f ), 1, 1));///30 12 X
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(1296.0f, 360.0f ), 1, 1));///27 7  Y
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(864.0f , 120.0f ), 1, 1));///18 6  Y
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(1440.0f, 1200.0f), 1, 1));///30 25 X
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(482.0f , 1440.0f), 1, 1));///10 30 Y
-        */
+    ////ITENS
 
-    float xItens[27];
-    float yItens[27];
-    char tipoItens[27];
+    criaItens(&dadosCena);
 
     std::vector<Item> itens;
-        criaItens(xItens, yItens, 35, tipoItens, xPlataformas, yPlataformas, compPlataformas, altPlataformas);
-        for(int i = 0; i < 27; i++)
-        {
-            itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(xItens[i], yItens[i]), tipoItens[i]));
-            printf("Item %d: (%f, %f) - %c\n", i, xItens[i], yItens[i], tipoItens[i]);
-        }
-        /*
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1296.0f, 1008.0f), 'a'));///27 21
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1248.0f, 1344.0f), 'b'));///26 28
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1488.0f, 1536.0f), 'c'));///31 32
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(336.0f , 672.0f ), 'd'));///7  14
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(288.0f , 1056.0f), 'e'));///6  22
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(960.0f , 1008.0f), 'f'));///18 24
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1488.0f, 1248.0f), 'g'));///6  8
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(318.0f , 1152.0f), 'h'));///6  24
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(960.0f , 864.0f ), 'i'));///20 18
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(480.0f , 336.0f ), 'a'));///10 7
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(624.0f , 1440.0f), 'b'));///6  28
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1200.0f, 720.0f ), 'c'));///25 15
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(288.0f , 288.0f ), 'd'));///6  6
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(336.0f , 1488.0f), 'e'));///7  31
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1056.0f, 672.0f ), 'f'));///22 14
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1248.0f, 384.0f ), 'g'));///8  15
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(624.0f , 1056.0f), 'h'));///13 22
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1056.0f, 288.0f ), 'i'));///22 6
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(624.0f , 720.0f ), 'a'));///13 15
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(672.0f , 912.0f ), 'b'));///14 19
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(768.0f , 288.0f ), 'c'));///16 6
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(480.0f , 768.0f ), 'd'));///10 16
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(864.0f , 1248.0f), 'e'));///18 26
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1440.0f, 288.0f ), 'f'));///30 6
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(288.0f , 864.0f ), 'g'));///6  18
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(912.0f , 1536.0f), 'h'));///19 32
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1392.0f, 720.0f ), 'i'));///29 15
-*/
+    for(int i = 0; i < NUMERO_ITENS; i++)
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(obtemXItem(&dadosCena, i), obtemYItem(&dadosCena, i)), dadosCena.getItemTipo(i)));
 
     //CONFIGURA TEMPO
     float deltaTempo = 0.0f;
@@ -285,7 +408,7 @@ int main()
         for(unsigned int i = 0; i < itens.size(); i++)
         {
             Item& item = itens[i];
-            if(item.getColisor().checaColisao(jogador.getColisor()) && sf::Keyboard::isKeyPressed(sf::Keyboard::E) && !item.getStatus())
+            if(item.getColisor().checaColisao(jogador.getColisor()) && sf::Keyboard::isKeyPressed(sf::Keyboard::E) && !item.getStatus() && !inventario.slotCheio(item.getTipo()))
             {
                 item.coletou();
                 inventario.pegouItem(item.getTipo());
@@ -326,20 +449,20 @@ int main()
 
         char direcao;
 
-        for(unsigned int i = 0; i < plataformas.size(); i++)
-        {
-            Plataforma& plataforma = plataformas[i];
-            plataforma.getColisor().checaColisaoJogadorPlataforma(jogador.getColisor());
-        }
-
         objetivo.getColisorPlayer().checaColisaoJogadorPlataforma(jogador.getColisor());
 
         for(unsigned int i = 0; i < plataformas.size(); i++)
         {
             Plataforma& plataforma = plataformas[i];
+
+            //JOGADOR x PLATAFORMA
+            plataforma.getColisor().checaColisaoJogadorPlataforma(jogador.getColisor());
+
             for(unsigned int j = 0; j < inimigos.size(); j++)
             {
                 Inimigo& inimigo = inimigos[j];
+
+                //INIMIGO x PLATAFORMA
                 direcao = plataforma.getColisor().checaColisaoInimigoPlataforma(inimigo.getColisor());
                 switch(direcao)
                 {
@@ -358,20 +481,14 @@ int main()
                     default:
                         break;
                 }
-            }
-        }
 
-        if(jogador.getStatus())
-        {
-            for(unsigned int i = 0; i < inimigos.size(); i++)
-            {
-                Inimigo& inimigo = inimigos[i];
-                jogador.setStatus(!jogador.getColisor().checaColisao(inimigo.getColisor()));
+                //INIMIGO x JOGADOR
+                if(jogador.getStatus())
+                    jogador.setStatus(!jogador.getColisor().checaColisao(inimigo.getColisor()));
             }
         }
 
         //MOVIMENTACAO
-
 
         for(unsigned int i = 0; i < inimigos.size(); i++)
         {
@@ -391,6 +508,12 @@ int main()
         //DESENHA OS OBJETOS
 
         mapa.desenha(window);
+
+        for(unsigned int i = 0; i < plataformas.size(); i++)
+        {
+            Plataforma& plat = plataformas[i];
+            plat.desenha(window);
+        }
 
         for(unsigned int i = 0; i < itens.size(); i++)
         {

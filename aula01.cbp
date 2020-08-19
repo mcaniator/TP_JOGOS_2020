@@ -2,7 +2,7 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="aula02.5" />
+		<Option title="aula03" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
@@ -47,6 +47,7 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="include/Animacao.h" />
+		<Unit filename="include/Cena.h" />
 		<Unit filename="include/Colisor.h" />
 		<Unit filename="include/Inimigo.h" />
 		<Unit filename="include/Inventario.h" />
@@ -57,6 +58,7 @@
 		<Unit filename="include/Plataforma.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/Animacao.cpp" />
+		<Unit filename="src/Cena.cpp" />
 		<Unit filename="src/Colisor.cpp" />
 		<Unit filename="src/Inimigo.cpp" />
 		<Unit filename="src/Inventario.cpp" />

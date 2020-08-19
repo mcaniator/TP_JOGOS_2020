@@ -15,5 +15,5 @@ Plataforma::~Plataforma()
 
 void Plataforma::desenha(sf::RenderWindow& window)
 {
-    window.draw(corpo);
+    //window.draw(corpo);
 }

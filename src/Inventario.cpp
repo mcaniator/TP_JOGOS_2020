@@ -72,6 +72,13 @@ char Inventario::soltouItem(int tecla)
         return ' ';
 }
 
+bool Inventario::slotCheio(char coletou)
+{
+    if(numColetados[coletou - 'a'] == 3)
+        return true;
+    return false;
+}
+
 void Inventario::desenha(sf::RenderWindow& window, sf::Vector2f posicaoJogador)
 {
     for(int i = 0; i < 9; i++)

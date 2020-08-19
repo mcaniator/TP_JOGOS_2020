@@ -11,6 +11,7 @@ class Inventario
 
         void pegouItem(char coletou);
         char soltouItem(int tecla);
+        bool slotCheio(char coletou);
 
         void desenha(sf::RenderWindow& window, sf::Vector2f posicaoJogador);
 
