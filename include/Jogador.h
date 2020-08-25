@@ -14,6 +14,7 @@ class Jogador
         void desenha(sf::RenderWindow& window);
 
         sf::Vector2f getPosicao() { return corpoJogador.getPosition(); };
+        float getX() { return corpoJogador.getPosition().x; };
         float getY() { return corpoJogador.getPosition().y; };
 
         bool getStatus() { return vivo; };

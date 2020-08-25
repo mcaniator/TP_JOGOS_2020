@@ -50,6 +50,16 @@ int teclaPressionada()
         return 0;
 }
 
+float obtemXJogador(Jogador* j)
+{
+    return j->getX();
+}
+
+float obtemYJogador(Jogador* j)
+{
+    return j->getY();
+}
+
 float obtemXPlataforma(Cena* c, int i)
 {
     return c->getPlatX(i);
@@ -301,6 +311,33 @@ void criaInimigos(Cena* c)
 ///                                                                                  ///
 ///----------------------------------------------------------------------------------///
 
+float distancia(float x1, float y1, float x2, float y2)
+{
+    float distanciaPontos = sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2));
+    printf("%f", distanciaPontos);
+    return distanciaPontos;
+}
+
+int adicionaEventos(Jogador* j, float x[], float y[], int numeroEventos)
+{
+    x[numeroEventos] = obtemXJogador(j);
+    y[numeroEventos] = obtemYJogador(j);
+    printf("%f %f\n", x[numeroEventos], y[numeroEventos]);
+    return numeroEventos++;
+}
+
+float calculaDistanciaTotal(float x[], float y[], int numeroEventos)
+{
+    float distanciaTotal = 0;
+    for(int i = 0; i < numeroEventos - 1; i++)
+        distanciaTotal += distancia(x[i], y[i], x[i + 1], y[i + 1]);
+    return distanciaTotal;
+}
+
+///----------------------------------------------------------------------------------///
+///                                                                                  ///
+///----------------------------------------------------------------------------------///
+
 int main()
 {
     //VARIAVEIS DA CONFIGURACAO
@@ -333,6 +370,11 @@ int main()
     Inventario inventario(&texturaInventario, sf::Vector2u(17, 10), &texturaItem, sf::Vector2u(16, 16), &texturaIndice, sf::Vector2u(4, 1));
 
     Objetivo objetivo(&texturaObjetivo, sf::Vector2u(13, 21), &texturaInventario, sf::Vector2u(17, 10), &texturaItem, sf::Vector2u(16, 16));
+
+    ////DISTANCIA
+    float xEventos[1000];
+    float yEventos[1000];
+    int numeroEventos = 0;
 
     ////CRIA CENA
 
@@ -412,6 +454,7 @@ int main()
             {
                 item.coletou();
                 inventario.pegouItem(item.getTipo());
+                numeroEventos = adicionaEventos(&jogador, xEventos, yEventos, numeroEventos);
             }
         }
 
@@ -431,7 +474,8 @@ int main()
                         break;
                     }
                 }
-            delay = 0.6;
+                delay = 0.6;
+                numeroEventos = adicionaEventos(&jogador, xEventos, yEventos, numeroEventos);
             }
         }
 
@@ -442,6 +486,7 @@ int main()
             {
                 item.coletou();
                 objetivo.recebeuItem(item.getTipo());
+                numeroEventos = adicionaEventos(&jogador, xEventos, yEventos, numeroEventos);
             }
         }
 
@@ -559,6 +604,7 @@ int main()
         {
             objetivo.fimDeJogo();
             objetivo.desenhaFinal(window, view.getCenter());
+            printf("%f", calculaDistanciaTotal(xEventos, yEventos, numeroEventos));
         }
 
         ////
