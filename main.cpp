@@ -251,6 +251,7 @@ void criaItens(Cena* c)
             tamanhoItem = obtemTamanhoItem(c, i);
             xItem = BORDA_ESQ + tamanhoItem / 2.0 + (rand() % (int)(BORDA_DIR - BORDA_ESQ - tamanhoItem));
             yItem = BORDA_CIMA + tamanhoItem / 2.0 + (rand() % (int)(BORDA_BAIXO - BORDA_CIMA - tamanhoItem));
+            printf("itens");
             atualizaPosicaoItem(c, i, xItem, yItem);
 
             colisaoPlat = colidiuPlataformasItens(c, i);
@@ -287,6 +288,7 @@ void criaInimigos(Cena* c)
             altInimigo = obtemAltInimigo(c, i);
             xInimigo = BORDA_ESQ + compInimigo / 2.0 + (rand() % (int)(BORDA_DIR - BORDA_ESQ - compInimigo));
             yInimigo = BORDA_CIMA + altInimigo / 2.0 + (rand() % (int)(BORDA_BAIXO - BORDA_CIMA - altInimigo));
+            printf("inimigos");
             atualizaPosicaoInimigo(c, i, xInimigo, yInimigo);
 
             colisaoPlat = colidiuPlataformasInimigos(c, i);

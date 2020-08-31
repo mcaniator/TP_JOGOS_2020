@@ -3,7 +3,7 @@
 
 #define NUMERO_PLATAFORMAS 11
 #define NUMERO_ITENS 27
-#define NUMERO_INIMIGOS 30
+#define NUMERO_INIMIGOS 10
 
 typedef struct
 {
