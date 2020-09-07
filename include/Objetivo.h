@@ -20,15 +20,17 @@ class Objetivo
 
         float getY() { return corpo.getPosition().y; };
 
-        void desenha(sf::RenderWindow& window);
-        void desenhaFinal(sf::RenderWindow& window, sf::Vector2f posicao);
+        void desenha(sf::RenderWindow& window, bool vivo);
+        void desenhaFinal(sf::RenderWindow& window, sf::Vector2f posicao, float p);
 
     private:
         sf::RectangleShape corpo;
         sf::RectangleShape corpoObjetivo;
         sf::IntRect objetivoRet;
+
         sf::RectangleShape corpoFala;
         sf::IntRect falaRet;
+
         sf::RectangleShape corpoItem;
         sf::IntRect itemRet;
 
@@ -42,7 +44,10 @@ class Objetivo
         int numRecebidos;
 
         sf::Text texto;
+        sf::Text pontos;
+        sf::Text numero;
         sf::Font fonte;
+
 };
 
 #endif // OBJETIVO_H

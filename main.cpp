@@ -1,5 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <stdio.h>
+#include <fstream>
+#include <string>
 #include <vector>
 #include <math.h>
 #include "Jogador.h"
@@ -15,6 +18,8 @@
 #define BORDA_DIR 1584
 #define BORDA_CIMA 192
 #define BORDA_BAIXO 1632
+
+#define MAX_RECORDES 5
 
 static const float VIEW_HEIGHT = 322.0f;
 
@@ -314,7 +319,6 @@ void criaInimigos(Cena* c)
 float distancia(float x1, float y1, float x2, float y2)
 {
     float distanciaPontos = sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2));
-    printf("%f", distanciaPontos);
     return distanciaPontos;
 }
 
@@ -322,16 +326,54 @@ int adicionaEventos(Jogador* j, float x[], float y[], int numeroEventos)
 {
     x[numeroEventos] = obtemXJogador(j);
     y[numeroEventos] = obtemYJogador(j);
-    printf("%f %f\n", x[numeroEventos], y[numeroEventos]);
-    return numeroEventos++;
+    numeroEventos++;
+    return numeroEventos;
 }
 
 float calculaDistanciaTotal(float x[], float y[], int numeroEventos)
 {
     float distanciaTotal = 0;
+    float dist;
     for(int i = 0; i < numeroEventos - 1; i++)
-        distanciaTotal += distancia(x[i], y[i], x[i + 1], y[i + 1]);
+    {
+        dist = distancia(x[i], y[i], x[i + 1], y[i + 1]);
+        distanciaTotal += dist;
+    }
     return distanciaTotal;
+}
+
+float calculaPontos(float x[], float y[], int numeroEventos, float tempoTotal)
+{
+    float dist = calculaDistanciaTotal(x, y, numeroEventos);
+    cout << "Distancia: " << dist << endl;
+    float pontos;
+    pontos = dist / tempoTotal;
+    cout << "Pontos: " << dist << endl;
+    return pontos;
+}
+
+int organizaRecordes(float recordes[], int numeroRecordes, float pontos)
+{
+    float indiceDoMenor = -1;
+    for(int i = 0; i < numeroRecordes; i++)
+        if(recordes[i] < pontos)
+            indiceDoMenor = i;
+    if(indiceDoMenor != -1)
+    {
+        for(int i = MAX_RECORDES - 1; i > indiceDoMenor; i--)
+            recordes[i] = recordes[i - 1];
+        recordes[indiceDoMenor] = pontos;
+        numeroRecordes++;
+    }
+    else
+    {
+        if(numeroRecordes < 5)
+        {
+            recordes[numeroRecordes] = pontos;
+            numeroRecordes++;
+        }
+    }
+    return numeroRecordes;
 }
 
 ///----------------------------------------------------------------------------------///
@@ -341,7 +383,7 @@ float calculaDistanciaTotal(float x[], float y[], int numeroEventos)
 int main()
 {
     //VARIAVEIS DA CONFIGURACAO
-    sf::RenderWindow window(sf::VideoMode(800, 512), "Jogo Aula 03", sf::Style::Close);
+    sf::RenderWindow window(sf::VideoMode(800, 512), "Jogo Aula 04", sf::Style::Close);
     sf::View view(sf::Vector2f(0, 0), sf::Vector2f(VIEW_HEIGHT, VIEW_HEIGHT));
     srand(time(0));
 
@@ -371,10 +413,42 @@ int main()
 
     Objetivo objetivo(&texturaObjetivo, sf::Vector2u(13, 21), &texturaInventario, sf::Vector2u(17, 10), &texturaItem, sf::Vector2u(16, 16));
 
-    ////DISTANCIA
+    ////REGISTRO DE EVENTOS
+
     float xEventos[1000];
     float yEventos[1000];
     int numeroEventos = 0;
+    numeroEventos = adicionaEventos(&jogador, xEventos, yEventos, numeroEventos);
+
+    ////RANKING
+
+    float recordes[5];
+    int numeroRecordes;
+
+    FILE *rec = fopen("recordes.txt", "rt");
+
+    if (rec == NULL)
+    {
+        printf("Problemas ao abrir o arquivo\n");
+        return 0;
+    }
+
+    fscanf(rec, "%d", &numeroRecordes);
+    cout << numeroRecordes << endl;
+
+    for(int i = 0; i < numeroRecordes; i++)
+    {
+        fscanf(rec, "%f", &recordes[i]);
+        cout << recordes[i] << endl;
+    }
+
+    fclose(rec);
+
+    ////TEMPO
+
+    float tempoTotal = 0;
+    float tempoAtual;
+    bool tempoAtualRecebido = false;
 
     ////CRIA CENA
 
@@ -429,6 +503,8 @@ int main()
             delay -= deltaTempo;
         else
             delay = 0;
+
+        tempoTotal += deltaTempo;
 
         sf::Event evnt;
         while(window.pollEvent(evnt))
@@ -529,7 +605,19 @@ int main()
 
                 //INIMIGO x JOGADOR
                 if(jogador.getStatus())
-                    jogador.setStatus(!jogador.getColisor().checaColisao(inimigo.getColisor()));
+                {
+                    bool status = jogador.getColisor().checaColisao(inimigo.getColisor());
+                    if(status)
+                    {
+                        jogador.setStatus(!status);
+                        numeroEventos = adicionaEventos(&jogador, xEventos, yEventos, numeroEventos);
+                        if(!tempoAtualRecebido)
+                        {
+                            tempoAtual = tempoTotal;
+                            tempoAtualRecebido = true;
+                        }
+                    }
+                }
             }
         }
 
@@ -580,13 +668,13 @@ int main()
         }
 
         if(!naFrente)
-            objetivo.desenha(window);
+            objetivo.desenha(window, jogador.getStatus());
 
         if(vivo)
             jogador.desenha(window);
 
         if(naFrente)
-            objetivo.desenha(window);
+            objetivo.desenha(window, jogador.getStatus());
 
         for(unsigned int i = 0; i < inimigos.size(); i++)
         {
@@ -595,16 +683,26 @@ int main()
                 inimigo.desenha(window);
         }
 
-        if(!objetivo.getTerminou())
+        if(!objetivo.getTerminou() && jogador.getStatus())
             inventario.desenha(window, jogador.getPosicao());
 
         //FINAL DO JOGO
 
+        if(!jogador.getStatus())
+        {
+            float p = calculaPontos(xEventos, yEventos, numeroEventos, tempoAtual);
+            p *= 0.5;
+            objetivo.desenhaFinal(window, view.getCenter(), p);
+
+        }
+
+
         if(objetivo.getTerminou())
         {
+            float p = calculaPontos(xEventos, yEventos, numeroEventos, tempoAtual);
+            p *= 1.5;
             objetivo.fimDeJogo();
-            objetivo.desenhaFinal(window, view.getCenter());
-            printf("%f", calculaDistanciaTotal(xEventos, yEventos, numeroEventos));
+            objetivo.desenhaFinal(window, view.getCenter(), p);
         }
 
         ////
