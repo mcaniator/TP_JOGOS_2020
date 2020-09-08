@@ -1,10 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include <stdio.h>
-#include <fstream>
-#include <string>
 #include <vector>
-#include <math.h>
 #include "Jogador.h"
 #include "Inimigo.h"
 #include "Plataforma.h"
@@ -13,11 +9,6 @@
 #include "Inventario.h"
 #include "Objetivo.h"
 #include "Cena.h"
-
-#define BORDA_ESQ 240
-#define BORDA_DIR 1584
-#define BORDA_CIMA 192
-#define BORDA_BAIXO 1632
 
 #define MAX_RECORDES 5
 
@@ -65,255 +56,25 @@ float obtemYJogador(Jogador* j)
     return j->getY();
 }
 
-float obtemXPlataforma(Cena* c, int i)
+void gravarRecordes(FILE *rec, float recordes[], int numeroRecordes)
 {
-    return c->getPlatX(i);
-}
+    rec = fopen("recordes.txt", "wt");
 
-float obtemCompPlataforma(Cena* c, int i)
-{
-    return c->getPlatComp(i);
-}
+    if (rec == NULL)
+    {
+        printf("Problemas ao abrir o arquivo\n");
+    }
 
-float obtemYPlataforma(Cena* c, int i)
-{
-    return c->getPlatY(i);
-}
+    fprintf(rec, "%d\n", numeroRecordes);
 
-float obtemAltPlataforma(Cena* c, int i)
-{
-    return c->getPlatAlt(i);
-}
+    for(int i = 0; i < numeroRecordes; i++)
+        fprintf(rec, "%f\n", recordes[i]);
 
-float obtemXItem(Cena* c, int i)
-{
-    return c->getItemX(i);
-}
-
-float obtemYItem(Cena* c, int i)
-{
-    return c->getItemY(i);
-}
-
-float obtemTamanhoItem(Cena* c, int i)
-{
-    return c->getItemTamanho(i);
-}
-
-void atualizaPosicaoItem(Cena* c, int i, float x, float y)
-{
-    c->setItemX(i, x);
-    c->setItemY(i, y);
-}
-
-void atualizaTipoItem(Cena* c, int i, char tipo)
-{
-    c->setItemTipo(i, tipo);
-}
-
-float obtemXInimigo(Cena* c, int i)
-{
-    return c->getInimX(i);
-}
-
-float obtemCompInimigo(Cena* c, int i)
-{
-    return c->getInimComp(i);
-}
-
-float obtemYInimigo(Cena* c, int i)
-{
-    return c->getInimY(i);
-}
-
-float obtemAltInimigo(Cena* c, int i)
-{
-    return c->getInimAlt(i);
-}
-
-void atualizaPosicaoInimigo(Cena* c, int i, float x, float y)
-{
-    c->setInimX(i, x);
-    c->setInimY(i, y);
-}
-
-void atualizaMovInimigo(Cena* c, int i, int x, int y)
-{
-    c->setInimMovX(i, x);
-    c->setInimMovY(i, y);
-}
-
-void atualizaVelInimigo(Cena* c, int i, float vel)
-{
-    c->setInimVel(i, vel);
+    fclose(rec);
 }
 
 ///----------------------------------------------------------------------------------///
 ///                                     TESTE                                        ///
-///----------------------------------------------------------------------------------///
-
-int colidiu(float itemX, float compItem, float itemY, float altItem, float objX, float compObj, float objY, float altObj)
-{
-    float deltaX = fabs(itemX - objX);
-    float deltaY = fabs(itemY - objY);
-    float distMinX = (compItem + compObj) / 2;
-    float distMinY = (altItem + altObj) / 2;
-    if((deltaX <= distMinX) && (deltaY <= distMinY))
-        return 1;
-    else
-        return 0;
-}
-
-int colidiuPlataformasItens(Cena* c, int indiceItem)
-{
-    float platX, platY, compPlat, altPlat;
-    float itemX = obtemXItem(c, indiceItem);
-    float itemY = obtemYItem(c, indiceItem);
-    float compItem = obtemTamanhoItem(c, indiceItem), altItem = compItem;
-
-    for(int i = 0; i < NUMERO_PLATAFORMAS; i++)
-    {
-        platX = obtemXPlataforma(c, i);
-        platY = obtemYPlataforma(c, i);
-        compPlat = obtemCompPlataforma(c, i);
-        altPlat = obtemAltPlataforma(c, i);
-        if(colidiu(itemX, compItem, itemY, altItem, platX, compPlat, platY, altPlat))
-            return 1;
-    }
-    return 0;
-}
-
-int colidiuPlataformasInimigos(Cena* c, int indiceInimigo)
-{
-    float platX, platY, compPlat, altPlat;
-    float inimigoX = obtemXInimigo(c, indiceInimigo);
-    float inimigoY = obtemYInimigo(c, indiceInimigo);
-    float inimigoComp = obtemCompInimigo(c, indiceInimigo);
-    float inimigoAlt = obtemAltInimigo(c, indiceInimigo);
-
-    for(int i = 0; i < NUMERO_PLATAFORMAS; i++)
-    {
-        platX = obtemXPlataforma(c, i);
-        platY = obtemYPlataforma(c, i);
-        compPlat = obtemCompPlataforma(c, i);
-        altPlat = obtemAltPlataforma(c, i);
-        if(colidiu(inimigoX, inimigoComp, inimigoY, inimigoAlt, platX, compPlat, platY, altPlat))
-            return 1;
-    }
-    return 0;
-}
-
-int colidiuItens(Cena* c, int indiceItem)
-{
-    float item2X, item2Y, compItem2, altItem2;
-
-    float itemX = obtemXItem(c, indiceItem);
-    float itemY = obtemYItem(c, indiceItem);
-    float compItem = obtemTamanhoItem(c, indiceItem);
-    float altItem = compItem;
-
-    for(int i = 0; i < indiceItem; i++)
-    {
-        item2X = obtemXItem(c, i);
-        item2Y = obtemYItem(c, i);
-        compItem2 = obtemTamanhoItem(c, i);
-        altItem2 = compItem2;
-        if(colidiu(itemX, compItem, itemY, altItem, item2X, compItem2, item2Y, altItem2))
-            return 1;
-    }
-    return 0;
-}
-
-int colidiuInimigos(Cena* c, int indiceInimigo)
-{
-    float inimigo2X, inimigo2Y, inimigo2Comp, inimigo2Alt;
-
-    float inimigoX = obtemXInimigo(c, indiceInimigo);
-    float inimigoY = obtemYInimigo(c, indiceInimigo);
-    float inimigoComp = obtemCompInimigo(c, indiceInimigo);
-    float inimigoAlt  =  obtemAltInimigo(c, indiceInimigo);
-
-    for(int i = 0; i < indiceInimigo; i++)
-    {
-        inimigo2X = obtemXInimigo(c, i);
-        inimigo2Y = obtemYInimigo(c, i);
-        inimigo2Comp = obtemCompInimigo(c, i);
-        inimigo2Alt  =  obtemAltInimigo(c, i);
-        if(colidiu(inimigoX, inimigoComp, inimigoY, inimigoAlt, inimigo2X, inimigo2Comp, inimigo2Y, inimigo2Alt))
-            return 1;
-    }
-    return 0;
-}
-
-void criaItens(Cena* c)
-{
-    int colisaoPlat = 1;
-    int colisaoItens = 1;
-
-    float xItem, yItem, tamanhoItem;
-    char tipoItem;
-
-    for(int i = 0; i < NUMERO_ITENS; i++)
-    {
-        tipoItem = 'a' + (i%9);
-        atualizaTipoItem(c, i, tipoItem);
-
-        colisaoPlat = 1;
-        colisaoItens = 1;
-
-        while(colisaoPlat || colisaoItens)
-        {
-            tamanhoItem = obtemTamanhoItem(c, i);
-            xItem = BORDA_ESQ + tamanhoItem / 2.0 + (rand() % (int)(BORDA_DIR - BORDA_ESQ - tamanhoItem));
-            yItem = BORDA_CIMA + tamanhoItem / 2.0 + (rand() % (int)(BORDA_BAIXO - BORDA_CIMA - tamanhoItem));
-            atualizaPosicaoItem(c, i, xItem, yItem);
-
-            colisaoPlat = colidiuPlataformasItens(c, i);
-
-            if(!colisaoPlat)
-                colisaoItens = colidiuItens(c, i);
-        }
-    }
-}
-
-void criaInimigos(Cena* c)
-{
-    int colisaoPlat = 1;
-    int colisaoInimigos = 1;
-
-    float xInimigo, yInimigo, compInimigo, altInimigo, velInimigo;
-    int movX, movY;
-
-    for(int i = 0; i < NUMERO_INIMIGOS; i++)
-    {
-        movX = rand()%2;
-        movY = !movX;
-        atualizaMovInimigo(c, i, movX, movY);
-
-        velInimigo = 60 + rand()%60;
-        atualizaVelInimigo(c, i, velInimigo);
-
-        colisaoPlat = 1;
-        colisaoInimigos = 1;
-
-        while(colisaoPlat || colisaoInimigos)
-        {
-            compInimigo = obtemCompInimigo(c, i);
-            altInimigo = obtemAltInimigo(c, i);
-            xInimigo = BORDA_ESQ + compInimigo / 2.0 + (rand() % (int)(BORDA_DIR - BORDA_ESQ - compInimigo));
-            yInimigo = BORDA_CIMA + altInimigo / 2.0 + (rand() % (int)(BORDA_BAIXO - BORDA_CIMA - altInimigo));
-            atualizaPosicaoInimigo(c, i, xInimigo, yInimigo);
-
-            colisaoPlat = colidiuPlataformasInimigos(c, i);
-
-            if(!colisaoPlat)
-                colisaoInimigos = colidiuInimigos(c, i);
-        }
-    }
-}
-
-///----------------------------------------------------------------------------------///
-///                                                                                  ///
 ///----------------------------------------------------------------------------------///
 
 float distancia(float x1, float y1, float x2, float y2)
@@ -345,25 +106,31 @@ float calculaDistanciaTotal(float x[], float y[], int numeroEventos)
 float calculaPontos(float x[], float y[], int numeroEventos, float tempoTotal)
 {
     float dist = calculaDistanciaTotal(x, y, numeroEventos);
-    cout << "Distancia: " << dist << endl;
+    //cout << "Distancia: " << dist << endl;
     float pontos;
     pontos = dist / tempoTotal;
-    cout << "Pontos: " << dist << endl;
+    //cout << "Pontos: " << dist << endl;
     return pontos;
 }
 
 int organizaRecordes(float recordes[], int numeroRecordes, float pontos)
 {
-    float indiceDoMenor = -1;
+    int indiceDoMenor = -1;
     for(int i = 0; i < numeroRecordes; i++)
+    {
         if(recordes[i] < pontos)
+        {
             indiceDoMenor = i;
+            break;
+        }
+    }
     if(indiceDoMenor != -1)
     {
         for(int i = MAX_RECORDES - 1; i > indiceDoMenor; i--)
             recordes[i] = recordes[i - 1];
         recordes[indiceDoMenor] = pontos;
-        numeroRecordes++;
+        if(numeroRecordes < 5)
+            numeroRecordes++;
     }
     else
     {
@@ -376,12 +143,52 @@ int organizaRecordes(float recordes[], int numeroRecordes, float pontos)
     return numeroRecordes;
 }
 
+void imprimev(float v[])
+{
+    for(int i = 0; i < 5; i++)
+        cout << v[i];
+    cout << endl;
+}
+
 ///----------------------------------------------------------------------------------///
 ///                                                                                  ///
 ///----------------------------------------------------------------------------------///
 
 int main()
 {
+    float teste1[5] = { 0, 0, 0, 0, 0 };
+    int numeroRecordes;
+
+    FILE *rec;
+
+    rec = fopen("recordes.txt", "rt");
+
+    if (rec == NULL)
+    {
+        printf("Problemas ao abrir o arquivo\n");
+        return 0;
+    }
+
+    fscanf(rec, "%d", &numeroRecordes);
+    cout << numeroRecordes << endl;
+
+    for(int i = 0; i < numeroRecordes; i++)
+    {
+        fscanf(rec, "%f", &teste1[i]);
+        cout << teste1[i] << endl;
+    }
+
+    fclose(rec);
+
+    numeroRecordes = organizaRecordes(teste1, numeroRecordes, 75);
+
+    gravarRecordes(rec, teste1, numeroRecordes);
+
+
+
+    imprimev(teste1);
+
+
     //VARIAVEIS DA CONFIGURACAO
     sf::RenderWindow window(sf::VideoMode(800, 512), "Jogo Aula 04", sf::Style::Close);
     sf::View view(sf::Vector2f(0, 0), sf::Vector2f(VIEW_HEIGHT, VIEW_HEIGHT));
@@ -422,27 +229,12 @@ int main()
 
     ////RANKING
 
-    float recordes[5];
-    int numeroRecordes;
+    //float recordes[5] = {0, 0, 0, 0, 0};
+    //int numeroRecordes;
 
-    FILE *rec = fopen("recordes.txt", "rt");
+    ////ARQUIVO RECORDES
 
-    if (rec == NULL)
-    {
-        printf("Problemas ao abrir o arquivo\n");
-        return 0;
-    }
 
-    fscanf(rec, "%d", &numeroRecordes);
-    cout << numeroRecordes << endl;
-
-    for(int i = 0; i < numeroRecordes; i++)
-    {
-        fscanf(rec, "%f", &recordes[i]);
-        cout << recordes[i] << endl;
-    }
-
-    fclose(rec);
 
     ////TEMPO
 
@@ -463,23 +255,21 @@ int main()
 
     std::vector<Plataforma> plataformas;
     for(int i = 0; i < NUMERO_PLATAFORMAS; i++)
-        plataformas.push_back(Plataforma(NULL, sf::Vector2f(obtemXPlataforma(&dadosCena, i), obtemYPlataforma(&dadosCena, i)), sf::Vector2f(obtemCompPlataforma(&dadosCena, i), obtemAltPlataforma(&dadosCena, i))));
+        plataformas.push_back(Plataforma(NULL, sf::Vector2f(dadosCena.getPlatX(i), dadosCena.getPlatY(i)), sf::Vector2f(dadosCena.getPlatComp(i), dadosCena.getPlatAlt(i))));
 
     ////INIMIGO
 
-    criaInimigos(&dadosCena);
-
+    dadosCena.criaInimigos();
     std::vector<Inimigo> inimigos;
     for(int i = 0; i < NUMERO_INIMIGOS; i++)
         inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, dadosCena.getInimVel(i), sf::Vector2f(dadosCena.getInimX(i) , dadosCena.getInimY(i)), dadosCena.getInimMovX(i), dadosCena.getInimMovY(i)));
 
     ////ITENS
 
-    criaItens(&dadosCena);
-
+    dadosCena.criaItens();
     std::vector<Item> itens;
     for(int i = 0; i < NUMERO_ITENS; i++)
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(obtemXItem(&dadosCena, i), obtemYItem(&dadosCena, i)), dadosCena.getItemTipo(i)));
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(dadosCena.getItemX(i), dadosCena.getItemY(i)), dadosCena.getItemTipo(i)));
 
     //CONFIGURA TEMPO
     float deltaTempo = 0.0f;

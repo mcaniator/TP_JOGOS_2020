@@ -1,5 +1,12 @@
 #ifndef CENA_H
 #define CENA_H
+#include <math.h>
+#include <cstdlib>
+
+#define BORDA_ESQ 240
+#define BORDA_DIR 1584
+#define BORDA_CIMA 192
+#define BORDA_BAIXO 1632
 
 #define NUMERO_PLATAFORMAS 11
 #define NUMERO_ITENS 27
@@ -63,6 +70,14 @@ class Cena
         void setInimVel(int i, float a) { dadosInimigos[i].vel = a; }
         void setInimMovX(int i, int a) { dadosInimigos[i].movX = a; }
         void setInimMovY(int i, int a) { dadosInimigos[i].movY = a; }
+
+        int colidiu(float itemX, float compItem, float itemY, float altItem, float objX, float compObj, float objY, float altObj);
+        int colidiuPlataformasItens(int indiceItem);
+        int colidiuPlataformasInimigos(int indiceInimigo);
+        int colidiuItens(int indiceItem);
+        int colidiuInimigos(int indiceInimigo);
+        void criaItens();
+        void criaInimigos();
 
     private:
         DadosPlataforma dadosPlataformas[NUMERO_PLATAFORMAS];
