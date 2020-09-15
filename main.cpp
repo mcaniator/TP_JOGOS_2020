@@ -106,10 +106,8 @@ float calculaDistanciaTotal(float x[], float y[], int numeroEventos)
 float calculaPontos(float x[], float y[], int numeroEventos, float tempoTotal)
 {
     float dist = calculaDistanciaTotal(x, y, numeroEventos);
-    //cout << "Distancia: " << dist << endl;
-    float pontos;
-    pontos = dist / tempoTotal;
-    //cout << "Pontos: " << dist << endl;
+    cout << "distancia: " << dist << endl << "tempo: " << tempoTotal << endl;
+    float pontos = dist / tempoTotal;
     return pontos;
 }
 
@@ -143,52 +141,12 @@ int organizaRecordes(float recordes[], int numeroRecordes, float pontos)
     return numeroRecordes;
 }
 
-void imprimev(float v[])
-{
-    for(int i = 0; i < 5; i++)
-        cout << v[i];
-    cout << endl;
-}
-
 ///----------------------------------------------------------------------------------///
 ///                                                                                  ///
 ///----------------------------------------------------------------------------------///
 
 int main()
 {
-    float teste1[5] = { 0, 0, 0, 0, 0 };
-    int numeroRecordes;
-
-    FILE *rec;
-
-    rec = fopen("recordes.txt", "rt");
-
-    if (rec == NULL)
-    {
-        printf("Problemas ao abrir o arquivo\n");
-        return 0;
-    }
-
-    fscanf(rec, "%d", &numeroRecordes);
-    cout << numeroRecordes << endl;
-
-    for(int i = 0; i < numeroRecordes; i++)
-    {
-        fscanf(rec, "%f", &teste1[i]);
-        cout << teste1[i] << endl;
-    }
-
-    fclose(rec);
-
-    numeroRecordes = organizaRecordes(teste1, numeroRecordes, 75);
-
-    gravarRecordes(rec, teste1, numeroRecordes);
-
-
-
-    imprimev(teste1);
-
-
     //VARIAVEIS DA CONFIGURACAO
     sf::RenderWindow window(sf::VideoMode(800, 512), "Jogo Aula 04", sf::Style::Close);
     sf::View view(sf::Vector2f(0, 0), sf::Vector2f(VIEW_HEIGHT, VIEW_HEIGHT));
@@ -227,19 +185,42 @@ int main()
     int numeroEventos = 0;
     numeroEventos = adicionaEventos(&jogador, xEventos, yEventos, numeroEventos);
 
-    ////RANKING
+    ////RECORDES
 
-    //float recordes[5] = {0, 0, 0, 0, 0};
-    //int numeroRecordes;
+    float recordes[5] = {0, 0, 0, 0, 0};
+    int numeroRecordes;
+    bool recordeAdicionado = false;
+    bool pontosCalculados = false;
+    bool desenhaRecordes = false;
+    float delayRecordes;
 
     ////ARQUIVO RECORDES
 
+    FILE *rec;
 
+    rec = fopen("recordes.txt", "rt");
+
+    if (rec == NULL)
+    {
+        printf("Problemas ao abrir o arquivo\n");
+        return 0;
+    }
+
+    fscanf(rec, "%d", &numeroRecordes);
+    cout << numeroRecordes << endl;
+
+    for(int i = 0; i < numeroRecordes; i++)
+    {
+        fscanf(rec, "%f", &recordes[i]);
+        cout << recordes[i] << endl;
+    }
+
+    fclose(rec);
 
     ////TEMPO
 
-    float tempoTotal = 0;
-    float tempoAtual;
+    float tempoTotal = 0.01;
+    float tempoAtual = 0.01;
     bool tempoAtualRecebido = false;
 
     ////CRIA CENA
@@ -295,6 +276,12 @@ int main()
             delay = 0;
 
         tempoTotal += deltaTempo;
+        //cout << tempoTotal << endl;
+
+        if(delayRecordes > 0)
+            delayRecordes -= deltaTempo;
+        else
+            delayRecordes = 0;
 
         sf::Event evnt;
         while(window.pollEvent(evnt))
@@ -401,11 +388,6 @@ int main()
                     {
                         jogador.setStatus(!status);
                         numeroEventos = adicionaEventos(&jogador, xEventos, yEventos, numeroEventos);
-                        if(!tempoAtualRecebido)
-                        {
-                            tempoAtual = tempoTotal;
-                            tempoAtualRecebido = true;
-                        }
                     }
                 }
             }
@@ -478,21 +460,66 @@ int main()
 
         //FINAL DO JOGO
 
-        if(!jogador.getStatus())
+        if(!jogador.getStatus() && !objetivo.getTerminou())
         {
-            float p = calculaPontos(xEventos, yEventos, numeroEventos, tempoAtual);
-            p *= 0.5;
-            objetivo.desenhaFinal(window, view.getCenter(), p);
+            float p;
+            if(!tempoAtualRecebido)
+            {
+                tempoAtual = tempoTotal;
+                tempoAtualRecebido = true;
+            }
+            if(!pontosCalculados)
+            {
+                p = calculaPontos(xEventos, yEventos, numeroEventos, tempoAtual) * 0.5;
+                pontosCalculados = true;
+            }
+            if(!recordeAdicionado)
+            {
+                numeroRecordes = organizaRecordes(recordes, numeroRecordes, p);
+                recordeAdicionado = true;
+                gravarRecordes(rec, recordes, numeroRecordes);
+            }
 
+            objetivo.desenhaFinal(window, view.getCenter(), p, desenhaRecordes);
+
+            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Tab))
+                desenhaRecordes = true;
+            else
+                desenhaRecordes = false;
+            if(desenhaRecordes)
+                objetivo.desenhaRecordes(window, view.getCenter(), numeroRecordes, recordes);
         }
 
 
         if(objetivo.getTerminou())
         {
-            float p = calculaPontos(xEventos, yEventos, numeroEventos, tempoAtual);
-            p *= 1.5;
+            float p;
+            if(!tempoAtualRecebido)
+            {
+                tempoAtual = tempoTotal;
+                tempoAtualRecebido = true;
+            }
+            if(!pontosCalculados)
+            {
+                p = calculaPontos(xEventos, yEventos, numeroEventos, tempoAtual) * 2.0;
+                pontosCalculados = true;
+            }
+            if(!recordeAdicionado)
+            {
+                numeroRecordes = organizaRecordes(recordes, numeroRecordes, p);
+                recordeAdicionado = true;
+                gravarRecordes(rec, recordes, numeroRecordes);
+            }
+
             objetivo.fimDeJogo();
-            objetivo.desenhaFinal(window, view.getCenter(), p);
+            objetivo.desenhaFinal(window, view.getCenter(), p, desenhaRecordes);
+
+            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Tab))
+                desenhaRecordes = true;
+            else
+                desenhaRecordes = false;
+            if(desenhaRecordes)
+                objetivo.desenhaRecordes(window, view.getCenter(), numeroRecordes, recordes);
         }
 
         ////

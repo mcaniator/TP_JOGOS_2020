@@ -21,7 +21,8 @@ class Objetivo
         float getY() { return corpo.getPosition().y; };
 
         void desenha(sf::RenderWindow& window, bool vivo);
-        void desenhaFinal(sf::RenderWindow& window, sf::Vector2f posicao, float p);
+        void desenhaFinal(sf::RenderWindow& window, sf::Vector2f posicao, float p, bool desenhaRecordes);
+        void desenhaRecordes(sf::RenderWindow& window, sf::Vector2f posicao, int numeroRecordes, float recordes[]);
 
     private:
         sf::RectangleShape corpo;
@@ -34,6 +35,9 @@ class Objetivo
         sf::RectangleShape corpoItem;
         sf::IntRect itemRet;
 
+        sf::RectangleShape corpoRec;
+        sf::IntRect recRet;
+
         bool terminou;
         bool ganhou;
 
@@ -45,7 +49,7 @@ class Objetivo
 
         sf::Text texto;
         sf::Text pontos;
-        sf::Text numero;
+        sf::Text recorde;
         sf::Font fonte;
 
 };
