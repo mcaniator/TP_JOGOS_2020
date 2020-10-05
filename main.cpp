@@ -67,6 +67,12 @@ void ResizeView(const sf::RenderWindow& window, sf::View& view)
 ///EXERCICIO 1
 float deslocamentoLateral(Jogador* p, float deltaTempo)
 {
+    floatx, y;
+    x = obtemPosicaoX(p);
+    y = obtemPosicaoY(p);
+    x = x + deslocamentoLateral(p, deltaTempo);
+    y = y + deslocamentoVertical(p, deltaTempo);
+    atualizaPosicao(p, x, y);
     return 0;
 }
 
@@ -77,7 +83,7 @@ float deslocamentoVertical(Jogador* p, float deltaTempo)
 }
 
 ///EXERCICIO 3
-int calculaDeslocamento(Jogador* p, float deltaTempo)
+int movimentaPersonagem(Jogador* p, float deltaTempo)
 {
     return 0;
 }
@@ -156,7 +162,7 @@ int main()
         }
 
         jogador.atualiza(deltaTempo, acelerado);
-        acelerado = calculaDeslocamento(&jogador, deltaTempo);
+        acelerado = movimentaPersonagem(&jogador, deltaTempo);
 
         //ATUALIZA CONFIGURACOES
 
