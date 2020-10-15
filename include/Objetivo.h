@@ -2,6 +2,7 @@
 #define OBJETIVO_H
 #include <SFML/Graphics.hpp>
 #include "Colisor.h"
+#include "math.h"
 
 class Objetivo
 {
@@ -20,8 +21,13 @@ class Objetivo
 
         void fimDeJogo();
 
-        void desenha(sf::RenderWindow& window);
-        void desenhaFinal(sf::RenderWindow& window, sf::Vector2f posicao);
+        void desenha(sf::RenderWindow& window, bool vivo);
+        void desenhaFinal(sf::RenderWindow& window, sf::Vector2f posicao, bool desenhaRecordes);
+        void desenhaRecordes(sf::RenderWindow& window, sf::Vector2f posicao);
+
+        void adicionaEventos(sf::Vector2f posicao);
+        void calculaPontos(float tempoTotal);
+        void organizaRecordes();
 
     private:
         sf::RectangleShape corpo;
@@ -35,6 +41,9 @@ class Objetivo
         sf::RectangleShape corpoItem;
         sf::IntRect itemRet;
 
+        sf::RectangleShape corpoRec;
+        sf::IntRect recRet;
+
         bool terminou;
         bool ganhou;
 
@@ -45,7 +54,23 @@ class Objetivo
         int numRecebidos;
 
         sf::Text texto;
+        sf::Text pontos;
+        sf::Text recorde;
         sf::Font fonte;
+
+        //EVENTOS
+
+        float xEventos[1000];
+        float yEventos[1000];
+        int numeroEventos;
+
+        //RECORDES
+        float recordes[5];
+        int numeroRecordes;
+        float pontuacao;
+        bool recordeAdicionado;
+        bool pontosCalculados;
+
 };
 
 #endif // OBJETIVO_H
