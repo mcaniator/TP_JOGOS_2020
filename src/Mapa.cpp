@@ -113,6 +113,7 @@ void Mapa::desenhaMinimapa(sf::RenderWindow& window, sf::Vector2f posicao, int m
     sf::Color brown(139,69,19);
 
     borda.setPosition(posicao.x + 126, posicao.y + 38);
+    //borda.setPosition(posicao.x - (float)(minimapa.getSize().x * TAMANHO_MAPA_X) / 2.0, posicao.y - (float)(minimapa.getSize().y * TAMANHO_MAPA_Y) / 2.0);
     window.draw(borda);
 
     for(int i = 0; i < TAMANHO_MAPA_X; i++)
@@ -122,9 +123,11 @@ void Mapa::desenhaMinimapa(sf::RenderWindow& window, sf::Vector2f posicao, int m
             tipo = tipoBlocos[i][j];
             tipo2 = mapa[i][j];
             minimapa.setPosition(posicao.x + 126 + 3 * i, posicao.y + 38 + 3 * j);
+            //minimapa.setPosition((posicao.x + minimapa.getSize().x * i) - (float)(minimapa.getSize().x * TAMANHO_MAPA_X) / 2.0, (posicao.y + minimapa.getSize().y * j) - (float)(minimapa.getSize().y * TAMANHO_MAPA_Y) / 2.0);
             filtro.setPosition(minimapa.getPosition());
 
             //PRIMEIRO
+
             if(tipo == 0)
                 minimapa.setFillColor(green);
             else if(tipo == 7 || tipo == 8)

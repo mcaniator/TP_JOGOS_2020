@@ -140,55 +140,56 @@ void Objetivo::calculaPontos(float tempoTotal)
     pontuacao = dist / tempoTotal;
 }
 
-void Objetivo::organizaRecordes()
+int Objetivo::organizaRecordes()
 {
-    if(!recordeAdicionado) {
-        int indiceDoMenor = -1;
-        for(int i = 0; i < numeroRecordes; i++)
+    int indiceDoMenor = -1;
+    for(int i = 0; i < numeroRecordes; i++)
+    {
+        if(recordes[i] < pontuacao)
         {
-            if(recordes[i] < pontuacao)
-            {
-                indiceDoMenor = i;
-                break;
-            }
+            indiceDoMenor = i;
+            break;
         }
-        if(indiceDoMenor != -1)
-        {
-            for(int i = 5 - 1; i > indiceDoMenor; i--)
-                recordes[i] = recordes[i - 1];
-            recordes[indiceDoMenor] = pontuacao;
-            if(numeroRecordes < 5)
-                numeroRecordes++;
-        }
-        else
-        {
-            if(numeroRecordes < 5)
-            {
-                recordes[numeroRecordes] = pontuacao;
-                numeroRecordes++;
-            }
-        }
-
-        //GRAVAR RECORDES
-
-        FILE *rec;
-
-        rec = fopen("recordes.txt", "wt");
-
-        if (rec == NULL)
-        {
-            printf("Problemas ao abrir o arquivo\n");
-        }
-
-        fprintf(rec, "%d\n", numeroRecordes);
-
-        for(int i = 0; i < numeroRecordes; i++)
-            fprintf(rec, "%f\n", recordes[i]);
-
-        fclose(rec);
-
-        recordeAdicionado = true;
     }
+    if(indiceDoMenor != -1)
+    {
+        for(int i = 5 - 1; i > indiceDoMenor; i--)
+            recordes[i] = recordes[i - 1];
+        recordes[indiceDoMenor] = pontuacao;
+        if(numeroRecordes < 5)
+            numeroRecordes++;
+    }
+    else
+    {
+        if(numeroRecordes < 5)
+        {
+            recordes[numeroRecordes] = pontuacao;
+            indiceDoMenor = numeroRecordes;
+            numeroRecordes++;
+        }
+    }
+
+    //GRAVAR RECORDES
+
+    FILE *rec;
+
+    rec = fopen("recordes.txt", "wt");
+
+    if (rec == NULL)
+    {
+        printf("Problemas ao abrir o arquivo\n");
+    }
+
+    fprintf(rec, "%d\n", numeroRecordes);
+
+    for(int i = 0; i < numeroRecordes; i++)
+        fprintf(rec, "%f\n", recordes[i]);
+
+    fclose(rec);
+
+    recordeAdicionado = true;
+
+    return indiceDoMenor;
 }
 
 void Objetivo::desenha(sf::RenderWindow& window, bool vivo)
@@ -329,10 +330,10 @@ void Objetivo::desenhaFinal(sf::RenderWindow& window, sf::Vector2f posicao, bool
     }
 }
 
-void Objetivo::desenhaRecordes(sf::RenderWindow& window, sf::Vector2f posicao)
+void Objetivo::desenhaRecordes(sf::RenderWindow& window, sf::Vector2f posicao, char nomes[5][6])
 {
     corpoRec.setSize(sf::Vector2f(40.0f, 40.0f));
-    int linhas = 8, colunas = 6;
+    int linhas = 8, colunas = 10;
     float posicaoX = posicao.x + corpoRec.getSize().x / 2 - corpoRec.getSize().x * ((float)colunas / 2.0);
     float posicaoY = posicao.y + corpoRec.getSize().y / 2 - corpoRec.getSize().y * ((float)linhas / 2.0);
 
@@ -369,14 +370,21 @@ void Objetivo::desenhaRecordes(sf::RenderWindow& window, sf::Vector2f posicao)
 
     for(int i = 0; i < numeroRecordes; i++)
     {
-        std::string b = "º - ";
         std::ostringstream s1;
         s1 << i + 1;
         std::string a(s1.str());
+
+        std::string b = "º - ";
+
+        std::string c = nomes[i];
+
+        std::string d = " - ";
+
         std::ostringstream s2;
         s2 << recordes[i];
-        std::string c(s2.str());
-        recorde.setString(a + b + c);
+        std::string e(s2.str());
+
+        recorde.setString(a + b + c + d + e);
         recorde.setPosition(posicaoX + 10, posicaoY + 60 + i * 40);
         window.draw(recorde);
     }

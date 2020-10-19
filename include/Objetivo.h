@@ -23,11 +23,11 @@ class Objetivo
 
         void desenha(sf::RenderWindow& window, bool vivo);
         void desenhaFinal(sf::RenderWindow& window, sf::Vector2f posicao, bool desenhaRecordes);
-        void desenhaRecordes(sf::RenderWindow& window, sf::Vector2f posicao);
+        void desenhaRecordes(sf::RenderWindow& window, sf::Vector2f posicao, char nomes[5][6]);
 
         void adicionaEventos(sf::Vector2f posicao);
         void calculaPontos(float tempoTotal);
-        void organizaRecordes();
+        int organizaRecordes();
 
     private:
         sf::RectangleShape corpo;

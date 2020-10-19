@@ -42,8 +42,10 @@ int teclaPressionada()
         return 8;
     else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num9))
         return 9;
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Tab))
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::M))
         return 10;
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Tab))
+        return 11;
     else
         return 0;
 }
@@ -58,68 +60,87 @@ float obtemPosY(Jogador* j)
     return j->getY();
 }
 
+void gravarNomes(char nomes[5][6], int numeroNomes)
+{
+    FILE *rec;
+
+    rec = fopen("nomes.txt", "wt");
+
+    if (rec == NULL)
+    {
+        printf("Problemas ao abrir o arquivo\n");
+    }
+
+    fprintf(rec, "%d\n", numeroNomes);
+
+    for(int i = 0; i < numeroNomes; i++)
+    {
+        fprintf(rec, "%s\n", nomes[i]);
+    }
+
+    fclose(rec);
+}
+
 ///----------------------------------------------------------------------------------///
 ///                                  EXERCICIOS                                      ///
 ///----------------------------------------------------------------------------------///
 
 ///EXERCICIO 1
-typedef struct
-{
-    float posicaoJogador[2];
-    int campoDeVisao;
-}DadosJogador;
 
-typedef struct
+void atualizaMinimapa(int minimapa[TAMANHO_MAPA_X][TAMANHO_MAPA_Y], Jogador* j)
 {
-    int mapa[TAMANHO_MAPA_X][TAMANHO_MAPA_Y];
-    int coordenadasJogadorX;
-    int coordenadasJogadorY;
-    DadosJogador dados;
-}Minimapa;
+    int jogadorX, jogadorY;
+    float jogadorPosX, jogadorPosY, blocoPosX, blocoPosY;
+    float distancia;
 
-///EXERCICIO 2
-DadosJogador atualizaDadosJogador(Jogador* j)
-{
-    DadosJogador dados;
-    dados.posicaoJogador[0] = obtemPosX(j);
-    dados.posicaoJogador[1] = obtemPosY(j);
-    dados.campoDeVisao = 48 * 10;
+    jogadorPosX = obtemPosX(j);
+    jogadorPosY = obtemPosY(j);
 
-    return dados;
-}
-
-void atualizaDadosJogadorMapa(Minimapa& minimapa, Jogador* j)
-{
-    minimapa.dados = atualizaDadosJogador(j);
-    minimapa.coordenadasJogadorX = int(minimapa.dados.posicaoJogador[0] / TAMANHO_BLOCOS);
-    minimapa.coordenadasJogadorY = int(minimapa.dados.posicaoJogador[1] / TAMANHO_BLOCOS);
-}
-
-///EXERCICIO 3
-void atualizaMinimapa(Minimapa& minimapa)
-{
-    ///EXERCICIO 4
-    float centroX, centroY, jogadorX, jogadorY;
-    jogadorX = minimapa.dados.posicaoJogador[0];
-    jogadorY = minimapa.dados.posicaoJogador[1];
-    ///
+    jogadorX = (int)(obtemPosX(j) / TAMANHO_BLOCOS);
+    jogadorY = (int)(obtemPosY(j) / TAMANHO_BLOCOS);
 
     for(int i = 0; i < TAMANHO_MAPA_X; i++)
     {
         for(int j = 0; j < TAMANHO_MAPA_Y; j++)
         {
-            minimapa.mapa[i][j] = 2; ///NO EXERCICIO 3 ELE RECEBE 0 PARA SER TRANSPARENTE
+            blocoPosX = (i * TAMANHO_BLOCOS) + (TAMANHO_BLOCOS / 2);
+            blocoPosY = (j * TAMANHO_BLOCOS) + (TAMANHO_BLOCOS / 2);
 
-            ///EXERCICIO 4
-            centroX = i * TAMANHO_BLOCOS + TAMANHO_BLOCOS / 2;
-            centroY = j * TAMANHO_BLOCOS + TAMANHO_BLOCOS / 2;
+            distancia = sqrt(pow(blocoPosX - jogadorPosX, 2) + pow(blocoPosY - jogadorPosY, 2));
 
-            if(sqrt(pow(jogadorX - centroX, 2) + pow(jogadorY - centroY, 2)) < minimapa.dados.campoDeVisao)
-                minimapa.mapa[i][j] = 0;
-            ///
+            if(distancia < 500)
+                minimapa[i][j] = 0;
+            else
+                minimapa[i][j] = 2;
         }
     }
-    minimapa.mapa[minimapa.coordenadasJogadorX][minimapa.coordenadasJogadorY] = 1;
+    minimapa[jogadorX][jogadorY] = 1;
+}
+
+///EXERCICIO 2
+
+void liberaLinha(char nomes[5][6], int linha)
+{
+    for(int j = 0; j < 5; j++)
+    {
+        nomes[linha][j] = nomes[linha - 1][j];
+    }
+}
+
+///EXERCICIO 3
+
+int insereNome(char nomes[5][6], int numeroNomes, int linha, char nome[6])
+{
+    for(int i = numeroNomes - 1 ; i > linha; i--)
+        liberaLinha(nomes, i);
+
+    for(int i = 0; i < 5; i++)
+        nomes[linha][i] = nome[i];
+
+    if(numeroNomes < 5)
+        numeroNomes++;
+
+    return numeroNomes;
 }
 
 ///----------------------------------------------------------------------------------///
@@ -128,13 +149,17 @@ void atualizaMinimapa(Minimapa& minimapa)
 
 int main()
 {
+    char nome[6];
+    printf("Digite seu apelido (abaixo de 5 caracteres): ");
+    scanf("%s", nome);
+
     //VARIAVEIS DA CONFIGURACAO
     sf::RenderWindow window(sf::VideoMode(800, 512), "Jogo Aula 06", sf::Style::Close);
     sf::View view(sf::Vector2f(0, 0), sf::Vector2f(VIEW_HEIGHT, VIEW_HEIGHT));
     srand(time(0));
 
     //VARIAVEL EXERCICIO
-    Minimapa minimapa;
+    int minimapa[TAMANHO_MAPA_X][TAMANHO_MAPA_Y];
 
     //VARIAVEIS DO JOGO
     sf::Texture texturaJogador;
@@ -195,6 +220,33 @@ int main()
     std::vector<Item> itens;
     for(int i = 0; i < NUMERO_ITENS; i++)
         itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(dadosCena.getItemX(i), dadosCena.getItemY(i)), dadosCena.getItemTipo(i)));
+
+    //NOMES RECORDES
+    int numeroNomes;
+    char nomes[5][6];
+
+    FILE *rec;
+
+    rec = fopen("nomes.txt", "rt");
+
+    if (rec == NULL)
+    {
+        printf("Problemas ao abrir o arquivo\n");
+    }
+
+    fscanf(rec, "%d\n", &numeroNomes);
+    cout << "Numero nomes: " << numeroNomes << endl;;
+
+    for(int i = 0; i < numeroNomes; i++) {
+        fscanf(rec, "%s\n", nomes[i]);
+        cout << "Nome: " << nomes[i] << endl << endl;
+    }
+
+    fclose(rec);
+
+    for(int i = 0; i < 5; i++)
+        for(int j = 0; nomes[i][j]!= '\0' ; j++)
+            cout << nomes[i][j];
 
     //CONFIGURA TEMPO
     float deltaTempo = 0.0f;
@@ -348,6 +400,7 @@ int main()
 
         //MINIMAPA
 
+        /*
         atualizaDadosJogadorMapa(minimapa, &jogador);
         atualizaMinimapa(minimapa);
         for(unsigned int i = 0; i < itens.size(); i++)
@@ -358,6 +411,7 @@ int main()
             if(!item.getStatus() && minimapa.mapa[x][y] != 1 && minimapa.mapa[x][y] != 2)
                 minimapa.mapa[x][y] = 3;
         }
+        */
 
         //DESENHA OS OBJETOS
 
@@ -400,8 +454,11 @@ int main()
 
         if(!objetivo.getTerminou() && jogador.getStatus())
         {
+            //if(teclaPressionada() != 10)
             inventario.desenha(window, view.getCenter());
-            mapa.desenhaMinimapa(window, view.getCenter(), minimapa.mapa);
+            //if(teclaPressionada() == 10)
+            atualizaMinimapa(minimapa, &jogador);
+            mapa.desenhaMinimapa(window, view.getCenter(), minimapa);
         }
 
         //FINAL DO JOGO
@@ -412,14 +469,18 @@ int main()
             {
                 tempoAtual = tempoTotal;
                 tempoAtualRecebido = true;
+                objetivo.calculaPontos(tempoAtual);
+                int i = objetivo.organizaRecordes();
+                if(i != -1)
+                {
+                    numeroNomes = insereNome(nomes, numeroNomes, i, nome);
+                    gravarNomes(nomes, numeroNomes);
+                }
             }
-            objetivo.calculaPontos(tempoAtual);
-            objetivo.organizaRecordes();
-
             objetivo.desenhaFinal(window, view.getCenter(), (teclaPressionada() == 10));
 
-            if(teclaPressionada() == 10)
-                objetivo.desenhaRecordes(window, view.getCenter());
+            if(teclaPressionada() == 11)
+                objetivo.desenhaRecordes(window, view.getCenter(), nomes);
         }
 
 
@@ -429,15 +490,19 @@ int main()
             {
                 tempoAtual = tempoTotal;
                 tempoAtualRecebido = true;
+                objetivo.calculaPontos(tempoAtual);
+                int i = objetivo.organizaRecordes();
+                if(i != -1)
+                {
+                    numeroNomes = insereNome(nomes, numeroNomes, i, nome);
+                    gravarNomes(nomes, numeroNomes);
+                }
             }
-            objetivo.calculaPontos(tempoAtual);
-            objetivo.organizaRecordes();
-
             objetivo.fimDeJogo();
             objetivo.desenhaFinal(window, view.getCenter(), (teclaPressionada() == 10));
 
-            if(teclaPressionada() == 10)
-                objetivo.desenhaRecordes(window, view.getCenter());
+            if(teclaPressionada() == 11)
+                objetivo.desenhaRecordes(window, view.getCenter(), nomes);
         }
 
         ////

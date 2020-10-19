@@ -23,7 +23,7 @@ class Mapa
         virtual ~Mapa();
 
         void desenha(sf::RenderWindow& window);
-        void desenhaMinimapa(sf::RenderWindow& window, sf::Vector2f posicao, int mapa[TAMANHO_MAPA_X][TAMANHO_MAPA_Y]);
+        void desenhaMinimapa(sf::RenderWindow& window, sf::Vector2f posicao, int minimapa[TAMANHO_MAPA_X][TAMANHO_MAPA_Y]);
 
     private:
         sf::Vector2i numBlocos;
