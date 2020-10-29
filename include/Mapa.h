@@ -9,12 +9,37 @@
 #define BORDA_SUP 192
 #define BORDA_INF 1632
 
+#define MAX_PONTOS 2000
+#define NUMERO_ITENS 27
+
 typedef struct
 {
     sf::IntRect corpoBloco;
     sf::Vector2f posicaoBloco;
     sf::Vector2i posicaoNaImagem;
 }Bloco;
+
+typedef struct
+{
+    int x;
+    int y;
+}Ponto1;
+
+typedef struct
+{
+    Ponto1 posicao;
+    int visivel;
+}ItemMinimapa1;
+
+typedef struct
+{
+    int mapa[TAMANHO_MAPA_X][TAMANHO_MAPA_Y];
+    Ponto1 jogador;
+    int campoVisao;
+    int numeroPontos;
+    Ponto1 pontosVisiveis[MAX_PONTOS];
+    ItemMinimapa1 itens[NUMERO_ITENS];
+}Minimapa1;
 
 class Mapa
 {
@@ -23,7 +48,10 @@ class Mapa
         virtual ~Mapa();
 
         void desenha(sf::RenderWindow& window);
-        void desenhaMinimapa(sf::RenderWindow& window, sf::Vector2f posicao, int mapa[TAMANHO_MAPA_X][TAMANHO_MAPA_Y]);
+        Minimapa1 m;
+        void desenhaMinimapa(sf::RenderWindow& window, sf::Vector2f posicao);
+
+        int getCelula(int x, int y) { return tipoBlocos[x][y]; };
 
     private:
         sf::Vector2i numBlocos;

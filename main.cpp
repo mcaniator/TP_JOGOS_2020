@@ -7,8 +7,12 @@
 #include "Item.h"
 #include "Jogador.h"
 #include "Mapa.h"
+#include "Cena.h"
 #include "Objetivo.h"
 #include "Plataforma.h"
+
+#define MAX_PONTOS 2000
+#define MAX_ITENS 27
 
 static const float VIEW_HEIGHT = 322.0f;
 
@@ -40,6 +44,10 @@ int teclaPressionada()
         return 8;
     else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Num9))
         return 9;
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::M))
+        return 10;
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Tab))
+        return 11;
     else
         return 0;
 }
@@ -54,42 +62,144 @@ float obtemPosY(Jogador* j)
     return j->getY();
 }
 
+typedef struct
+{
+    float x, y;
+    int visivel;
+}Item2;
+
+float obtemPosItemX(Item2 t[], int i)
+{
+    return t[i].x;
+}
+
+float obtemPosItemY(Item2 t[], int i)
+{
+    return t[i].y;
+}
+
+int obtemVisibilidadeItem(Item2 t[], int i)
+{
+    return t[i].visivel;
+}
+
+void atualizaItens(Item2 t[], std::vector<Item> itens)
+{
+    for(int i = 0; i < NUMERO_ITENS; i++)
+    {
+        t[i].x = itens[i].getX();
+        t[i].y = itens[i].getY();
+        t[i].visivel = !itens[i].getStatus();
+    }
+}
+
+int obtemTipoCelula(Mapa* m, int x, int y)
+{
+    return m->getCelula(x, y);
+}
+
 ///----------------------------------------------------------------------------------///
 ///                                  EXERCICIOS                                      ///
 ///----------------------------------------------------------------------------------///
 
 ///EXERCICIO 1
+
 typedef struct
 {
-    float posicaoJogador[2];
-    int campoDeVisao;
-}DadosJogador;
+    int x;
+    int y;
+}Ponto;
+
+typedef struct
+{
+    Ponto posicao;
+    int visivel;
+}ItemMinimapa;
 
 typedef struct
 {
     int mapa[TAMANHO_MAPA_X][TAMANHO_MAPA_Y];
-    int coordenadasJogadorX;
-    int coordenadasJogadorY;
-    DadosJogador dados;
+    Ponto jogador;
+    int campoVisao;
+    int numeroPontos;
+    Ponto pontosVisiveis[MAX_PONTOS];
+    ItemMinimapa itens[MAX_ITENS];
 }Minimapa;
 
 ///EXERCICIO 2
-DadosJogador atualizaDadosJogador(Jogador* j)
+
+Ponto atualizaJogador(Jogador* j, Minimapa minimapa)
 {
-    DadosJogador dados;
-    return dados;
+    minimapa.jogador.x = (int)(obtemPosX(j) / TAMANHO_BLOCOS);
+    minimapa.jogador.y = (int)(obtemPosY(j) / TAMANHO_BLOCOS);
+    return minimapa.jogador;
 }
 
 ///EXERCICIO 3
-void atualizaDadosJogadorMapa(Minimapa& minimapa, Jogador* j)
-{
 
+Minimapa atualizaVisibilidade(Jogador* j, Minimapa minimapa)
+{
+    minimapa.campoVisao = 500;
+    minimapa.numeroPontos = 0;
+    float jogadorX = obtemPosX(j);
+    float jogadorY = obtemPosY(j);
+    float blocoX, blocoY, distancia;
+    for(int i = 0; i < TAMANHO_MAPA_X; i++)
+    {
+        for(int j = 0; j < TAMANHO_MAPA_Y; j++)
+        {
+            blocoX = (i * TAMANHO_BLOCOS) + (TAMANHO_BLOCOS / 2);
+            blocoY = (j * TAMANHO_BLOCOS) + (TAMANHO_BLOCOS / 2);
+
+            distancia = sqrt(pow(blocoX - jogadorX, 2) + pow(blocoY - jogadorY, 2));
+
+            if(distancia < 500)
+            {
+                minimapa.pontosVisiveis[minimapa.numeroPontos].x = i;
+                minimapa.pontosVisiveis[minimapa.numeroPontos].y = j;
+                minimapa.numeroPontos++;
+            }
+        }
+    }
+    return minimapa;
 }
 
 ///EXERCICIO 4
-void atualizaMinimapa(Minimapa& minimapa)
-{
 
+ItemMinimapa atualizaPontoItem(Item2 t[], int i, Minimapa minimapa)
+{
+    minimapa.itens[i].posicao.x = (int)(obtemPosItemX(t, i) / TAMANHO_BLOCOS);
+    minimapa.itens[i].posicao.y = (int)(obtemPosItemY(t, i) / TAMANHO_BLOCOS);
+    minimapa.itens[i].visivel = obtemVisibilidadeItem(t, i);
+    return minimapa.itens[i];
+}
+
+///EXERCICIO 5
+
+Minimapa atualizaMapa(Mapa* m, Item2 t[], Jogador* j, Minimapa minimapa)
+{
+    minimapa = atualizaVisibilidade(j, minimapa);
+    minimapa.campoVisao = 500;
+    int valor;
+    for(int i = 0; i < TAMANHO_MAPA_X; i++)
+    {
+        for(int j = 0; j < TAMANHO_MAPA_Y; j++)
+        {
+            valor = obtemTipoCelula(m, i, j);
+            if(valor == 0)
+                minimapa.mapa[i][j] = 0;
+            else if(valor == 7 || valor == 8)
+                minimapa.mapa[i][j] = 2;
+            else
+                minimapa.mapa[i][j] = 1;
+        }
+    }
+    for(int i = 0; i < NUMERO_ITENS; i++)
+    {
+        minimapa.itens[i] = atualizaPontoItem(t, i, minimapa);
+    }
+    minimapa.jogador = atualizaJogador(j, minimapa);
+    return minimapa;
 }
 
 ///----------------------------------------------------------------------------------///
@@ -98,8 +208,12 @@ void atualizaMinimapa(Minimapa& minimapa)
 
 int main()
 {
+    char nome[6];
+    printf("Digite seu apelido (abaixo de 5 caracteres): ");
+    scanf("%s", nome);
+
     //VARIAVEIS DA CONFIGURACAO
-    sf::RenderWindow window(sf::VideoMode(800, 512), "Jogo Aula 07", sf::Style::Close);
+    sf::RenderWindow window(sf::VideoMode(800, 512), "Jogo Aula 06", sf::Style::Close);
     sf::View view(sf::Vector2f(0, 0), sf::Vector2f(VIEW_HEIGHT, VIEW_HEIGHT));
     srand(time(0));
 
@@ -129,65 +243,44 @@ int main()
     Inventario inventario(&texturaInventario, sf::Vector2u(17, 10), &texturaItem, sf::Vector2u(16, 16), &texturaIndice, sf::Vector2u(4, 1));
 
     Objetivo objetivo(&texturaObjetivo, sf::Vector2u(13, 21), &texturaInventario, sf::Vector2u(17, 10), &texturaItem, sf::Vector2u(16, 16));
+    objetivo.adicionaEventos(jogador.getPosicao());
+
+    ////TEMPO
+
+    float tempoTotal = 0.01;
+    float tempoAtual = 0.01;
+    bool tempoAtualRecebido = false;
+
+    //CENA
+
+    float xPlataformas[NUMERO_PLATAFORMAS] = {500, 384,  480,  624,  864, 1056, 1248, 1296,  768, 1128, 1392};
+    float compPlataformas[NUMERO_PLATAFORMAS] = {26, 96, 192, 288, 192, 192, 192, 192, 192, 144,  96};
+    float yPlataformas[NUMERO_PLATAFORMAS] = {227, 384, 1104,  528,  624, 1296, 1200,  576, 1104,  888, 1512};
+    float altPlataformas[NUMERO_PLATAFORMAS] =  {15, 96, 384, 192, 384, 384, 192, 192, 192, 144, 144};
+
+    Cena dadosCena(xPlataformas, compPlataformas, yPlataformas, altPlataformas);
+
+    ////PLATAFORMAS
 
     std::vector<Plataforma> plataformas;
-        plataformas.push_back(Plataforma(NULL, sf::Vector2f(384.0f , 384.0f ), sf::Vector2f(96.0f , 96.0f )));
-        plataformas.push_back(Plataforma(NULL, sf::Vector2f(480.0f , 1104.0f), sf::Vector2f(192.0f, 384.0f)));
-        plataformas.push_back(Plataforma(NULL, sf::Vector2f(624.0f , 528.0f ), sf::Vector2f(288.0f, 192.0f)));
-        plataformas.push_back(Plataforma(NULL, sf::Vector2f(864.0f , 624.0f ), sf::Vector2f(192.0f, 384.0f)));
-        plataformas.push_back(Plataforma(NULL, sf::Vector2f(1056.0f, 1296.0f), sf::Vector2f(192.0f, 384.0f)));
-        plataformas.push_back(Plataforma(NULL, sf::Vector2f(1248.0f, 1200.0f), sf::Vector2f(192.0f, 192.0f)));
-        plataformas.push_back(Plataforma(NULL, sf::Vector2f(1296.0f, 576.0f ), sf::Vector2f(192.0f, 192.0f)));
-        plataformas.push_back(Plataforma(NULL, sf::Vector2f(768.0f , 1104.0f), sf::Vector2f(192.0f, 192.0f)));
-        plataformas.push_back(Plataforma(NULL, sf::Vector2f(1128.0f, 888.0f ), sf::Vector2f(144.0f, 144.0f)));
-        plataformas.push_back(Plataforma(NULL, sf::Vector2f(1392.0f, 1512.0f), sf::Vector2f(96.0f , 144.0f)));
+    for(int i = 0; i < NUMERO_PLATAFORMAS; i++)
+        plataformas.push_back(Plataforma(NULL, sf::Vector2f(dadosCena.getPlatX(i), dadosCena.getPlatY(i)), sf::Vector2f(dadosCena.getPlatComp(i), dadosCena.getPlatAlt(i))));
 
+    ////INIMIGO
+
+    dadosCena.criaInimigos();
     std::vector<Inimigo> inimigos;
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(672.0f , 288.0f ), 0, 1));///14 6  Y
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(336.0f , 528.0f ), 1, 0));///7  11 X
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(816.0f , 912.0f ), 0, 1));///17 19 Y
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(288.0f , 1000.0f), 1, 0));///6  20 X
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(288.0f , 1248.0f), 1, 0));///6  26 X
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(528.0f , 816.0f ), 0, 1));///11 17 Y
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(768.0f , 1300.0f), 0, 1));///15 25 Y
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(1056.0f, 1536.0f), 0, 1));///22 32 Y
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(1128.0f, 1008.0f), 0, 1));///23 21 Y
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(1200.0f, 888.0f ), 1, 0));///28 18 X
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(1056.0f, 578.0f ), 1, 0));///22 12 X
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(1440.0f, 578.0f ), 1, 0));///30 12 X
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(1296.0f, 360.0f ), 0, 1));///27 7  Y
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(864.0f , 120.0f ), 0, 1));///18 6  Y
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(1440.0f, 1200.0f), 1, 0));///30 25 X
-        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, 60 + rand()%60, sf::Vector2f(482.0f , 1440.0f), 0, 1));///10 30 Y
+    for(int i = 0; i < NUMERO_INIMIGOS; i++)
+        inimigos.push_back(Inimigo(&texturaInimigo, sf::Vector2u(13, 21), 0.3f, dadosCena.getInimVel(i), sf::Vector2f(dadosCena.getInimX(i) , dadosCena.getInimY(i)), dadosCena.getInimMovX(i), dadosCena.getInimMovY(i)));
 
+    ////ITENS
+
+    Item2 itensMinimapa[NUMERO_ITENS];
+    dadosCena.criaItens();
     std::vector<Item> itens;
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1296.0f, 1008.0f), 'a'));///27 21
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1248.0f, 1344.0f), 'b'));///26 28
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1488.0f, 1536.0f), 'c'));///31 32
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(336.0f , 672.0f ), 'd'));///7  14
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(288.0f , 1056.0f), 'e'));///6  22
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(960.0f , 1008.0f), 'f'));///18 24
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1488.0f, 1248.0f), 'g'));///6  8
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(318.0f , 1152.0f), 'h'));///6  24
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(960.0f , 864.0f ), 'i'));///20 18
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(480.0f , 336.0f ), 'a'));///10 7
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(624.0f , 1440.0f), 'b'));///6  28
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1200.0f, 720.0f ), 'c'));///25 15
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(288.0f , 288.0f ), 'd'));///6  6
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(336.0f , 1488.0f), 'e'));///7  31
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1056.0f, 672.0f ), 'f'));///22 14
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1248.0f, 384.0f ), 'g'));///8  15
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(624.0f , 1056.0f), 'h'));///13 22
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1056.0f, 288.0f ), 'i'));///22 6
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(624.0f , 720.0f ), 'a'));///13 15
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(672.0f , 912.0f ), 'b'));///14 19
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(768.0f , 288.0f ), 'c'));///16 6
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(480.0f , 768.0f ), 'd'));///10 16
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(864.0f , 1248.0f), 'e'));///18 26
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1440.0f, 288.0f ), 'f'));///30 6
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(288.0f , 864.0f ), 'g'));///6  18
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(912.0f , 1536.0f), 'h'));///19 32
-        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(1392.0f, 720.0f ), 'i'));///29 15
+    for(int i = 0; i < NUMERO_ITENS; i++)
+        itens.push_back(Item(&texturaItem, sf::Vector2u(16, 16), sf::Vector2f(dadosCena.getItemX(i), dadosCena.getItemY(i)), dadosCena.getItemTipo(i)));
+    atualizaItens(itensMinimapa, itens);
 
     //CONFIGURA TEMPO
     float deltaTempo = 0.0f;
@@ -211,6 +304,8 @@ int main()
             delay -= deltaTempo;
         else
             delay = 0;
+
+        tempoTotal += deltaTempo;
 
         sf::Event evnt;
         while(window.pollEvent(evnt))
@@ -238,12 +333,15 @@ int main()
             {
                 item.coletou();
                 inventario.pegouItem(item.getTipo());
+                atualizaItens(itensMinimapa, itens);
+                objetivo.adicionaEventos(jogador.getPosicao());
             }
 
             //ENTREGAR ITEM
             if(item.getColisor().checaColisao(objetivo.getColisorItens()) && !item.getStatus() && objetivo.getNumRecebidos() != 5)
             {
                 item.coletou();
+                atualizaItens(itensMinimapa, itens);
                 objetivo.recebeuItem(item.getTipo());
             }
         }
@@ -261,10 +359,12 @@ int main()
                     if(item.getTipo() == tipo && item.getStatus())
                     {
                         item.soltou(jogador.getPosicao().x, jogador.getPosicao().y - 20);
+                        atualizaItens(itensMinimapa, itens);
                         break;
                     }
                 }
             delay = 0.6;
+            objetivo.adicionaEventos(jogador.getPosicao());
             }
         }
 
@@ -305,7 +405,14 @@ int main()
 
                 //INIMIGO x JOGADOR
                 if(jogador.getStatus())
-                    jogador.setStatus(!jogador.getColisor().checaColisao(inimigo.getColisor()));
+                {
+                    bool status = jogador.getColisor().checaColisao(inimigo.getColisor());
+                    if(status)
+                    {
+                        jogador.setStatus(!status);
+                        objetivo.adicionaEventos(jogador.getPosicao());
+                    }
+                }
             }
         }
 
@@ -330,6 +437,7 @@ int main()
 
         //MINIMAPA
 
+        /*
         atualizaDadosJogadorMapa(minimapa, &jogador);
         atualizaMinimapa(minimapa);
         for(unsigned int i = 0; i < itens.size(); i++)
@@ -340,6 +448,7 @@ int main()
             if(!item.getStatus() && minimapa.mapa[x][y] != 1 && minimapa.mapa[x][y] != 2)
                 minimapa.mapa[x][y] = 3;
         }
+        */
 
         //DESENHA OS OBJETOS
 
@@ -365,13 +474,13 @@ int main()
         }
 
         if(!naFrente)
-            objetivo.desenha(window);
+            objetivo.desenha(window, jogador.getStatus());
 
         if(vivo)
             jogador.desenha(window);
 
         if(naFrente)
-            objetivo.desenha(window);
+            objetivo.desenha(window, jogador.getStatus());
 
         for(unsigned int i = 0; i < inimigos.size(); i++)
         {
@@ -383,15 +492,66 @@ int main()
         if(!objetivo.getTerminou() && jogador.getStatus())
         {
             inventario.desenha(window, view.getCenter());
-            mapa.desenhaMinimapa(window, view.getCenter(), minimapa.mapa);
+            minimapa = atualizaMapa(&mapa, itensMinimapa, &jogador, minimapa);
+
+            mapa.m.campoVisao = minimapa.campoVisao;
+            for(int i = 0; i < NUMERO_ITENS; i++)
+            {
+                mapa.m.itens[i].posicao.x = minimapa.itens[i].posicao.x;
+                mapa.m.itens[i].posicao.y = minimapa.itens[i].posicao.y;
+                mapa.m.itens[i].visivel = minimapa.itens[i].visivel;
+            }
+            mapa.m.jogador.x = minimapa.jogador.x;
+            mapa.m.jogador.y = minimapa.jogador.y;
+            for(int i = 0; i < TAMANHO_MAPA_X; i++)
+            {
+                for(int j = 0; j < TAMANHO_MAPA_X; j++)
+                {
+                    mapa.m.mapa[i][j] = minimapa.mapa[i][j];
+                }
+            }
+            mapa.m.numeroPontos = minimapa.numeroPontos;
+            for(int i = 0; i < minimapa.numeroPontos; i++)
+            {
+                mapa.m.pontosVisiveis[i].x = minimapa.pontosVisiveis[i].x;
+                mapa.m.pontosVisiveis[i].y = minimapa.pontosVisiveis[i].y;
+            }
+
+            mapa.desenhaMinimapa(window, view.getCenter());
         }
 
         //FINAL DO JOGO
 
+        if(!jogador.getStatus() && !objetivo.getTerminou())
+        {
+            if(!tempoAtualRecebido)
+            {
+                tempoAtual = tempoTotal;
+                tempoAtualRecebido = true;
+                objetivo.calculaPontos(tempoAtual);
+                objetivo.organizaRecordes(nome);
+            }
+            objetivo.desenhaFinal(window, view.getCenter(), (teclaPressionada() == 10));
+
+            if(teclaPressionada() == 11)
+                objetivo.desenhaRecordes(window, view.getCenter());
+        }
+
+
         if(objetivo.getTerminou())
         {
+            if(!tempoAtualRecebido)
+            {
+                tempoAtual = tempoTotal;
+                tempoAtualRecebido = true;
+                objetivo.calculaPontos(tempoAtual);
+                objetivo.organizaRecordes(nome);
+            }
             objetivo.fimDeJogo();
-            objetivo.desenhaFinal(window, view.getCenter());
+            objetivo.desenhaFinal(window, view.getCenter(), (teclaPressionada() == 10));
+
+            if(teclaPressionada() == 11)
+                objetivo.desenhaRecordes(window, view.getCenter());
         }
 
         ////
@@ -400,4 +560,3 @@ int main()
 
     return 0;
 }
-

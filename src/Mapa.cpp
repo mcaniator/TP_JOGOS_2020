@@ -104,9 +104,8 @@ void Mapa::desenha(sf::RenderWindow& window)
     }
 }
 
-void Mapa::desenhaMinimapa(sf::RenderWindow& window, sf::Vector2f posicao, int mapa[TAMANHO_MAPA_X][TAMANHO_MAPA_Y])
+void Mapa::desenhaMinimapa(sf::RenderWindow& window, sf::Vector2f posicao)
 {
-    int tipo, tipo2;
     sf::Color green(43, 209, 31);
     sf::Color darkgreen(20, 97, 15);
     sf::Color grey(128, 128, 128);
@@ -119,30 +118,38 @@ void Mapa::desenhaMinimapa(sf::RenderWindow& window, sf::Vector2f posicao, int m
     {
         for(int j = 0; j < TAMANHO_MAPA_Y; j++)
         {
-            tipo = tipoBlocos[i][j];
-            tipo2 = mapa[i][j];
+            tipo = m.mapa[i][j];
             minimapa.setPosition(posicao.x + 126 + 3 * i, posicao.y + 38 + 3 * j);
             filtro.setPosition(minimapa.getPosition());
 
             //PRIMEIRO
             if(tipo == 0)
                 minimapa.setFillColor(green);
-            else if(tipo == 7 || tipo == 8)
+            else if(tipo == 2)
                 minimapa.setFillColor(grey);
             else
                 minimapa.setFillColor(darkgreen);
 
-            //SEGUNDO
+            filtro.setFillColor(sf::Color::Black);
+            for(int z = 0; z < m.numeroPontos; z++)
+            {
+                if(m.pontosVisiveis[z].x == i && m.pontosVisiveis[z].y == j)
+                {
+                    filtro.setFillColor(sf::Color::Transparent);
+                    break;
+                }
+            }
 
-            if(tipo2 == 3)
-                filtro.setFillColor(sf::Color::Blue);
-            else if(tipo2 == 2)
-                filtro.setFillColor(sf::Color::Black);
-            else if(tipo2 == 1)
+            if(m.jogador.x == i && m.jogador.y == j)
                 filtro.setFillColor(sf::Color::Red);
-            else
-                filtro.setFillColor(sf::Color::Transparent);
 
+            for(int z = 0; z < NUMERO_ITENS; z++)
+            {
+                if(m.itens[z].posicao.x == i && m.itens[z].posicao.y == j && m.itens[z].visivel)
+                {
+                    minimapa.setFillColor(sf::Color::Blue);
+                }
+            }
 
             if(i == 0 || i == TAMANHO_MAPA_X - 1 || j == 0 || j == TAMANHO_MAPA_Y - 1)
             {
