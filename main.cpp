@@ -88,29 +88,88 @@ void ResizeView(const sf::RenderWindow& window, sf::View& view)
 ///EXERCICIO 1
 int colisaoBordaX(float posX, float tamanhoX)
 {
-    return 0;
+    if((posX - (tamanhoX / 2) < BORDA_ESQ && teclaEsq()) || (posX + (tamanhoX / 2) > BORDA_DIR && teclaDir()))
+        return 1;
+    else
+        return 0;
 }
 
 int colisaoBordaY(float posY, float tamanhoY)
 {
-    return 0;
+    if((posY - (tamanhoY / 2) < BORDA_CIMA && teclaCima()) || (posY + (tamanhoY / 2) > BORDA_BAIXO && teclaBaixo()))
+        return 1;
+    else
+        return 0;
 }
 
 ///EXERCICIO 2
 int colidiu(float jogX, float compJog, float jogY, float altJog, float objX, float compObj, float objY, float altObj)
 {
-    return 0;
+    float deltaX = fabs(jogX - objX);
+    float deltaY = fabs(jogY - objY);
+    float distMinX = (compJog + compObj) / 2;
+    float distMinY = (altJog + altObj) / 2;
+    if((deltaX <= distMinX) && (deltaY <= distMinY))
+        return 1;
+    else
+        return 0;
 }
 
 ///EXERCICIO 3
 char ladoColisao(float jogX, float compJog, float jogY, float altJog, float objX, float compObj, float objY, float altObj)
 {
-    return '0';
+    float e, d, c, b;
+    e = fabs((jogX - (compJog / 2)) - (objX + (compObj / 2)));
+    d = fabs((jogX + (compJog / 2)) - (objX - (compObj / 2)));
+    c = fabs((jogY - (altJog / 2)) - (objY + (altObj / 2)));
+    b = fabs((jogY + (altJog / 2)) - (objY - (altObj / 2)));
+
+    if(e < d && e < c && e < b)
+        return 'e';
+    else if(d < e && d < c && d < b)
+        return 'd';
+    else if(c < d && c < e && c < b)
+        return 'c';
+    else if(b < d && b < c && b < e)
+        return 'b';
+    else
+        return '0';
 }
 
 ///EXERCICIO 4
 int moveInimigo(Inimigo* i, Jogador* p)
 {
+    float compI = obtemCompInimigo(i);
+    float xI = obtemPosicaoXinimigo(i);
+    ///float yI = obtemPosicaoYinimigo(i);
+    ///float xP = obtemPosicaoX(p);
+    ///float yP = obtemPosicaoY(p);
+
+    if(xI - compI / 2 < BORDA_ESQ)
+    {
+        atualizaSentidoXinimigo(i, 1);
+        atualizaPosicaoXinimigo(i, BORDA_ESQ + compI / 2 + 1);
+    }
+    else if(xI + compI / 2 > BORDA_DIR)
+    {
+        atualizaSentidoXinimigo(i, -1);
+        atualizaPosicaoXinimigo(i, BORDA_DIR - compI / 2 - 1);
+    }
+
+    ///EXERCICIO 5
+    ///if(yP > yI)
+    ///    atualizaSentidoYinimigo(i, 1);
+    ///else if(yP < yI)
+    ///    atualizaSentidoYinimigo(i, -1);
+    ///else
+    ///    atualizaSentidoYinimigo(i, 0);
+    ///if(xP > xI)
+    ///    atualizaSentidoXinimigo(i, 1);
+    ///else if(xP < xI)
+    ///    atualizaSentidoXinimigo(i, -1);
+    ///else
+    ///    atualizaSentidoXinimigo(i, 0);
+
     return 0;
 }
 
