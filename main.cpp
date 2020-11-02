@@ -137,6 +137,7 @@ void atualizaVelInimigo(Cena* c, int i, float vel)
 ///                                     TESTE                                        ///
 ///----------------------------------------------------------------------------------///
 
+///EXERCICIO 1
 int colidiu(float itemX, float compItem, float itemY, float altItem, float objX, float compObj, float objY, float altObj)
 {
     float deltaX = fabs(itemX - objX);
@@ -149,6 +150,7 @@ int colidiu(float itemX, float compItem, float itemY, float altItem, float objX,
         return 0;
 }
 
+///EXERCICIO 2
 int colidiuPlataformasItens(Cena* c, int indiceItem)
 {
     float platX, platY, compPlat, altPlat;
@@ -230,6 +232,8 @@ int colidiuInimigos(Cena* c, int indiceInimigo)
     return 0;
 }
 
+///EXERCICIO 3
+
 void criaItens(Cena* c)
 {
     int colisaoPlat = 1;
@@ -251,7 +255,6 @@ void criaItens(Cena* c)
             tamanhoItem = obtemTamanhoItem(c, i);
             xItem = BORDA_ESQ + tamanhoItem / 2.0 + (rand() % (int)(BORDA_DIR - BORDA_ESQ - tamanhoItem));
             yItem = BORDA_CIMA + tamanhoItem / 2.0 + (rand() % (int)(BORDA_BAIXO - BORDA_CIMA - tamanhoItem));
-            printf("itens");
             atualizaPosicaoItem(c, i, xItem, yItem);
 
             colisaoPlat = colidiuPlataformasItens(c, i);
@@ -261,6 +264,8 @@ void criaItens(Cena* c)
         }
     }
 }
+
+///EXERCICIO 4
 
 void criaInimigos(Cena* c)
 {
@@ -288,7 +293,6 @@ void criaInimigos(Cena* c)
             altInimigo = obtemAltInimigo(c, i);
             xInimigo = BORDA_ESQ + compInimigo / 2.0 + (rand() % (int)(BORDA_DIR - BORDA_ESQ - compInimigo));
             yInimigo = BORDA_CIMA + altInimigo / 2.0 + (rand() % (int)(BORDA_BAIXO - BORDA_CIMA - altInimigo));
-            printf("inimigos");
             atualizaPosicaoInimigo(c, i, xInimigo, yInimigo);
 
             colisaoPlat = colidiuPlataformasInimigos(c, i);
