@@ -77,11 +77,15 @@ void gravarRecordes(FILE *rec, float recordes[], int numeroRecordes)
 ///                                     TESTE                                        ///
 ///----------------------------------------------------------------------------------///
 
+///EXERCICIO 1
+
 float distancia(float x1, float y1, float x2, float y2)
 {
     float distanciaPontos = sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2));
     return distanciaPontos;
 }
+
+///EXERCICIO 2
 
 int adicionaEventos(Jogador* j, float x[], float y[], int numeroEventos)
 {
@@ -90,6 +94,8 @@ int adicionaEventos(Jogador* j, float x[], float y[], int numeroEventos)
     numeroEventos++;
     return numeroEventos;
 }
+
+///EXERCICIO 3
 
 float calculaDistanciaTotal(float x[], float y[], int numeroEventos)
 {
@@ -103,13 +109,16 @@ float calculaDistanciaTotal(float x[], float y[], int numeroEventos)
     return distanciaTotal;
 }
 
+///EXERCICIO 4
+
 float calculaPontos(float x[], float y[], int numeroEventos, float tempoTotal)
 {
     float dist = calculaDistanciaTotal(x, y, numeroEventos);
-    cout << "distancia: " << dist << endl << "tempo: " << tempoTotal << endl;
     float pontos = dist / tempoTotal;
     return pontos;
 }
+
+///EXERCICIO 5
 
 int organizaRecordes(float recordes[], int numeroRecordes, float pontos)
 {
@@ -207,12 +216,10 @@ int main()
     }
 
     fscanf(rec, "%d", &numeroRecordes);
-    cout << numeroRecordes << endl;
 
     for(int i = 0; i < numeroRecordes; i++)
     {
         fscanf(rec, "%f", &recordes[i]);
-        cout << recordes[i] << endl;
     }
 
     fclose(rec);
