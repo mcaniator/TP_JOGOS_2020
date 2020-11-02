@@ -66,24 +66,24 @@ typedef struct
 {
     float x, y;
     int visivel;
-}Item2;
+}Itens;
 
-float obtemPosItemX(Item2 t[], int i)
+float obtemPosItemX(Itens t[], int i)
 {
     return t[i].x;
 }
 
-float obtemPosItemY(Item2 t[], int i)
+float obtemPosItemY(Itens t[], int i)
 {
     return t[i].y;
 }
 
-int obtemVisibilidadeItem(Item2 t[], int i)
+int obtemVisibilidadeItem(Itens t[], int i)
 {
     return t[i].visivel;
 }
 
-void atualizaItens(Item2 t[], std::vector<Item> itens)
+void atualizaItens(Itens t[], std::vector<Item> itens)
 {
     for(int i = 0; i < NUMERO_ITENS; i++)
     {
@@ -120,7 +120,6 @@ typedef struct
 {
     int mapa[TAMANHO_MAPA_X][TAMANHO_MAPA_Y];
     Ponto jogador;
-    int campoVisao;
     int numeroPontos;
     Ponto pontosVisiveis[MAX_PONTOS];
     ItemMinimapa itens[MAX_ITENS];
@@ -132,6 +131,7 @@ Ponto atualizaJogador(Jogador* j, Minimapa minimapa)
 {
     minimapa.jogador.x = (int)(obtemPosX(j) / TAMANHO_BLOCOS);
     minimapa.jogador.y = (int)(obtemPosY(j) / TAMANHO_BLOCOS);
+
     return minimapa.jogador;
 }
 
@@ -139,7 +139,6 @@ Ponto atualizaJogador(Jogador* j, Minimapa minimapa)
 
 Minimapa atualizaVisibilidade(Jogador* j, Minimapa minimapa)
 {
-    minimapa.campoVisao = 500;
     minimapa.numeroPontos = 0;
     float jogadorX = obtemPosX(j);
     float jogadorY = obtemPosY(j);
@@ -166,20 +165,23 @@ Minimapa atualizaVisibilidade(Jogador* j, Minimapa minimapa)
 
 ///EXERCICIO 4
 
-ItemMinimapa atualizaPontoItem(Item2 t[], int i, Minimapa minimapa)
+ItemMinimapa atualizaPontoItem(Itens t[], int i, Minimapa minimapa)
 {
     minimapa.itens[i].posicao.x = (int)(obtemPosItemX(t, i) / TAMANHO_BLOCOS);
     minimapa.itens[i].posicao.y = (int)(obtemPosItemY(t, i) / TAMANHO_BLOCOS);
     minimapa.itens[i].visivel = obtemVisibilidadeItem(t, i);
+
     return minimapa.itens[i];
 }
 
 ///EXERCICIO 5
 
-Minimapa atualizaMapa(Mapa* m, Item2 t[], Jogador* j, Minimapa minimapa)
+Minimapa atualizaMinimapa(Jogador* j, Mapa* m, Itens t[], Minimapa minimapa)
 {
     minimapa = atualizaVisibilidade(j, minimapa);
-    minimapa.campoVisao = 500;
+
+    minimapa.jogador = atualizaJogador(j, minimapa);
+
     int valor;
     for(int i = 0; i < TAMANHO_MAPA_X; i++)
     {
@@ -194,11 +196,12 @@ Minimapa atualizaMapa(Mapa* m, Item2 t[], Jogador* j, Minimapa minimapa)
                 minimapa.mapa[i][j] = 1;
         }
     }
+
     for(int i = 0; i < NUMERO_ITENS; i++)
     {
         minimapa.itens[i] = atualizaPontoItem(t, i, minimapa);
     }
-    minimapa.jogador = atualizaJogador(j, minimapa);
+
     return minimapa;
 }
 
@@ -275,7 +278,7 @@ int main()
 
     ////ITENS
 
-    Item2 itensMinimapa[NUMERO_ITENS];
+    Itens itensMinimapa[NUMERO_ITENS];
     dadosCena.criaItens();
     std::vector<Item> itens;
     for(int i = 0; i < NUMERO_ITENS; i++)
@@ -492,9 +495,8 @@ int main()
         if(!objetivo.getTerminou() && jogador.getStatus())
         {
             inventario.desenha(window, view.getCenter());
-            minimapa = atualizaMapa(&mapa, itensMinimapa, &jogador, minimapa);
+            minimapa = atualizaMinimapa(&jogador, &mapa, itensMinimapa, minimapa);
 
-            mapa.m.campoVisao = minimapa.campoVisao;
             for(int i = 0; i < NUMERO_ITENS; i++)
             {
                 mapa.m.itens[i].posicao.x = minimapa.itens[i].posicao.x;

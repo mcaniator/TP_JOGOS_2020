@@ -35,7 +35,6 @@ typedef struct
 {
     int mapa[TAMANHO_MAPA_X][TAMANHO_MAPA_Y];
     Ponto1 jogador;
-    int campoVisao;
     int numeroPontos;
     Ponto1 pontosVisiveis[MAX_PONTOS];
     ItemMinimapa1 itens[NUMERO_ITENS];

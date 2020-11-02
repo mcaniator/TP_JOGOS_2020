@@ -118,7 +118,7 @@ void Mapa::desenhaMinimapa(sf::RenderWindow& window, sf::Vector2f posicao)
     {
         for(int j = 0; j < TAMANHO_MAPA_Y; j++)
         {
-            tipo = m.mapa[i][j];
+            int tipo = m.mapa[i][j];
             minimapa.setPosition(posicao.x + 126 + 3 * i, posicao.y + 38 + 3 * j);
             filtro.setPosition(minimapa.getPosition());
 
