@@ -67,26 +67,43 @@ void ResizeView(const sf::RenderWindow& window, sf::View& view)
 ///EXERCICIO 1
 float deslocamentoLateral(Jogador* p, float deltaTempo)
 {
-    floatx, y;
-    x = obtemPosicaoX(p);
-    y = obtemPosicaoY(p);
-    x = x + deslocamentoLateral(p, deltaTempo);
-    y = y + deslocamentoVertical(p, deltaTempo);
-    atualizaPosicao(p, x, y);
-    return 0;
+    float vx = obtemVelocidadeX(p);
+    return vx * deltaTempo * sentidoMovimentoLateral(p);
 }
 
 ///EXERCICIO 2
 float deslocamentoVertical(Jogador* p, float deltaTempo)
 {
-    return 0;
+    float vy = obtemVelocidadeY(p);
+    return vy * deltaTempo * sentidoMovimentoVertical(p);
 }
 
 ///EXERCICIO 3
 int movimentaPersonagem(Jogador* p, float deltaTempo)
 {
+    float x, y;
+    x = obtemPosicaoX(p);
+    y = obtemPosicaoY(p);
+
+///EXERCICIO 4
+///float vx, vy;
+///vx = obtemVelocidadeX(p);
+///vy = obtemVelocidadeY(p);
+///vx = vx + (500 * deltaTempo * sentidoMovimentoLateral(p));
+///vy = vy + (500 * deltaTempo * sentidoMovimentoVertical(p));
+///atualizaVelocidadeX(p, vx);
+///atualizaVelocidadeY(p, vy);
+///x = x + vx * deltaTempo;
+///y = y + vy * deltaTempo;
+
+    ///Essas duas linhas abaixo devem ser excluidas para o funcionamento do exercicio 4;
+    x = x + deslocamentoLateral(p, deltaTempo);
+    y = y + deslocamentoVertical(p, deltaTempo);
+    atualizaPosicao(p, x, y);
+
     return 0;
 }
+
 
 ///----------------------------------------------------------------------------------///
 ///                                                                                  ///

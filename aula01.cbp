@@ -13,13 +13,18 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add option="-DSFML_STATIC" />
 					<Add directory="SFML-2.5.1/include" />
 					<Add directory="include" />
 				</Compiler>
 				<Linker>
-					<Add library="sfml-graphics" />
-					<Add library="sfml-window" />
-					<Add library="sfml-system" />
+					<Add library="sfml-graphics-s" />
+					<Add library="sfml-window-s" />
+					<Add library="sfml-system-s" />
+					<Add library="gdi32" />
+					<Add library="opengl32" />
+					<Add library="winmm" />
+					<Add library="freetype" />
 					<Add directory="SFML-2.5.1/lib" />
 				</Linker>
 			</Target>
