@@ -85,7 +85,6 @@ void gravarNomes(char nomes[5][6], int numeroNomes)
 ///----------------------------------------------------------------------------------///
 
 ///EXERCICIO 1
-
 void liberaLinha(char nomes[5][6], int linha)
 {
     for(int j = 0; j < 5; j++)
@@ -95,7 +94,6 @@ void liberaLinha(char nomes[5][6], int linha)
 }
 
 ///EXERCICIO 2
-
 int insereNome(char nomes[5][6], int numeroNomes, int linha, char nome[6])
 {
     for(int i = numeroNomes - 1 ; i > linha; i--)
@@ -111,7 +109,6 @@ int insereNome(char nomes[5][6], int numeroNomes, int linha, char nome[6])
 }
 
 ///EXERCICIO 3 & 4
-
 void atualizaMinimapa(int minimapa[TAMANHO_MAPA_X][TAMANHO_MAPA_Y], Jogador* j)
 {
     int jogadorX, jogadorY;

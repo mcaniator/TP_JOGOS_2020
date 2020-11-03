@@ -14,7 +14,7 @@
 				<Compiler>
 					<Add option="-g" />
 					<Add option="-DSFML_STATIC" />
-					<Add directory="../SFML-2.5.1/include" />
+					<Add directory="SFML-2.5.1/include" />
 					<Add directory="include" />
 				</Compiler>
 				<Linker>
@@ -25,7 +25,7 @@
 					<Add library="gdi32" />
 					<Add library="winmm" />
 					<Add library="freetype" />
-					<Add directory="../SFML-2.5.1/lib" />
+					<Add directory="SFML-2.5.1/lib" />
 				</Linker>
 			</Target>
 			<Target title="Release">
