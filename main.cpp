@@ -147,6 +147,15 @@ int main()
     Inventario inventario(&texturaInventario, sf::Vector2u(17, 10), &texturaItem, sf::Vector2u(16, 16), &texturaIndice, sf::Vector2u(4, 1));
 
     Objetivo objetivo(&texturaObjetivo, sf::Vector2u(13, 21), &texturaInventario, sf::Vector2u(17, 10), &texturaItem, sf::Vector2u(16, 16));
+    objetivo.adicionaEventos(jogador.getPosicao());
+
+     ////TEMPO
+
+    float tempoTotal = 0.01;
+    float tempoAtual = 0.01;
+    bool tempoAtualRecebido = false;
+
+    ////CENA
 
     float xPlataformas[NUMERO_PLATAFORMAS] = {500, 384,  480,  624,  864, 1056, 1248, 1296,  768, 1128, 1392};
     float compPlataformas[NUMERO_PLATAFORMAS] = {26, 96, 192, 288, 192, 192, 192, 192, 192, 144,  96};
@@ -198,6 +207,8 @@ int main()
         else
             delay = 0;
 
+        tempoTotal += deltaTempo;
+
         sf::Event evnt;
         while(window.pollEvent(evnt))
         {
@@ -224,6 +235,7 @@ int main()
             {
                 item.coletou();
                 organizaInventario(item.getTipo(), coletados, numcoletados);
+                objetivo.adicionaEventos(jogador.getPosicao());
             }
 
             //ITEM COLETADO
@@ -266,6 +278,7 @@ int main()
                 }
             }
             delay = 0.6;
+            objetivo.adicionaEventos(jogador.getPosicao());
         }
 
         //COLISOES
@@ -307,7 +320,14 @@ int main()
 
                 //INIMIGO x JOGADOR
                 if(jogador.getStatus())
-                    jogador.setStatus(!jogador.getColisor().checaColisao(inimigo.getColisor()));
+                {
+                    bool status = jogador.getColisor().checaColisao(inimigo.getColisor());
+                    if(status)
+                    {
+                        jogador.setStatus(!status);
+                        objetivo.adicionaEventos(jogador.getPosicao());
+                    }
+                }
             }
         }
 
@@ -353,13 +373,13 @@ int main()
         }
 
         if(!naFrente)
-            objetivo.desenha(window, resposta, recebidos, ganhou, terminou);
+            objetivo.desenha(window, resposta, recebidos, ganhou, terminou, jogador.getStatus());
 
         if(vivo)
             jogador.desenha(window);
 
         if(naFrente)
-            objetivo.desenha(window, resposta, recebidos, ganhou, terminou);
+            objetivo.desenha(window, resposta, recebidos, ganhou, terminou, jogador.getStatus());
 
         for(unsigned int i = 0; i < inimigos.size(); i++)
         {
@@ -373,6 +393,22 @@ int main()
 
         //FINAL DO JOGO
 
+        if(!jogador.getStatus() && !terminou)
+        {
+            if(!tempoAtualRecebido)
+            {
+                tempoAtual = tempoTotal;
+                tempoAtualRecebido = true;
+                objetivo.calculaPontos(tempoAtual, false);
+                objetivo.organizaRecordes();
+            }
+
+            objetivo.desenhaFinal(window, view.getCenter(), false);
+
+            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Tab))
+                objetivo.desenhaRecordes(window, view.getCenter());
+        }
+
         if(numRecebidos == 5)
         {
             if(!terminou)
@@ -380,8 +416,25 @@ int main()
                 terminou = true;
                 ganhou = comparaString(resposta, recebidos);
             }
-            objetivo.desenhaFinal(window, view.getCenter(), ganhou);
         }
+
+        if(terminou)
+        {
+            if(!tempoAtualRecebido)
+            {
+                tempoAtual = tempoTotal;
+                tempoAtualRecebido = true;
+                objetivo.calculaPontos(tempoAtual, ganhou);
+                objetivo.organizaRecordes();
+            }
+
+            objetivo.desenhaFinal(window, view.getCenter(), ganhou);
+
+            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Tab))
+                objetivo.desenhaRecordes(window, view.getCenter());
+        }
+
+
 
         ////
         window.display();
