@@ -8,7 +8,6 @@
 #include "Jogador.h"
 #include "Mapa.h"
 #include "Cena.h"
-#include "Recordes.h"
 #include "Objetivo.h"
 #include "Plataforma.h"
 
@@ -87,10 +86,38 @@ void gravarNomes(char nomes[5][6], int numeroNomes)
 
 ///EXERCICIO 1
 
+void liberaLinha(char nomes[5][6], int linha)
+{
+    for(int j = 0; j < 5; j++)
+    {
+        nomes[linha][j] = nomes[linha - 1][j];
+    }
+}
+
+///EXERCICIO 2
+
+int insereNome(char nomes[5][6], int numeroNomes, int linha, char nome[6])
+{
+    for(int i = numeroNomes - 1 ; i > linha; i--)
+        liberaLinha(nomes, i);
+
+    for(int i = 0; i < 5; i++)
+        nomes[linha][i] = nome[i];
+
+    if(numeroNomes < 5)
+        numeroNomes++;
+
+    return numeroNomes;
+}
+
+///EXERCICIO 3 & 4
+
 void atualizaMinimapa(int minimapa[TAMANHO_MAPA_X][TAMANHO_MAPA_Y], Jogador* j)
 {
     int jogadorX, jogadorY;
-    float jogadorPosX, jogadorPosY, blocoPosX, blocoPosY;
+    float jogadorPosX, jogadorPosY;
+
+    float blocoPosX, blocoPosY;
     float distancia;
 
     jogadorPosX = obtemPosX(j);
@@ -115,32 +142,6 @@ void atualizaMinimapa(int minimapa[TAMANHO_MAPA_X][TAMANHO_MAPA_Y], Jogador* j)
         }
     }
     minimapa[jogadorX][jogadorY] = 1;
-}
-
-///EXERCICIO 2
-
-void liberaLinha(char nomes[5][6], int linha)
-{
-    for(int j = 0; j < 5; j++)
-    {
-        nomes[linha][j] = nomes[linha - 1][j];
-    }
-}
-
-///EXERCICIO 3
-
-int insereNome(char nomes[5][6], int numeroNomes, int linha, char nome[6])
-{
-    for(int i = numeroNomes - 1 ; i > linha; i--)
-        liberaLinha(nomes, i);
-
-    for(int i = 0; i < 5; i++)
-        nomes[linha][i] = nome[i];
-
-    if(numeroNomes < 5)
-        numeroNomes++;
-
-    return numeroNomes;
 }
 
 ///----------------------------------------------------------------------------------///
@@ -235,18 +236,12 @@ int main()
     }
 
     fscanf(rec, "%d\n", &numeroNomes);
-    cout << "Numero nomes: " << numeroNomes << endl;;
 
     for(int i = 0; i < numeroNomes; i++) {
         fscanf(rec, "%s\n", nomes[i]);
-        cout << "Nome: " << nomes[i] << endl << endl;
     }
 
     fclose(rec);
-
-    for(int i = 0; i < 5; i++)
-        for(int j = 0; nomes[i][j]!= '\0' ; j++)
-            cout << nomes[i][j];
 
     //CONFIGURA TEMPO
     float deltaTempo = 0.0f;

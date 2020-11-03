@@ -138,6 +138,8 @@ void Objetivo::calculaPontos(float tempoTotal)
     for(int i = 0; i < numeroEventos - 1; i++)
         dist += sqrt(pow(xEventos[i + 1] - xEventos[i], 2) + pow(yEventos[i + 1] - yEventos[i], 2));
     pontuacao = dist / tempoTotal;
+    if(ganhou)
+        pontuacao *= 10;
 }
 
 int Objetivo::organizaRecordes()
