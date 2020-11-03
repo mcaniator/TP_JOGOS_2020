@@ -120,8 +120,9 @@ int main()
 
     char recebidos[6];
     int numRecebidos = 0;
-        //OBJETIVO
-        montaObjetivo(letras, resposta);
+
+    //OBJETIVO
+    montaObjetivo(letras, resposta);
 
     //VARIAVEIS DO JOGO
     sf::Texture texturaJogador;
