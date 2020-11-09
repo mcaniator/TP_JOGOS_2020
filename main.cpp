@@ -99,7 +99,7 @@ int insereNome(char nomes[5][6], int numeroNomes, int linha, char nome[6])
     for(int i = numeroNomes - 1 ; i > linha; i--)
         liberaLinha(nomes, i);
 
-    for(int i = 0; i < 5; i++)
+    for(int i = 0; i < 6; i++)
         nomes[linha][i] = nome[i];
 
     if(numeroNomes < 5)
