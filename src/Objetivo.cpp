@@ -188,7 +188,7 @@ void Objetivo::organizaRecordes(char nome[6])
         if(numeroRecordes < 5)
         {
             recordes[numeroRecordes] = pontuacao;
-            for(int i = 0; nomes[numeroRecordes][i] != '\0'; i++)
+            for(int i = 0; i < 6; i++)
                 nomes[numeroRecordes][i] = nome[i];
             numeroRecordes++;
         }
@@ -222,9 +222,7 @@ void Objetivo::organizaRecordes(char nome[6])
     fprintf(rec, "%d\n", numeroRecordes);
 
     for(int i = 0; i < numeroRecordes; i++)
-    {
         fprintf(rec, "%s\n", nomes[i]);
-    }
 
     fclose(rec);
 
