@@ -136,7 +136,7 @@ char ladoColisao(float jogX, float compJog, float jogY, float altJog, float objX
         return '0';
 }
 
-///EXERCICIO 4
+///EXERCICIO 4 & 5
 int moveInimigo(Inimigo* i, Jogador* p)
 {
     float compI = obtemCompInimigo(i);
