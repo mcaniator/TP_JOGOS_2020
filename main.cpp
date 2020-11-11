@@ -78,7 +78,7 @@ float deslocamentoVertical(Jogador* p, float deltaTempo)
     return vy * deltaTempo * sentidoMovimentoVertical(p);
 }
 
-///EXERCICIO 3
+///EXERCICIO 3 & 4
 int movimentaPersonagem(Jogador* p, float deltaTempo)
 {
     float x, y;
