@@ -11,6 +11,8 @@
 #include "Objetivo.h"
 #include "Plataforma.h"
 
+#define CAMPO_VISAO 500
+
 static const float VIEW_HEIGHT = 322.0f;
 
 using namespace std;
