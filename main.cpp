@@ -216,7 +216,7 @@ int main()
     scanf("%s", nome);
 
     //VARIAVEIS DA CONFIGURACAO
-    sf::RenderWindow window(sf::VideoMode(800, 512), "Jogo Aula 06", sf::Style::Close);
+    sf::RenderWindow window(sf::VideoMode(800, 512), "Jogo Aula 07", sf::Style::Close);
     sf::View view(sf::Vector2f(0, 0), sf::Vector2f(VIEW_HEIGHT, VIEW_HEIGHT));
     srand(time(0));
 
