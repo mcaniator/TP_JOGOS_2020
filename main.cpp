@@ -13,6 +13,7 @@
 
 #define MAX_PONTOS 2000
 #define MAX_ITENS 27
+#define CAMPO_VISAO 500
 
 static const float VIEW_HEIGHT = 322.0f;
 
@@ -106,23 +107,23 @@ int obtemTipoCelula(Mapa* m, int x, int y)
 
 typedef struct
 {
-    int x;
-    int y;
+    int x; ///Coordenada x
+    int y; ///Coordenada y
 }Ponto;
 
 typedef struct
 {
-    Ponto posicao;
-    int visivel;
+    Ponto posicao; ///Posicao do item
+    int visivel;   ///Indicador se o item eh visivel ou nao
 }ItemMinimapa;
 
 typedef struct
 {
-    int mapa[TAMANHO_MAPA_X][TAMANHO_MAPA_Y];
-    Ponto jogador;
-    int numeroPontos;
-    Ponto pontosVisiveis[MAX_PONTOS];
-    ItemMinimapa itens[MAX_ITENS];
+    int mapa[TAMANHO_MAPA_X][TAMANHO_MAPA_Y]; ///Matriz do minimapa
+    Ponto jogador;                            ///Posicao do jogador
+    int numeroPontos;                         ///Numero de pontos visiveis
+    Ponto pontosVisiveis[MAX_PONTOS];         ///Vetor de pontos visiveis
+    ItemMinimapa itens[MAX_ITENS];            ///Vetor de itens no minimapa
 }Minimapa;
 
 ///EXERCICIO 2
@@ -152,7 +153,7 @@ Minimapa atualizaVisibilidade(Jogador* j, Minimapa minimapa)
 
             distancia = sqrt(pow(blocoX - jogadorX, 2) + pow(blocoY - jogadorY, 2));
 
-            if(distancia < 500)
+            if(distancia < CAMPO_VISAO)
             {
                 minimapa.pontosVisiveis[minimapa.numeroPontos].x = i;
                 minimapa.pontosVisiveis[minimapa.numeroPontos].y = j;
