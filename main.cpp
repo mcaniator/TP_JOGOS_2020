@@ -12,6 +12,7 @@
 #include "Plataforma.h"
 
 #define CAMPO_VISAO 500
+#define MAX_RECORDES 5
 
 static const float VIEW_HEIGHT = 322.0f;
 
@@ -89,7 +90,7 @@ void gravarNomes(char nomes[5][6], int numeroNomes)
 ///EXERCICIO 1
 void liberaLinha(char nomes[5][6], int linha)
 {
-    for(int j = 0; j < 5; j++)
+    for(int j = 0; j < 6; j++)
     {
         nomes[linha][j] = nomes[linha - 1][j];
     }
@@ -98,13 +99,13 @@ void liberaLinha(char nomes[5][6], int linha)
 ///EXERCICIO 2
 int insereNome(char nomes[5][6], int numeroNomes, int linha, char nome[6])
 {
-    for(int i = numeroNomes - 1 ; i > linha; i--)
+    for(int i = numeroNomes; i > linha; i--)
         liberaLinha(nomes, i);
 
     for(int i = 0; i < 6; i++)
         nomes[linha][i] = nome[i];
 
-    if(numeroNomes < 5)
+    if(numeroNomes < MAX_RECORDES)
         numeroNomes++;
 
     return numeroNomes;
@@ -134,7 +135,7 @@ void atualizaMinimapa(int minimapa[TAMANHO_MAPA_X][TAMANHO_MAPA_Y], Jogador* j)
 
             distancia = sqrt(pow(blocoPosX - jogadorPosX, 2) + pow(blocoPosY - jogadorPosY, 2));
 
-            if(distancia < 500)
+            if(distancia < CAMPO_VISAO)
                 minimapa[i][j] = 0;
             else
                 minimapa[i][j] = 2;
