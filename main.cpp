@@ -439,21 +439,6 @@ int main()
         window.setView(view);
         window.clear(sf::Color(150,150,150));
 
-        //MINIMAPA
-
-        /*
-        atualizaDadosJogadorMapa(minimapa, &jogador);
-        atualizaMinimapa(minimapa);
-        for(unsigned int i = 0; i < itens.size(); i++)
-        {
-            Item& item = itens[i];
-            int x = int(item.getX() / TAMANHO_BLOCOS);
-            int y = int(item.getY() / TAMANHO_BLOCOS);
-            if(!item.getStatus() && minimapa.mapa[x][y] != 1 && minimapa.mapa[x][y] != 2)
-                minimapa.mapa[x][y] = 3;
-        }
-        */
-
         //DESENHA OS OBJETOS
 
         mapa.desenha(window);
