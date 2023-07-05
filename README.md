@@ -6,35 +6,35 @@ Cada branch está associada a uma aula específica. Cada aula possui o seu próp
 
 As aulas foram divididas da seguinte forma:
 
-Aula01: Movimentação básica
+### Aula01: Movimentação básica
 Tópicos trabalhados: 
 - Uso de funções
 - Declaração de variáveis
 - Expressões aritméticas e atribuições
 
-Aula02: Movimentação com colisão
+### Aula02: Movimentação com colisão
 Tópicos trabalhados:
 - Condicionais
 
-Aula03: Movimentação com colisão e geração de itens e inimigos
+### Aula03: Movimentação com colisão e geração de itens e inimigos
 Tópicos trabalhados:
 - Condicionais
 - Estruturas de repetição
 
-Aula04: Coleta de itens e ranking de pontuação
+### Aula04: Coleta de itens e ranking de pontuação
 Tópicos trabalhados:
 - Vetores numéricos
 
-Aula05: Coleta de itens em uma ordem específica
+### Aula05: Coleta de itens em uma ordem específica
 Tópicos trabalhados:
 - Strings
 
-Aula06: Inclusão de nome no ranking e minimapa
+### Aula06: Inclusão de nome no ranking e minimapa
 Tópicos trabalhados:
 - Strings
 - Matrizes
 
-Aula07: Inclusão de itens no minimapa
+### Aula07: Inclusão de itens no minimapa
 Tópicos trabalhados:
 - Matrizes
 - Structs
@@ -56,12 +56,12 @@ Arch: sudo pacman -Sy sfml
 Ao abrir o projeto no Code::Blocks, deve-se seguir os seguintes passos:
 1) Clicar com o botão direito no nome do projeto e selecionar "Build options"
 2) Acessar a aba "Linker settings" e incluir as seguintes bibliotecas na caixa "Link libraries", **nesta ordem**:
-- sfml-graphics
-- sfml-window
-- sfml-system
+   - sfml-graphics
+   - sfml-window
+   - sfml-system
 3) Caso os arquivos da biblioteca não tenham sido descompactados em uma pasta padrão do sistema, será necessário incluir os diretórios no PATH ou fazer os passos abaixo:
-  1) Na aba "Search directories", incluir na sub-aba "Compiler" o diretório de instalação dos arquivos de cabeçalho (.h) da biblioteca (normalmente estes arquivos estão em uma pasta chamada "include")
-  2) Na aba "Search directories", incluir na sub-aba "Linker" o diretório de instalação dos arquivos compilados (.a) da biblioteca (normalmente estes arquivos estão em uma pasta chamada "lib")
+   1) Na aba "Search directories", incluir na sub-aba "Compiler" o diretório de instalação dos arquivos de cabeçalho (.h) da biblioteca (normalmente estes arquivos estão em uma pasta chamada "include")
+   2) Na aba "Search directories", incluir na sub-aba "Linker" o diretório de instalação dos arquivos compilados (.a) da biblioteca (normalmente estes arquivos estão em uma pasta chamada "lib")
 
 Mais detalhes sobre o processo de configuração de um projeto com a SFML podem ser encontrados na seção "Getting started" dos tutoriais oficiais da biblioteca:
 https://www.sfml-dev.org/tutorials/2.6/
