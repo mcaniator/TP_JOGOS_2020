@@ -60,8 +60,8 @@ Ao abrir o projeto no Code::Blocks, deve-se seguir os seguintes passos:
 - sfml-window
 - sfml-system
 3) Caso os arquivos da biblioteca não tenham sido descompactados em uma pasta padrão do sistema, será necessário incluir os diretórios no PATH ou fazer os passos abaixo:
-3.1) Na aba "Search directories", incluir na sub-aba "Compiler" o diretório de instalação dos arquivos de cabeçalho (.h) da biblioteca (normalmente estes arquivos estão em uma pasta chamada "include")
-3.2) Na aba "Search directories", incluir na sub-aba "Linker" o diretório de instalação dos arquivos compilados (.a) da biblioteca (normalmente estes arquivos estão em uma pasta chamada "lib")
+  3.1) Na aba "Search directories", incluir na sub-aba "Compiler" o diretório de instalação dos arquivos de cabeçalho (.h) da biblioteca (normalmente estes arquivos estão em uma pasta chamada "include")
+  3.2) Na aba "Search directories", incluir na sub-aba "Linker" o diretório de instalação dos arquivos compilados (.a) da biblioteca (normalmente estes arquivos estão em uma pasta chamada "lib")
 
 Mais detalhes sobre o processo de configuração de um projeto com a SFML podem ser encontrados na seção "Getting started" dos tutoriais oficiais da biblioteca:
 https://www.sfml-dev.org/tutorials/2.6/
